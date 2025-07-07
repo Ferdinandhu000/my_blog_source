@@ -34,4 +34,4 @@ jobs:
           EXTERNAL_REPOSITORY: Ferdinandhu000/my_blog_show # 你的GitHub Pages仓库
           PUBLISH_BRANCH: main # 或者是你的GitHub Pages分支
           PUBLISH_DIR: ./
-          commit_message: ${{ github.event.head_commit.message }}阿萨
+          commit_message: ${{ github.event.head_commit.message }}
