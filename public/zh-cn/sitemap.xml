@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2025-07-16T17:00:39+08:00</lastmod>
+    <lastmod>2025-07-20T18:44:52+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -15,21 +15,8 @@
                 href="http://localhost:1313/"
                 />
   </url><url>
-    <loc>http://localhost:1313/post/</loc>
-    <lastmod>2025-07-16T17:00:39+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://localhost:1313/en/post/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="http://localhost:1313/post/"
-                />
-  </url><url>
     <loc>http://localhost:1313/categories/</loc>
-    <lastmod>2025-07-12T22:22:14+08:00</lastmod>
+    <lastmod>2025-07-20T18:44:52+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -42,7 +29,7 @@
                 />
   </url><url>
     <loc>http://localhost:1313/categories/java/</loc>
-    <lastmod>2025-07-12T22:22:14+08:00</lastmod>
+    <lastmod>2025-07-20T18:44:52+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -54,14 +41,8 @@
                 href="http://localhost:1313/categories/java/"
                 />
   </url><url>
-    <loc>http://localhost:1313/categories/%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91/</loc>
-    <lastmod>2025-07-12T22:22:14+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/p/%E6%96%87%E4%BB%B6%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E5%99%A8%E7%95%8C%E9%9D%A2-v1.0/</loc>
-    <lastmod>2025-07-12T22:22:14+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/categories/notes/</loc>
-    <lastmod>2025-07-01T10:15:02+08:00</lastmod>
+    <lastmod>2025-07-20T18:44:52+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -72,6 +53,31 @@
                 hreflang="zh-cn"
                 href="http://localhost:1313/categories/notes/"
                 />
+  </url><url>
+    <loc>http://localhost:1313/post/</loc>
+    <lastmod>2025-07-20T18:44:52+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://localhost:1313/en/post/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="http://localhost:1313/post/"
+                />
+  </url><url>
+    <loc>http://localhost:1313/p/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2025-07-20T18:44:52+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91/</loc>
+    <lastmod>2025-07-16T14:33:35+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/p/%E6%96%87%E4%BB%B6%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E5%99%A8%E7%95%8C%E9%9D%A2-v2.0/</loc>
+    <lastmod>2025-07-16T14:33:35+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/p/%E6%96%87%E4%BB%B6%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E5%99%A8%E7%95%8C%E9%9D%A2-v1.0/</loc>
+    <lastmod>2025-07-12T22:22:14+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/p/%E7%AC%AC%E4%B8%80%E7%AB%A0%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95%E4%BA%8C/</loc>
     <lastmod>2025-07-01T10:15:02+08:00</lastmod>
