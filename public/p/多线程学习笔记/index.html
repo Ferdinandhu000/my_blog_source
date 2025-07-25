@@ -468,8 +468,8 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">MyThread</span><span class="w"> </span><span class="n">mt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyThread</span><span class="p">();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 调用start方法开启线程</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">mt</span><span class="p">.</span><span class="na">start</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// mt.run(); 千万不要调用run方法,因为并没有开启线程,只是一个对象调用一次    方法而已.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 这个循环属于main方法所在的线程,就是换一个叫做&#34;main&#34;线程,这线程就是主 线程</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// mt.run(); 不要调用run方法。run()方法不会启动线程，只是普通的调用方法而已。不会分配新的分支栈。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 这个循环属于main方法所在的线程,就是换一个叫做&#34;main&#34;线程,这线程就是主线程</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">100</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;主线程中的任务---&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
@@ -608,6 +608,14 @@
 </div><hr>
 <h3 id="任务用线程在窗口中绘制可运动的小球要求鼠标点击时产生新的小球每个小球有独立的运动且只使用一个线程来控制所有操作">任务：用线程在窗口中绘制可运动的小球，要求鼠标点击时产生新的小球，每个小球有独立的运动，且只使用一个线程来控制所有操作
 </h3><p><img src="https://raw.githubusercontent.com/Ferdinandhu000/my_blog_img/master/20250722154617.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/2659edabe3de129692c84435978d4402.gif"
 	
 	
 	

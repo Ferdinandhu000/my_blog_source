@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Project on FerdinandHu</title>
-        <link>http://localhost:1313/en/categories/project/</link>
+        <link>https://ferdinandhu.netlify.app/en/categories/project/</link>
         <description>Recent content in Project on FerdinandHu</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Ferdinand Hu</copyright>
-        <lastBuildDate>Sun, 27 Apr 2025 17:25:19 +0800</lastBuildDate><atom:link href="http://localhost:1313/en/categories/project/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 27 Apr 2025 17:25:19 +0800</lastBuildDate><atom:link href="https://ferdinandhu.netlify.app/en/categories/project/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Pratical Project 1 -- User Authentication Interface</title>
-        <link>http://localhost:1313/en/p/pratical-project-1--user-authentication-interface/</link>
+        <link>https://ferdinandhu.netlify.app/en/p/pratical-project-1--user-authentication-interface/</link>
         <pubDate>Sun, 27 Apr 2025 17:25:19 +0800</pubDate>
         
-        <guid>http://localhost:1313/en/p/pratical-project-1--user-authentication-interface/</guid>
+        <guid>https://ferdinandhu.netlify.app/en/p/pratical-project-1--user-authentication-interface/</guid>
         <description>&lt;h2 id=&#34;user-authentication-interface&#34;&gt;User Authentication Interface
 &lt;/h2&gt;&lt;hr&gt;
 &lt;p&gt;Implement a simple user authentication interface using Java, which includes user registration, login, logout, and cancellation functions, and generate a window through the Graphical User Interface (GUI) for users to interact with.&lt;/p&gt;
