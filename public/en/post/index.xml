@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Posts on FerdinandHu</title>
-        <link>https://ferdinandhu.netlify.app/en/post/</link>
+        <link>http://localhost:1313/en/post/</link>
         <description>Recent content in Posts on FerdinandHu</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Ferdinand Hu</copyright>
-        <lastBuildDate>Fri, 30 May 2025 11:29:16 +0800</lastBuildDate><atom:link href="https://ferdinandhu.netlify.app/en/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 30 May 2025 11:29:16 +0800</lastBuildDate><atom:link href="http://localhost:1313/en/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Common Encryption Algorithms and Encoding Types</title>
-        <link>https://ferdinandhu.netlify.app/en/p/common-encryption-algorithms-and-encoding-types/</link>
+        <link>http://localhost:1313/en/p/common-encryption-algorithms-and-encoding-types/</link>
         <pubDate>Fri, 30 May 2025 11:29:16 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/en/p/common-encryption-algorithms-and-encoding-types/</guid>
+        <guid>http://localhost:1313/en/p/common-encryption-algorithms-and-encoding-types/</guid>
         <description>&lt;h2 id=&#34;encoding-types&#34;&gt;Encoding Types
 &lt;/h2&gt;&lt;h3 id=&#34;1-base64&#34;&gt;1. Base64
 &lt;/h3&gt;&lt;ul&gt;
@@ -366,10 +366,10 @@
         </item>
         <item>
         <title>Interface</title>
-        <link>https://ferdinandhu.netlify.app/en/p/interface/</link>
+        <link>http://localhost:1313/en/p/interface/</link>
         <pubDate>Mon, 19 May 2025 21:05:05 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/en/p/interface/</guid>
+        <guid>http://localhost:1313/en/p/interface/</guid>
         <description>&lt;h2 id=&#34;两个重要接口&#34;&gt;两个重要接口
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Comparable Interface&lt;/li&gt;
@@ -680,10 +680,10 @@ int &amp;gt; 0, if this &amp;gt; other&lt;/p&gt;
         </item>
         <item>
         <title>Java Object-Oriented Programming</title>
-        <link>https://ferdinandhu.netlify.app/en/p/java-object-oriented-programming/</link>
+        <link>http://localhost:1313/en/p/java-object-oriented-programming/</link>
         <pubDate>Sat, 17 May 2025 14:16:37 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/en/p/java-object-oriented-programming/</guid>
+        <guid>http://localhost:1313/en/p/java-object-oriented-programming/</guid>
         <description>&lt;h1 id=&#34;java-object-oriented-programming-oop&#34;&gt;Java Object-Oriented Programming (OOP)
 &lt;/h1&gt;&lt;h2 id=&#34;contents&#34;&gt;Contents
 &lt;/h2&gt;&lt;ul&gt;
@@ -1205,10 +1205,10 @@ For the following code:&lt;/p&gt;
         </item>
         <item>
         <title>Interface of Java</title>
-        <link>https://ferdinandhu.netlify.app/en/p/interface-of-java/</link>
+        <link>http://localhost:1313/en/p/interface-of-java/</link>
         <pubDate>Sat, 17 May 2025 14:16:07 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/en/p/interface-of-java/</guid>
+        <guid>http://localhost:1313/en/p/interface-of-java/</guid>
         <description>&lt;h2 id=&#34;interface-of-java&#34;&gt;Interface of Java
 &lt;/h2&gt;&lt;h3 id=&#34;concept&#34;&gt;Concept:
 &lt;/h3&gt;&lt;ul&gt;
@@ -1316,10 +1316,10 @@ For the following code:&lt;/p&gt;
         </item>
         <item>
         <title>Interactive Drawing Board v3.0</title>
-        <link>https://ferdinandhu.netlify.app/en/p/interactive-drawing-board-v3.0/</link>
+        <link>http://localhost:1313/en/p/interactive-drawing-board-v3.0/</link>
         <pubDate>Sun, 11 May 2025 10:33:34 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/en/p/interactive-drawing-board-v3.0/</guid>
+        <guid>http://localhost:1313/en/p/interactive-drawing-board-v3.0/</guid>
         <description>&lt;h2 id=&#34;interactive-drawing-board-v30&#34;&gt;Interactive Drawing Board v3.0
 &lt;/h2&gt;&lt;p&gt;Implement a feature - rich interactive drawing board using Java. Based on version 2.0, more advanced features are added, including brush thickness adjustment, RGB color adjustment, etc., and the interface layout is optimized.&lt;/p&gt;
 &lt;h3 id=&#34;function-introduction-of-each-class&#34;&gt;Function Introduction of Each Class
@@ -2574,10 +2574,10 @@ For the following code:&lt;/p&gt;
         </item>
         <item>
         <title>Interactive Drawing Board v2.0</title>
-        <link>https://ferdinandhu.netlify.app/en/p/interactive-drawing-board-v2.0/</link>
+        <link>http://localhost:1313/en/p/interactive-drawing-board-v2.0/</link>
         <pubDate>Thu, 08 May 2025 20:31:26 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/en/p/interactive-drawing-board-v2.0/</guid>
+        <guid>http://localhost:1313/en/p/interactive-drawing-board-v2.0/</guid>
         <description>&lt;h2 id=&#34;interactive-drawing-board-v20&#34;&gt;Interactive Drawing Board v2.0
 &lt;/h2&gt;&lt;hr&gt;
 &lt;p&gt;Implement a simple interactive drawing board using Java. Based on version 1.0, more graphic drawing functions have been added, and the code structure has been optimized.&lt;/p&gt;
@@ -3366,10 +3366,10 @@ For the following code:&lt;/p&gt;
         </item>
         <item>
         <title>Interactive Drawing Board v1.0</title>
-        <link>https://ferdinandhu.netlify.app/en/p/interactive-drawing-board-v1.0/</link>
+        <link>http://localhost:1313/en/p/interactive-drawing-board-v1.0/</link>
         <pubDate>Sat, 03 May 2025 19:54:22 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/en/p/interactive-drawing-board-v1.0/</guid>
+        <guid>http://localhost:1313/en/p/interactive-drawing-board-v1.0/</guid>
         <description>&lt;h2 id=&#34;interactive-drawing-board-v10&#34;&gt;Interactive Drawing Board v1.0
 &lt;/h2&gt;&lt;hr&gt;
 &lt;p&gt;Implement a simple interactive drawing board using Java.&lt;/p&gt;
@@ -4085,10 +4085,10 @@ For the following code:&lt;/p&gt;
         </item>
         <item>
         <title>Pratical Project 1 -- User Authentication Interface</title>
-        <link>https://ferdinandhu.netlify.app/en/p/pratical-project-1--user-authentication-interface/</link>
+        <link>http://localhost:1313/en/p/pratical-project-1--user-authentication-interface/</link>
         <pubDate>Sun, 27 Apr 2025 17:25:19 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/en/p/pratical-project-1--user-authentication-interface/</guid>
+        <guid>http://localhost:1313/en/p/pratical-project-1--user-authentication-interface/</guid>
         <description>&lt;h2 id=&#34;user-authentication-interface&#34;&gt;User Authentication Interface
 &lt;/h2&gt;&lt;hr&gt;
 &lt;p&gt;Implement a simple user authentication interface using Java, which includes user registration, login, logout, and cancellation functions, and generate a window through the Graphical User Interface (GUI) for users to interact with.&lt;/p&gt;
@@ -4814,10 +4814,10 @@ For the following code:&lt;/p&gt;
         </item>
         <item>
         <title>Event listener</title>
-        <link>https://ferdinandhu.netlify.app/en/p/event-listener/</link>
+        <link>http://localhost:1313/en/p/event-listener/</link>
         <pubDate>Thu, 24 Apr 2025 09:28:48 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/en/p/event-listener/</guid>
+        <guid>http://localhost:1313/en/p/event-listener/</guid>
         <description>&lt;h2 id=&#34;event-listener&#34;&gt;Event Listener
 &lt;/h2&gt;&lt;hr&gt;
 &lt;h3 id=&#34;principle&#34;&gt;Principle
@@ -5357,10 +5357,10 @@ For the following code:&lt;/p&gt;
         </item>
         <item>
         <title>Basic Window Settings</title>
-        <link>https://ferdinandhu.netlify.app/en/p/basic-window-settings/</link>
+        <link>http://localhost:1313/en/p/basic-window-settings/</link>
         <pubDate>Wed, 23 Apr 2025 17:01:42 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/en/p/basic-window-settings/</guid>
+        <guid>http://localhost:1313/en/p/basic-window-settings/</guid>
         <description>&lt;h2 id=&#34;basic-window-settings&#34;&gt;Basic Window Settings
 &lt;/h2&gt;&lt;hr&gt;
 &lt;h3 id=&#34;principle&#34;&gt;Principle:

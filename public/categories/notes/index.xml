@@ -2,20 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Notes on FerdinandHu</title>
-        <link>https://ferdinandhu.netlify.app/categories/notes/</link>
+        <link>http://localhost:1313/categories/notes/</link>
         <description>Recent content in Notes on FerdinandHu</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Ferdinand Hu</copyright>
-        <lastBuildDate>Sun, 20 Jul 2025 18:44:52 +0800</lastBuildDate><atom:link href="https://ferdinandhu.netlify.app/categories/notes/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 20 Jul 2025 18:44:52 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/notes/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Java多线程学习笔记</title>
-        <link>https://ferdinandhu.netlify.app/p/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+        <link>http://localhost:1313/p/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Sun, 20 Jul 2025 18:44:52 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/p/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+        <guid>http://localhost:1313/p/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
         <description>&lt;h1 id=&#34;java多线程基础&#34;&gt;Java多线程基础
 &lt;/h1&gt;&lt;h2 id=&#34;1-基本概念&#34;&gt;1. 基本概念
-&lt;/h2&gt;&lt;h3 id=&#34;11-进程与线程&#34;&gt;1.1 进程与线程
+&lt;/h2&gt;&lt;hr&gt;
+&lt;h3 id=&#34;11-进程与线程&#34;&gt;1.1 进程与线程
 &lt;/h3&gt;&lt;h4 id=&#34;进程&#34;&gt;进程
 &lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;系统运行的基本单位&lt;/li&gt;
@@ -29,6 +30,7 @@
 &lt;li&gt;同一进程中的线程共享进程的内存空间和资源&lt;/li&gt;
 &lt;li&gt;线程是CPU调度的基本单位&lt;/li&gt;
 &lt;/ul&gt;
+&lt;hr&gt;
 &lt;h3 id=&#34;12-并发与并行&#34;&gt;1.2 并发与并行
 &lt;/h3&gt;&lt;h4 id=&#34;并发concurrency&#34;&gt;并发(Concurrency)
 &lt;/h4&gt;&lt;ul&gt;
@@ -45,7 +47,8 @@
 &lt;blockquote&gt;
 &lt;p&gt;注：对于单核计算机，虽然只有一个CPU，但是可以通过时间片轮转同时处理多个任务，这种情况下实现的是&lt;strong&gt;并发&lt;/strong&gt;而非并行。&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h2 id=&#34;2-java中实现多线程的三种方式&#34;&gt;2. Java中实现多线程的三种方式
-&lt;/h2&gt;&lt;h3 id=&#34;21-继承thread类&#34;&gt;2.1 继承Thread类
+&lt;/h2&gt;&lt;hr&gt;
+&lt;h3 id=&#34;21-继承thread类&#34;&gt;2.1 继承Thread类
 &lt;/h3&gt;&lt;p&gt;这是最直接的方式，通过继承&lt;code&gt;Thread&lt;/code&gt;类并重写&lt;code&gt;run()&lt;/code&gt;方法来实现：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -106,7 +109,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;22-实现runnable接口&#34;&gt;2.2 实现Runnable接口
+&lt;/div&gt;&lt;hr&gt;
+&lt;h3 id=&#34;22-实现runnable接口&#34;&gt;2.2 实现Runnable接口
 &lt;/h3&gt;&lt;p&gt;这种方式更加灵活，因为Java支持多实现：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -167,7 +171,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;23-实现callable接口&#34;&gt;2.3 实现Callable接口
+&lt;/div&gt;&lt;hr&gt;
+&lt;h3 id=&#34;23-实现callable接口&#34;&gt;2.3 实现Callable接口
 &lt;/h3&gt;&lt;p&gt;这种方式可以有返回值，并且可以抛出异常：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -292,7 +297,8 @@
 	
 &gt;&lt;/p&gt;
 &lt;h2 id=&#34;4-多线程实战案例&#34;&gt;4. 多线程实战案例
-&lt;/h2&gt;&lt;h3 id=&#34;41-交互式弹球游戏&#34;&gt;4.1 交互式弹球游戏
+&lt;/h2&gt;&lt;hr&gt;
+&lt;h3 id=&#34;41-交互式弹球游戏&#34;&gt;4.1 交互式弹球游戏
 &lt;/h3&gt;&lt;p&gt;本案例实现了一个多线程的弹球游戏，具有以下特点：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;鼠标点击产生新的彩色小球&lt;/li&gt;
@@ -786,10 +792,10 @@
         </item>
         <item>
         <title>第一章基础算法（二）</title>
-        <link>https://ferdinandhu.netlify.app/p/%E7%AC%AC%E4%B8%80%E7%AB%A0%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95%E4%BA%8C/</link>
+        <link>http://localhost:1313/p/%E7%AC%AC%E4%B8%80%E7%AB%A0%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95%E4%BA%8C/</link>
         <pubDate>Tue, 01 Jul 2025 10:15:02 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/p/%E7%AC%AC%E4%B8%80%E7%AB%A0%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95%E4%BA%8C/</guid>
+        <guid>http://localhost:1313/p/%E7%AC%AC%E4%B8%80%E7%AB%A0%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95%E4%BA%8C/</guid>
         <description>&lt;h2 id=&#34;前缀和&#34;&gt;前缀和
 &lt;/h2&gt;&lt;h3 id=&#34;什么是前缀和&#34;&gt;什么是前缀和？
 &lt;/h3&gt;&lt;p&gt;对于原数组a[n]&lt;br&gt;
@@ -1336,10 +1342,10 @@ $-1000 \leq$ 矩阵内元素的值 $\leq 1000$&lt;/p&gt;
         </item>
         <item>
         <title>第一章基础算法（一）</title>
-        <link>https://ferdinandhu.netlify.app/p/%E7%AC%AC%E4%B8%80%E7%AB%A0%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95%E4%B8%80/</link>
+        <link>http://localhost:1313/p/%E7%AC%AC%E4%B8%80%E7%AB%A0%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95%E4%B8%80/</link>
         <pubDate>Sun, 29 Jun 2025 15:13:16 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/p/%E7%AC%AC%E4%B8%80%E7%AB%A0%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95%E4%B8%80/</guid>
+        <guid>http://localhost:1313/p/%E7%AC%AC%E4%B8%80%E7%AB%A0%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95%E4%B8%80/</guid>
         <description>&lt;h2 id=&#34;快速排序&#34;&gt;快速排序
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;确定分界点&lt;/li&gt;
@@ -1580,10 +1586,10 @@ $-1000 \leq$ 矩阵内元素的值 $\leq 1000$&lt;/p&gt;
         </item>
         <item>
         <title>程序设计与算法语言期末复习4</title>
-        <link>https://ferdinandhu.netlify.app/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A04/</link>
+        <link>http://localhost:1313/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A04/</link>
         <pubDate>Thu, 19 Jun 2025 20:35:04 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A04/</guid>
+        <guid>http://localhost:1313/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A04/</guid>
         <description>&lt;h2 id=&#34;gui押题&#34;&gt;GUI押题
 &lt;/h2&gt;&lt;h3 id=&#34;direction&#34;&gt;Direction:
 &lt;/h3&gt;&lt;p&gt;Creat a GUI as shown in following figure.
@@ -1883,10 +1889,10 @@ $-1000 \leq$ 矩阵内元素的值 $\leq 1000$&lt;/p&gt;
         </item>
         <item>
         <title>程序设计与算法语言期末复习3</title>
-        <link>https://ferdinandhu.netlify.app/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A03/</link>
+        <link>http://localhost:1313/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A03/</link>
         <pubDate>Thu, 12 Jun 2025 11:10:39 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A03/</guid>
+        <guid>http://localhost:1313/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A03/</guid>
         <description>&lt;h2 id=&#34;易错&#34;&gt;易错
 &lt;/h2&gt;&lt;h3 id=&#34;python版块&#34;&gt;Python版块
 &lt;/h3&gt;&lt;ol&gt;
@@ -2580,10 +2586,10 @@ join() 是字符串对象的一个方法，用于将可迭代对象（如列表�
         </item>
         <item>
         <title>程序设计与算法语言期末复习2</title>
-        <link>https://ferdinandhu.netlify.app/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A02/</link>
+        <link>http://localhost:1313/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A02/</link>
         <pubDate>Thu, 12 Jun 2025 08:10:39 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A02/</guid>
+        <guid>http://localhost:1313/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A02/</guid>
         <description>&lt;h2 id=&#34;面向对象oop&#34;&gt;面向对象（OOP）
 &lt;/h2&gt;&lt;h3 id=&#34;python面向对象&#34;&gt;Python面向对象
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -3824,10 +3830,10 @@ join() 是字符串对象的一个方法，用于将可迭代对象（如列表�
         </item>
         <item>
         <title>程序设计与算法语言期末复习1</title>
-        <link>https://ferdinandhu.netlify.app/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A01/</link>
+        <link>http://localhost:1313/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A01/</link>
         <pubDate>Wed, 11 Jun 2025 15:10:39 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A01/</guid>
+        <guid>http://localhost:1313/p/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AF%AD%E8%A8%80%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A01/</guid>
         <description>&lt;h2 id=&#34;python版块&#34;&gt;Python版块
 &lt;/h2&gt;&lt;h3 id=&#34;重点语法&#34;&gt;重点语法
 &lt;/h3&gt;&lt;h4 id=&#34;1-变量&#34;&gt;1. 变量
@@ -4349,10 +4355,10 @@ join() 是字符串对象的一个方法，用于将可迭代对象（如列表�
         </item>
         <item>
         <title>线性结构</title>
-        <link>https://ferdinandhu.netlify.app/p/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84/</link>
+        <link>http://localhost:1313/p/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84/</link>
         <pubDate>Tue, 20 May 2025 10:19:05 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/p/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84/</guid>
+        <guid>http://localhost:1313/p/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84/</guid>
         <description>&lt;h2 id=&#34;线性表&#34;&gt;线性表
 &lt;/h2&gt;&lt;p&gt;[例] 多项式表示&lt;/p&gt;
 &lt;ul&gt;
@@ -4440,10 +4446,10 @@ a[i]：对于项的系数
         </item>
         <item>
         <title>Interface</title>
-        <link>https://ferdinandhu.netlify.app/p/interface/</link>
+        <link>http://localhost:1313/p/interface/</link>
         <pubDate>Mon, 19 May 2025 21:05:05 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/p/interface/</guid>
+        <guid>http://localhost:1313/p/interface/</guid>
         <description>&lt;h2 id=&#34;两个重要接口&#34;&gt;两个重要接口
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Comparable Interface&lt;/li&gt;
@@ -4754,10 +4760,10 @@ int &amp;gt; 0, if this &amp;gt; other&lt;/p&gt;
         </item>
         <item>
         <title>数据结构基本概念</title>
-        <link>https://ferdinandhu.netlify.app/p/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</link>
+        <link>http://localhost:1313/p/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</link>
         <pubDate>Mon, 19 May 2025 15:14:58 +0800</pubDate>
         
-        <guid>https://ferdinandhu.netlify.app/p/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</guid>
+        <guid>http://localhost:1313/p/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</guid>
         <description>&lt;h2 id=&#34;二算法基础&#34;&gt;二、算法基础
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;
