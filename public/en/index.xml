@@ -5536,7 +5536,11 @@ For the following code:&lt;/p&gt;
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/en/links/</guid>
-        <description></description>
+        <description>&lt;style&gt;
+    .article-header, .article-footer, .article-content {
+        display: none;
+    }
+&lt;/style&gt;</description>
         </item>
         <item>
         <title>Search</title>
