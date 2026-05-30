@@ -7,7 +7,7 @@
 
 <link rel='canonical' href='http://localhost:1313/'>
 
-<link rel="stylesheet" href="/scss/style.min.2f3d9b7267f2400dc6d37317b2c94a3e25c32820c879ca8d5fd5ad622407fe84.css"><meta property='og:title' content="FerdinandHu">
+<link rel="stylesheet" href="/scss/style.min.b4fd29089352292a8bcf6d141729056ebfd7ef10e9a913dbb024616f2feffc63.css"><meta property='og:title' content="FerdinandHu">
 <meta property='og:description' content="">
 <meta property='og:url' content='http://localhost:1313/'>
 <meta property='og:site_name' content='FerdinandHu'>
@@ -15,6 +15,27 @@
 <meta name="twitter:title" content="FerdinandHu">
 <meta name="twitter:description" content=""><link rel="alternate" type="application/rss&#43;xml" href="http://localhost:1313/index.xml">
     <link rel="shortcut icon" href="/images/203506445.ico" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+
+<div id="reading-progress-bar"></div>
+<script>
+(function() {
+    var bar = document.getElementById('reading-progress-bar');
+    if (!bar) return;
+    function updateProgress() {
+        var scrollTop = window.scrollY || document.documentElement.scrollTop;
+        var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        bar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+})();
+</script>
 
     </head>
     <body class="">
@@ -797,7 +818,9 @@
     <section class="copyright">
         &copy; 
         
-        2025 Ferdinand Hu
+            2025 - 
+        
+        2026 Ferdinand Hu
     </section>
     
     <section class="powerby">
