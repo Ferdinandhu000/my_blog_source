@@ -3,5 +3,6 @@
   "site": {
     "pv": 100,
     "uv": 86
-  }
+  },
+  "accumulated_script_runs": 0
 }
