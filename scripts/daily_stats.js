@@ -121,6 +121,95 @@ function sendTelegram(message) {
 // Helper: Delay function for rate limiting
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+// Helper: Fetch discussions and comments from GitHub GraphQL API
+function fetchGithubDiscussions() {
+    return new Promise((resolve) => {
+        const token = process.env.GITHUB_TOKEN;
+        if (!token) {
+            console.log('No GITHUB_TOKEN provided, skipping Giscus comments check.');
+            resolve([]);
+            return;
+        }
+
+        const query = `
+        query {
+          repository(owner: "Ferdinandhu000", name: "my_blog_source") {
+            discussions(first: 20, orderBy: {field: UPDATED_AT, direction: DESC}) {
+              nodes {
+                title
+                url
+                category {
+                  name
+                }
+                comments(last: 10) {
+                  nodes {
+                    author {
+                      login
+                    }
+                    bodyText
+                    createdAt
+                    url
+                  }
+                }
+              }
+            }
+          }
+        }`;
+
+        const payload = JSON.stringify({ query });
+
+        const options = {
+            hostname: 'api.github.com',
+            path: '/graphql',
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'User-Agent': 'NodeJS-HTTP-Client',
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(payload)
+            },
+            timeout: 10000
+        };
+
+        const req = https.request(options, (res) => {
+            let data = '';
+            res.on('data', (chunk) => { data += chunk; });
+            res.on('end', () => {
+                if (res.statusCode !== 200) {
+                    console.error(`GitHub API returned status ${res.statusCode}: ${data}`);
+                    resolve([]);
+                    return;
+                }
+                try {
+                    const parsed = JSON.parse(data);
+                    if (parsed.errors) {
+                        console.error('GitHub GraphQL Errors:', parsed.errors);
+                        resolve([]);
+                    } else {
+                        resolve(parsed.data.repository.discussions.nodes || []);
+                    }
+                } catch (e) {
+                    console.error('Failed to parse GitHub response:', e);
+                    resolve([]);
+                }
+            });
+        });
+
+        req.on('error', (err) => {
+            console.error('GitHub API network error:', err);
+            resolve([]);
+        });
+        req.on('timeout', () => {
+            req.destroy();
+            console.error('GitHub API timeout');
+            resolve([]);
+        });
+
+        req.write(payload);
+        req.end();
+    });
+}
+
 async function main() {
     console.log('Starting daily blog statistics collection (site-only)...');
 
@@ -148,7 +237,36 @@ async function main() {
     const deltaSitePv = history.site?.pv ? (currentSitePv - history.site.pv) : 0;
     const deltaSiteUv = history.site?.uv ? (currentSiteUv - history.site.uv) : 0;
 
-    // 3. Construct Telegram Message
+    // 3. Fetch Giscus comments
+    console.log('Fetching Giscus comments from GitHub...');
+    const discussions = await fetchGithubDiscussions();
+    const now = new Date();
+    const recentComments = [];
+
+    discussions.forEach(disc => {
+        if (disc.category && disc.category.name !== 'Announcements') {
+            return;
+        }
+
+        if (disc.comments && disc.comments.nodes) {
+            disc.comments.nodes.forEach(comment => {
+                const commentDate = new Date(comment.createdAt);
+                // 24 hours = 24 * 60 * 60 * 1000 = 86400000 ms
+                if (now - commentDate < 24 * 60 * 60 * 1000) {
+                    recentComments.push({
+                        articleTitle: disc.title,
+                        articleUrl: disc.url,
+                        author: comment.author ? comment.author.login : 'anonymous',
+                        body: comment.bodyText,
+                        url: comment.url,
+                        createdAt: commentDate
+                    });
+                }
+            });
+        }
+    });
+
+    // 4. Construct Telegram Message
     const todayStr = new Date().toLocaleDateString('zh-CN', {
         timeZone: 'Asia/Shanghai',
         year: 'numeric',
@@ -163,13 +281,25 @@ async function main() {
 
     message += `📈 *全站整体数据*:\n`;
     message += `• *总访问量 (PV)*: \`${currentSitePv}\` (较昨日 \`+${deltaSitePv}\`)\n`;
-    message += `• *总访客数 (UV)*: \`${currentSiteUv}\` (较昨日 \`+${deltaSiteUv}\`)\n`;
+    message += `• *总访客数 (UV)*: \`${currentSiteUv}\` (较昨日 \`+${deltaSiteUv}\`)\n\n`;
+
+    message += `💬 *最新留言评论 (24h 新增)*:\n`;
+    if (recentComments.length === 0) {
+        message += `• _过去 24 小时内暂无新评论。_\n`;
+    } else {
+        recentComments.forEach((c, idx) => {
+            const snippet = c.body.length > 60 ? (c.body.substring(0, 57) + '...') : c.body;
+            message += `${idx + 1}. *${c.author}* 在《${c.articleTitle}》中说:\n`;
+            message += `   └─ "${snippet}"\n`;
+            message += `   └─ [查看留言](${c.url})\n`;
+        });
+    }
 
     console.log('\n--- Telegram Message ---');
     console.log(message);
     console.log('------------------------');
 
-    // 4. Send message via Telegram Bot
+    // 5. Send message via Telegram Bot
     console.log('Sending report to Telegram...');
     try {
         await sendTelegram(message);
@@ -178,7 +308,7 @@ async function main() {
         console.error('Failed to send Telegram message:', err.message);
     }
 
-    // 5. Write updated history to file
+    // 6. Write updated history to file
     const newHistory = {
         last_updated: new Date().toISOString(),
         site: {
