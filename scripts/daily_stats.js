@@ -122,10 +122,10 @@ function sendTelegram(message) {
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function main() {
-    console.log('Starting daily blog statistics collection...');
+    console.log('Starting daily blog statistics collection (site-only)...');
 
     // 1. Load history stats
-    let history = { site: { pv: 0, uv: 0 }, articles: {} };
+    let history = { site: { pv: 0, uv: 0 } };
     if (fs.existsSync(HISTORY_FILE)) {
         try {
             history = JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf-8'));
@@ -148,64 +148,7 @@ async function main() {
     const deltaSitePv = history.site?.pv ? (currentSitePv - history.site.pv) : 0;
     const deltaSiteUv = history.site?.uv ? (currentSiteUv - history.site.uv) : 0;
 
-    // 3. Scan posts from the public/p directory
-    if (!fs.existsSync(POSTS_DIR)) {
-        console.error('Error: public/p/ directory does not exist. Run "hugo" to build the site first.');
-        process.exit(1);
-    }
-
-    const dirs = fs.readdirSync(POSTS_DIR).filter(file => {
-        return fs.statSync(path.join(POSTS_DIR, file)).isDirectory();
-    });
-
-    console.log(`Found ${dirs.length} published posts. Fetching individual views...`);
-
-    const articleStats = [];
-    const newArticlesHistory = {};
-
-    for (let i = 0; i < dirs.length; i++) {
-        const dir = dirs[i];
-        const pageUrl = `${SITE_URL}/p/${encodeURIComponent(dir)}/`;
-        const indexPath = path.join(POSTS_DIR, dir, 'index.html');
-
-        // Extract title from index.html
-        let title = dir;
-        if (fs.existsSync(indexPath)) {
-            const html = fs.readFileSync(indexPath, 'utf-8');
-            const titleMatch = html.match(/<title>([\s\S]*?)<\/title>/i);
-            if (titleMatch) {
-                const rawTitle = titleMatch[1].trim();
-                title = rawTitle.split('|')[0].trim(); // Extract before site title separator
-            }
-        }
-
-        // Fetch page PV
-        console.log(`[${i + 1}/${dirs.length}] Fetching: ${title}`);
-        const pageData = await fetchBusuanzi(pageUrl);
-        const currentPv = (pageData && pageData.page_pv) || 0;
-        
-        const oldPv = history.articles?.[dir] || 0;
-        const deltaPv = currentPv - oldPv;
-
-        articleStats.push({
-            dir,
-            title,
-            currentPv,
-            deltaPv
-        });
-
-        newArticlesHistory[dir] = currentPv;
-
-        // Rate limit: 200ms delay between requests to avoid overloading Busuanzi
-        await delay(200);
-    }
-
-    // Sort active articles by 24h page views change desc
-    const activeArticles = articleStats
-        .filter(art => art.deltaPv > 0)
-        .sort((a, b) => b.deltaPv - a.deltaPv);
-
-    // 4. Construct Telegram Message
+    // 3. Construct Telegram Message
     const todayStr = new Date().toLocaleDateString('zh-CN', {
         timeZone: 'Asia/Shanghai',
         year: 'numeric',
@@ -220,26 +163,13 @@ async function main() {
 
     message += `📈 *全站整体数据*:\n`;
     message += `• *总访问量 (PV)*: \`${currentSitePv}\` (较昨日 \`+${deltaSitePv}\`)\n`;
-    message += `• *总访客数 (UV)*: \`${currentSiteUv}\` (较昨日 \`+${deltaSiteUv}\`)\n\n`;
-
-    message += `🔥 *今日热门文章 (24h PV 新增)*:\n`;
-    if (activeArticles.length === 0) {
-        message += `• _暂无新增浏览量的文章，继续加油！_\n`;
-    } else {
-        activeArticles.slice(0, 10).forEach((art, idx) => {
-            message += `${idx + 1}. *${art.title}*\n`;
-            message += `   └─ 浏览量: \`${art.currentPv}\` (较昨日 \`+${art.deltaPv}\`)\n`;
-        });
-        if (activeArticles.length > 10) {
-            message += `• _...以及另外 ${activeArticles.length - 10} 篇有浏览增加的文章_`;
-        }
-    }
+    message += `• *总访客数 (UV)*: \`${currentSiteUv}\` (较昨日 \`+${deltaSiteUv}\`)\n`;
 
     console.log('\n--- Telegram Message ---');
     console.log(message);
     console.log('------------------------');
 
-    // 5. Send message via Telegram Bot
+    // 4. Send message via Telegram Bot
     console.log('Sending report to Telegram...');
     try {
         await sendTelegram(message);
@@ -248,14 +178,13 @@ async function main() {
         console.error('Failed to send Telegram message:', err.message);
     }
 
-    // 6. Write updated history to file
+    // 5. Write updated history to file
     const newHistory = {
         last_updated: new Date().toISOString(),
         site: {
             pv: currentSitePv,
             uv: currentSiteUv
-        },
-        articles: newArticlesHistory
+        }
     };
 
     fs.writeFileSync(HISTORY_FILE, JSON.stringify(newHistory, null, 2), 'utf-8');
