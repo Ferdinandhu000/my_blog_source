@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  discussions: read
 
 jobs:
   report:
@@ -26,6 +27,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_USER_ID: ${{ secrets.TELEGRAM_USER_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/daily_stats.js
 
       - name: Commit and Push History Update
