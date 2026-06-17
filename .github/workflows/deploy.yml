@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main # 或者是你的源代码分支
+    paths-ignore:
+      - 'scripts/**'
+      - 'stats_history.json'
 
 jobs:
   deploy:

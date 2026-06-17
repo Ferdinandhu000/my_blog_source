@@ -1,0 +1,41 @@
+name: Daily Statistics Report
+
+on:
+  schedule:
+    # 每天北京时间 08:00 运行 (对应 UTC 00:00)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 支持手动触发
+
+permissions:
+  contents: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Run Daily Stats Script
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_USER_ID: ${{ secrets.TELEGRAM_USER_ID }}
+        run: node scripts/daily_stats.js
+
+      - name: Commit and Push History Update
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          if [ -f stats_history.json ] && ! git diff --quiet stats_history.json; then
+            git add stats_history.json
+            git commit -m "chore: update daily blog statistics history [skip ci]"
+            git push
+          else
+            echo "No changes in stats history. Skipping push."
+          fi
