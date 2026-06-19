@@ -2,8 +2,8 @@ name: Daily Statistics Report
 
 on:
   schedule:
-    # 每天北京时间 08:18 运行 (对应 UTC 00:18)
-    - cron: '18 0 * * *'
+    # 每天北京时间 07:43 运行 (对应 UTC 23:43)
+    - cron: '43 23 * * *'
   workflow_dispatch: # 支持手动触发
 
 permissions:
