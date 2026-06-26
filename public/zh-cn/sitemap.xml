@@ -54,8 +54,18 @@
                 href="https://ferdinandhu.netlify.app/post/"
                 />
   </url><url>
-    <loc>https://ferdinandhu.netlify.app/categories/%E6%95%99%E7%A8%8B/</loc>
+    <loc>https://ferdinandhu.netlify.app/categories/tutorials/</loc>
     <lastmod>2026-06-26T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://ferdinandhu.netlify.app/en/categories/tutorials/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://ferdinandhu.netlify.app/categories/tutorials/"
+                />
   </url><url>
     <loc>https://ferdinandhu.netlify.app/categories/java/</loc>
     <lastmod>2025-12-17T16:28:22+08:00</lastmod>
@@ -91,9 +101,6 @@
   </url><url>
     <loc>https://ferdinandhu.netlify.app/p/algorithm-notes-i-comparative-analysis-of-core-sorting-algorithms/</loc>
     <lastmod>2025-12-17T16:25:58+08:00</lastmod>
-  </url><url>
-    <loc>https://ferdinandhu.netlify.app/p/a-critical-reading-of-mtgp-smote-concepts-analysis-and-observations/</loc>
-    <lastmod>2025-09-13T19:15:55+08:00</lastmod>
   </url><url>
     <loc>https://ferdinandhu.netlify.app/p/comprehensive-notes-on-multi-threaded-programming-in-java/</loc>
     <lastmod>2025-07-20T18:44:52+08:00</lastmod>
