@@ -197,7 +197,7 @@ const columnCounter = createRollingNumber($("#column-index"), {
 });
 const codeOptions = {
   ...numberOptions,
-  format: { minimumIntegerDigits: 3, useGrouping: false },
+  format: { minimumIntegerDigits: 6, useGrouping: false },
   value: 1,
 };
 const textOptions = {
