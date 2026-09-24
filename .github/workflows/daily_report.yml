@@ -16,19 +16,25 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - name: Prepare article index
+        run: |
+          npm ci
+          node scripts/prepare-content.mjs
 
       - name: Run Daily Stats Script
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_USER_ID: ${{ secrets.TELEGRAM_USER_ID }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/daily_stats.js
+        run: node scripts/daily_stats.cjs
 
       - name: Commit and Push History Update
         run: |
