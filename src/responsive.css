@@ -102,7 +102,9 @@
 
 /* Portrait keeps the specimen above an independently scrollable document. */
 [data-layout="portrait"] .brand { transform: scale(.42) !important; }
-[data-layout="portrait"] .system-nav { gap: 8px; }
+[data-layout="portrait"] .system-nav { gap: 4px; }
+[data-layout="portrait"] .system-nav .blog-nav-link { font-size: 9px; letter-spacing: 0; }
+[data-layout="portrait"] .system-nav .blog-nav-link:nth-of-type(2) { display: inline-flex; }
 [data-layout="portrait"] .system-nav button[data-action="search"] { font-size: 0; gap: 0; }
 [data-layout="portrait"] .system-nav button[data-action="saved"] { font-size: 10px; }
 [data-layout="portrait"] .system-nav button[data-action="saved"] { display: none; }

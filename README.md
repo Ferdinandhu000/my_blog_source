@@ -1,6 +1,6 @@
 # HJ Blog
 
-个人博客。首页是基于 [RhineLabUI](https://github.com/LBEILC/RhineLabUI) 改造的三维档案；文章、归档、搜索、终端和关于页是独立的静态页面。文章页不加载 Three.js。前端使用 Vite、TypeScript 和 Three.js，内容从 Markdown 在构建时生成。Hugo 不参与构建。
+个人博客。首页是基于 [RhineLabUI](https://github.com/LBEILC/RhineLabUI) 改造的三维档案；从首页打开归档、搜索、终端、CV 和文章时，内容显示在三维画面上的悬浮窗口中，画面暂停渲染并模糊。直接访问文章或归档等地址时使用相同风格的轻量静态背景，文章页不加载 Three.js。前端使用 Vite、TypeScript 和 Three.js，内容从 Markdown 在构建时生成。Hugo 不参与构建。
 
 ## 本地开发
 

@@ -11,6 +11,8 @@ import "@kitlangton/rolling-number/styles.css";
 import "./style.css";
 import "./quality-settings.css";
 import "./responsive.css";
+import "./unified-shell.css";
+import { UnifiedUI } from "./unified-ui";
 import { viewportLayout, openingLayout } from "./viewport-layout";
 import { assetUrl } from "./asset-url";
 import { createRollingNumber, createRollingText } from "@kitlangton/rolling-number";
@@ -54,6 +56,7 @@ let playground: ArchivePlayground | undefined;
 import { WallpaperEffects } from "./wallpaper-effects";
 import { WallpaperBackground } from "./wallpaper-background";
 let wallpaperEffects: WallpaperEffects | undefined;
+let unifiedUI: UnifiedUI | undefined;
 
 const $ = <T extends HTMLElement = HTMLElement>(selector: string) =>
   document.querySelector<T>(selector)!;
@@ -66,7 +69,7 @@ $("#stage").innerHTML = `
   <header class="brand">${brandHeading}</header>
   <nav class="system-nav" aria-label="系统导航">
     <button data-action="search"><span class="nav-glyph">⌕</span> ARCHIVE INDEX <span class="key">/</span></button>
-    <a class="blog-nav-link" href="/archives/">文章归档 ↗</a><a class="blog-nav-link" href="/terminal/">终端 ↗</a>
+    <a class="blog-nav-link" href="/archives/">文章归档 ↗</a><a class="blog-nav-link" href="/terminal/">终端 ↗</a><a class="blog-nav-link" href="/about/">CV ↗</a>
     <button data-action="saved" aria-label="查看收藏档案" title="收藏档案">＋ SAVED <span id="saved-count">00</span></button>
     <button class="settings-button" data-action="settings" aria-label="系统设置" title="系统设置"><span class="settings-glyph" aria-hidden="true">◷</span><span class="settings-label">设置</span></button>
   </nav>
@@ -813,7 +816,9 @@ document.addEventListener("click", async (e) => {
     setMode("archive");
     audio.play("back");
   }
-  if (action === "search" || action === "saved" || action === "settings") {
+  if (action === "search" && unifiedUI) {
+    unifiedUI.open("search");
+  } else if (action === "search" || action === "saved" || action === "settings") {
     el.focus({ preventScroll: true });
     openModal(action);
   }
@@ -844,6 +849,7 @@ document.addEventListener("click", async (e) => {
 });
 document.addEventListener("keydown", (e) => {
   if (!started) return;
+  if (unifiedUI?.isOpen) return;
   if (viewer?.isOpen) return;
   if (playground?.active && !modal) {
     if (e.key === "Escape") { e.preventDefault(); playground.stop(); }
@@ -894,7 +900,7 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "/") {
     e.preventDefault();
     if (mode === "boot") setMode("archive");
-    openModal("search");
+    if (unifiedUI) unifiedUI.open("search"); else openModal("search");
   }
   if (e.key === "ArrowLeft" && mode !== "boot") {
     e.preventDefault();
@@ -990,6 +996,12 @@ let lastTime = 0,
 function frame(ms: number) {
   if (!wallpaperFrame(ms)) { requestAnimationFrame(frame); return; }
   if (document.hidden) { requestAnimationFrame(frame); return; }
+  if (!isWallpaper && (unifiedUI?.isOpen || modal)) {
+    frameStart = ms;
+    frameCount = 0;
+    requestAnimationFrame(frame);
+    return;
+  }
   // Limit the blog's default rendering cadence without slowing animation time.
   if (!isWallpaper && superPerformanceEnabled() && ms - lastPresentedMs < 1000 / 30 - 1) {
     requestAnimationFrame(frame);
@@ -1008,7 +1020,7 @@ function frame(ms: number) {
       : undefined;
   wallpaperEffects?.update(time, motionIsReduced(), motionActive("pointerParallax"));
   // The calibrated 2D opening fully covers the scene until array entry.
-  if (!viewer?.isOpen && (!cinema || cinema.time >= 21.9)) scene?.update(time, cinema);
+  if (!unifiedUI?.isOpen && !modal && !viewer?.isOpen && (!cinema || cinema.time >= 21.9)) scene?.update(time, cinema);
   viewer?.update(time);
   if (threeState === "closing" && scene?.presentationHidden) releaseThree();
   playground?.position();
@@ -1277,6 +1289,11 @@ if (isWallpaper) {
     if (button) closeModal(() => { workbench!.setEnabled(button.dataset.workbenchMode === "workbench"); });
   });
 }
+if (!isWallpaper) unifiedUI = new UnifiedUI({
+  ready: () => ready && started,
+  showArchive: () => { if (mode !== "archive") setMode("archive"); },
+  showDetail: index => { select(index); openFile(); },
+});
 void start();
 // Deterministic review controls: the running application, never a video surrogate.
 Object.assign(window, {

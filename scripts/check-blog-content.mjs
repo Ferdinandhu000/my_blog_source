@@ -27,8 +27,17 @@ if (fs.existsSync(dist)) {
   const search = JSON.parse(fs.readFileSync(path.join(dist, 'search-index.json'), 'utf8'));
   assert.equal(search.length, articles.length);
   for (const article of articles) {
-    assert.ok(fs.existsSync(path.join(dist, 'p', article.slug, 'index.html')), `Missing ${article.url}`);
+    const page = path.join(dist, 'p', article.slug, 'index.html');
+    assert.ok(fs.existsSync(page), `Missing ${article.url}`);
+    const html = fs.readFileSync(page, 'utf8');
+    assert.match(html, /class="unified-direct"/, `Missing unified reader shell: ${article.slug}`);
+    assert.match(html, /giscus\.app\/client\.js/, `Missing comments: ${article.slug}`);
+    assert.doesNotMatch(html, /src="\/assets\/index-/, `3D bundle on direct article: ${article.slug}`);
     assert.ok(search.some(item => item.url === article.url), `Missing search entry: ${article.slug}`);
   }
+  for (const route of ['archives', 'terminal', 'search', 'about']) {
+    assert.match(fs.readFileSync(path.join(dist, route, 'index.html'), 'utf8'), /class="unified-direct"/);
+  }
+  assert.ok(fs.existsSync(path.join(dist, 'assets', 'archive-backdrop.webp')));
 }
 console.log(`Content checks passed: ${articles.length} articles, ${before.categories.length} categories.`);
