@@ -11,11 +11,12 @@
     <title>HJ BLOG · 个人博客</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script>
-      try {
-        if (location.pathname === '/' && JSON.parse(localStorage.getItem('hj-blog-settings') || '{}').language === 'en') {
-          location.replace('/en/' + location.search + location.hash);
-        }
-      } catch { /* Storage may be unavailable. */ }
+      if (location.pathname === '/') {
+        let savedLanguage;
+        try { savedLanguage = JSON.parse(localStorage.getItem('hj-blog-settings') || '{}').language; }
+        catch { /* Storage may be unavailable. */ }
+        if (savedLanguage !== 'zh') location.replace('/en/' + location.search + location.hash);
+      }
     </script>
   </head>
   <body>

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 import { loadArticles, markdownRenderer, metadata, writeIndex, root } from './content-pipeline.mjs';
 import { profile } from '../src/site-content.js';
 
@@ -93,6 +94,17 @@ if (fs.existsSync(dist)) {
   assert.match(englishHome, /<html lang="en">/);
   assert.match(englishHome, /src="\/assets\/index-[^"]+\.js"/);
   assert.doesNotMatch(englishHome, /location\.replace\("\/"\)/);
+  const home = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
+  const languageRedirect = home.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+  assert.ok(languageRedirect, 'Missing home language redirect');
+  for (const [saved, expected] of [[null, '/en/?q=1#section'], ['en', '/en/?q=1#section'], ['zh', null]]) {
+    let redirected = null;
+    vm.runInNewContext(languageRedirect, {
+      location: { pathname: '/', search: '?q=1', hash: '#section', replace: value => { redirected = value; } },
+      localStorage: { getItem: () => saved && JSON.stringify({ language: saved }) },
+    });
+    assert.equal(redirected, expected, `Unexpected home route for saved language ${saved}`);
+  }
   assert.match(fs.readFileSync(path.join(dist, 'en', 'archives', 'index.html'), 'utf8'), /class="unified-direct-close" href="\/en\/"/);
   assert.ok(fs.existsSync(path.join(dist, 'assets', 'archive-backdrop.webp')));
 }
