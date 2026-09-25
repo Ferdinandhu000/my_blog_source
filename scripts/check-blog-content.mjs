@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { loadArticles, metadata, writeIndex, root } from './content-pipeline.mjs';
+import { loadArticles, markdownRenderer, metadata, writeIndex, root } from './content-pipeline.mjs';
 import { profile } from '../src/site-content.js';
 
 const articles = loadArticles();
@@ -9,6 +9,29 @@ const before = metadata(articles);
 assert.equal(before.records.length, articles.length);
 assert.ok(before.categories.length > 0);
 assert.equal(new Set(articles.map(article => article.url)).size, articles.length);
+
+const renderer = markdownRenderer();
+const renderedArticles = new Map();
+for (const article of articles) {
+  for (const [language, version] of [['zh', article], ['en', article.english]]) {
+    const url = `${language === 'en' ? '/en' : ''}${article.url}`;
+    const html = renderer.render(version.body).replace(/href="\/p\//g, language === 'en' ? 'href="/en/p/' : 'href="/p/');
+    renderedArticles.set(url, html);
+    const readable = html.replace(/<pre[\s\S]*?<\/pre>/g, '').replace(/<code[\s\S]*?<\/code>/g, '');
+    assert.ok(!/\*\*/.test(readable), `Unrendered bold Markdown: ${url}`);
+    assert.ok(!/\]\s+\(https?:\/\/|\]https?:\/\/|\]\(\)|\]\s*\/p\//.test(version.body), `Malformed Markdown link: ${url}`);
+  }
+}
+for (const [url, html] of renderedArticles) {
+  for (const [, href] of html.matchAll(/<a\b[^>]*href="([^"]*)"/g)) {
+    assert.ok(href, `Empty article link: ${url}`);
+    const target = new URL(href, `https://ferdinandhu.netlify.app${url}`);
+    if (target.origin !== 'https://ferdinandhu.netlify.app') continue;
+    const targetHtml = renderedArticles.get(target.pathname);
+    if (/^\/(?:en\/)?p\//.test(target.pathname)) assert.ok(targetHtml, `Missing article target: ${url} -> ${href}`);
+    if (targetHtml && target.hash) assert.ok(targetHtml.includes(`id="${target.hash.slice(1)}"`), `Missing article heading: ${url} -> ${href}`);
+  }
+}
 
 const fixture = path.join(root, 'content', 'articles', 'temporary-content-check.zh-cn.md');
 const englishFixture = path.join(root, 'content', 'articles', 'temporary-content-check.en.md');

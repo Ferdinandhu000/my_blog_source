@@ -15,9 +15,9 @@ This article is organized by my Obsidian Docker study notes, keeping the most co
 
 ## Mirrors, containers and warehouses
 
-- ** Mirror** documents and configurations required for the operation of the packaged application can be named and distributed.
-- ** Containers** are relatively isolated processes created by mirrors. The same mirror can activate multiple containers.
-- ** Repository** to preserve and distribute mirror images; labels in mirror names are used to select specific versions, and the production environment should avoid`latest`Consider it a non-variable version number.
+- **Mirror** documents and configurations required for the operation of the packaged application can be named and distributed.
+- **Containers** are relatively isolated processes created by mirrors. The same mirror can activate multiple containers.
+- **Repository** to preserve and distribute mirror images; labels in mirror names are used to select specific versions, and the production environment should avoid`latest`Consider it a non-variable version number.
 
 Packagings usually share the inner core of the host, unlike virtual machines that have a separate host. Docker Desktop operates Linux packagings in Windows or MacOS using a virtual environment, so "shared kernel" is understood in the actual Linux container host environment.
 
@@ -65,4 +65,4 @@ docker compose down
 
 Status services such as databases need to be configured for the data catalogue. Normal`docker compose down`and`docker compose down -v`Particular attention should be paid to the distinction: the latter would also remove the naming volume of the project statement and possibly remove the data.
 
-**Ref:** [Docker's Concept of Containers]https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/), [Dockerfile Guide]https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/), [Compose Quick Start] (https://docs.docker.com/compose/gettingstarted/)。
+**Ref:** [Docker's Concept of Containers](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/), [Dockerfile Guide](https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/), [Compose Quick Start](https://docs.docker.com/compose/gettingstarted/).

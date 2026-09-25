@@ -16,12 +16,12 @@ body.unified-open #stage { filter: blur(6px); pointer-events: none; }
 .source-credit:hover, .source-credit:focus-visible { color: #ad662d; text-decoration: underline; }
 .unified-window--terminal .unified-credit { border-color: #354939; color: #9fc097; }
 .unified-about { max-width: 720px; margin: auto; padding: clamp(8px, 3vw, 32px) 0; }
-.unified-about h1, .unified-about h2 { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px 22px; margin: 4px 0 24px; font-size: clamp(36px, 5vw, 58px); letter-spacing: -.04em; }
-.unified-about h1 small, .unified-about h2 small { color: #7a8176; font-size: 18px; font-weight: 400; letter-spacing: .02em; }
+.unified-about h1, .unified-about h2 { margin: 4px 0 24px; font-size: clamp(36px, 5vw, 58px); letter-spacing: -.04em; }
 .unified-about-bio { max-width: 58ch; margin: 0 0 36px; font-size: clamp(15px, 2vw, 18px); line-height: 1.85; }
 .unified-about-links { margin: 0; border-top: 1px solid #bfc3b9; }
 .unified-about-links > div { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 16px; padding: 16px 0; border-bottom: 1px solid #c9cbc3; }
-.unified-about-links dt { color: #7c8379; font: 11px/1.6 ui-monospace, Consolas, monospace; letter-spacing: .1em; }
+.unified-about-links dt { display: inline-flex; align-items: center; gap: 10px; color: #7c8379; font: 11px/1.6 ui-monospace, Consolas, monospace; letter-spacing: .1em; }
+.unified-about-links dt svg { width: 17px; height: 17px; flex: none; }
 .unified-about-links dd { min-width: 0; margin: 0; overflow-wrap: anywhere; }
 .unified-about-links a { color: #344d3a; text-decoration: none; border-bottom: 1px solid currentColor; }
 .unified-about-links a:hover { color: #ad662d; }

@@ -71,4 +71,4 @@ Request`GET /items/3?limit=10`Other Organiser
 
 Reliance functions avoid duplication when multiple routes require the same parameter resolution, permission check or resource acquisition logic. Do not change all normal functions to depend: only if the logic that FastAPI interprets and provides the results during the request is needed will fit into`Depends`。
 
-** Ref:** [FastAPI Introduction]https://fastapi.tiangolo.com/tutorial/first-steps/), [road parameters] (https://fastapi.tiangolo.com/tutorial/path-params/), [dependent injections] (https://fastapi.tiangolo.com/tutorial/dependencies/)。
+**Ref:** [FastAPI First Steps](https://fastapi.tiangolo.com/tutorial/first-steps/), [Path Parameters](https://fastapi.tiangolo.com/tutorial/path-params/), [Dependencies](https://fastapi.tiangolo.com/tutorial/dependencies/).

@@ -21,7 +21,7 @@ $$
 \theta_{t+1}=\theta_t-\eta\nabla_\theta L(\theta_t).
 $$
 
-A chain-based law for reverse transmission in deep networks. Gradients received in an earlier hidden layer include subsequent layers of local conductors or the replication of the acacia matrix. Even multiplications may magnify the signal and may cause the signal to decay. However,** it cannot be asserted that the model has “exploded the gradient” or “disappeared the gradient” on the basis of a small or large gradient:** the size of the layer, the scaling of loss, the mass size and the optimizer affect the value.
+A chain-based law for reverse transmission in deep networks. Gradients received in an earlier hidden layer include subsequent layers of local conductors or the replication of the acacia matrix. Even multiplications may magnify the signal and may cause the signal to decay. However,**it cannot be asserted that the model has “exploded the gradient” or “disappeared the gradient” on the basis of a small or large gradient:** the size of the layer, the scaling of loss, the mass size and the optimizer affect the value.
 
 I'll observe the following signals at the same time:
 
@@ -52,7 +52,7 @@ for name, parameter in model.named_parameters():
 optimizer.step()
 ```
 
-The same set of batches, loss definitions and hybrid accuracy settings are maintained for recording, which is more useful when comparing ** over time** with a generic threshold. If a gradient is used to accumulate, the overall gradient is to be read at the end of the full cumulative period; if an automatic hybrid precision is used, the gradient is to be considered for scaling before recording and cropping.
+The same set of batches, loss definitions and hybrid accuracy settings are maintained for recording, which is more useful when comparing **over time** with a generic threshold. If a gradient is used to accumulate, the overall gradient is to be read at the end of the full cumulative period; if an automatic hybrid precision is used, the gradient is to be considered for scaling before recording and cropping.
 
 ## A check order.
 
@@ -60,8 +60,8 @@ The same set of batches, loss definitions and hybrid accuracy settings are maint
 2. Align the training steps where anomalies occur with data batches, learning rates and gradients.
 3. See if anomalies are concentrated on specific layers rather than on the average of the whole model.
 4. Cross-training and validation curve: certification is poor but training is normal, starting with generalization.
-5. Try learning rate, initialization, fusion or [gravitational tailoring and early halt] (/p/gradient-clipping-and-early-stopping/) Only a few variables are changed each time.
+5. Try learning rate, initialization, normalization, or [gradient clipping and early stopping](/p/gradient-clipping-and-early-stopping/). Change only a few variables at a time.
 
 This record does not automatically give the reasons, but allows the adjustment to be supported by evidence.
 
-** Ref:** [PyTorch Auto-micro](https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial), [PyTorch parameter optimized tutorial](https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial), [Examples of automatic hybrid accuracy] (https://docs.pytorch.org/docs/stable/notes/amp_examples.html)。
+**Ref:** [PyTorch autograd tutorial](https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial), [PyTorch optimization tutorial](https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial), [Automatic mixed precision examples](https://docs.pytorch.org/docs/stable/notes/amp_examples.html).

@@ -45,9 +45,9 @@ This promotion has requirements regarding the region of the account. Most Google
 2. Then you should be able to see the country and region currently associated with this Google account.
 ![Example of checking region](https://raw.githubusercontent.com/Ferdinandhu000/my_blog_img/master/Pasted%20image%2020260626115630.png)
 
-You can compare it with the table above. If the country your account belongs to is included in the list of countries for the 12-month plan, you are good to go and can skip to the next section. If not, it's fine. You can click on [Country/Region version]() and then click on [Learn more and contact us]() in the sidebar that pops up on the right.
+You can compare it with the table above. If the country your account belongs to is included in the list of countries for the 12-month plan, you are good to go and can skip to the next section. If not, click “Country/Region version” and then “Learn more and contact us” in the sidebar.
 ![](https://raw.githubusercontent.com/Ferdinandhu000/my_blog_img/master/20260626115904.png)
-Scroll down to find [Change associated country/region]()
+Scroll down to find “Change associated country/region”.
 ![](https://raw.githubusercontent.com/Ferdinandhu000/my_blog_img/master/20260626120026.png)
 Configure the settings as shown below and submit. For the state, you can choose a region that matches your VPN IP or choose a tax-free state (such as Oregon). Personally, I chose Oregon.
 ![](https://raw.githubusercontent.com/Ferdinandhu000/my_blog_img/master/20260626120914.png)

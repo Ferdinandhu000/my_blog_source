@@ -38,7 +38,7 @@ draft: false
 正文内容。
 ```
 
-`draft: true` 的文章不会发布；文件名以 `_` 开头或以 `.en.md` 结尾的文件也不会进入中文首发索引。分类直接取自文章，无须维护固定列数或每列档案数。文章地址为 `/p/<slug>/`，修改现有 `slug` 会改变地址及 Giscus 的 pathname 映射。搜索索引、归档和三维档案都由同一组 Markdown 生成。正文支持目录、代码高亮、图片、`$...$` / `$$...$$` / `\(...\)` / `\[...\]` 公式。
+`draft: true` 的文章不会发布；文件名以 `_` 开头或以 `.en.md` 结尾的文件也不会进入中文首发索引。分类直接取自文章，无须维护固定列数或每列档案数。文章地址为 `/p/<slug>/`，修改现有 `slug` 会改变地址及 Giscus 的 pathname 映射。搜索索引、归档和三维档案都由同一组 Markdown 生成。正文使用 MarkdownIt 渲染，支持加粗、链接、表格、目录、代码高亮、图片，以及 `$...$` / `$$...$$` / `\(...\)` / `\[...\]` 公式。站内文章请使用 `/p/<slug>/` 链接；英文页面会自动指向 `/en/p/<slug>/`。
 
 目前按主题分为「算法与数据结构」「Java 基础」「桌面开发」「AI 与研究」「开发实践」「随笔」。旧文章只更新分类与标签，保留原有 `slug` 和发布日期。首批从 Obsidian 人工整理的公开文章为梯度诊断、梯度裁剪与早停、Docker 和 FastAPI；实验日志、组会记录、个人练习及重复摘录未导入。
 
@@ -48,10 +48,10 @@ About Me 和终端 `/whoami` 共用 `src/site-content.js` 中的双语资料。�
 
 旧文中的图片继续使用公开的 `Ferdinandhu000/my_blog_img` 图床；因此图片可用性仍取决于该仓库。新增图片可以放在文章 Markdown 所在文件夹，并用与文章 URL 相对的文件名引用。发布 Obsidian 笔记前先人工筛选并检查私人信息、内部链接和图片授权，不会自动同步整个笔记库。
 
-## Netlify 预览与切换
+## Netlify 部署
 
-`netlify.toml` 已指定 `npm run build` 与 `dist`，`.nvmrc` 指定 Node 24。当前重构分支连接到独立 Netlify 预览站，先确认文章、图片、Giscus、移动端和三维性能。构建使用 Netlify 的 `URL` 生成 canonical、双语 alternate 和站点地图；本地构建默认使用原站地址。
+`netlify.toml` 已指定 `npm run build` 与 `dist`，`.nvmrc` 指定 Node 24。当前主站地址是 `https://ferdinandhu.netlify.app/`。构建生成的 canonical、双语 alternate 和站点地图默认使用此地址；将来换域名时可设置 `SITE_URL` 并重新部署。
 
-验收后，将分支合并到 `main`，再在 Netlify 将当前预览站的生产分支改为 `main`，由站点所有者调整主域名并触发一次新部署，以刷新页面元数据。此后推送 Markdown 会触发 Netlify 自动构建。每天的统计工作流仍在 GitHub Actions 运行，使用生成的文章索引查找评论所属文章。
+当前代码仍在 `codex/rhinelab-blog-rebuild` 分支；验收后再合并到 `main`，并将 Netlify 的生产分支设为 `main`。此后推送 Markdown 会触发 Netlify 自动构建。每天的统计工作流仍在 GitHub Actions 运行，使用生成的文章索引查找评论所属文章。
 
 RhineLabUI 的原始 MIT 许可在 [RHINELABUI-LICENSE](RHINELABUI-LICENSE)。三维模型保留供首页使用；原项目的演示档案、音频、字体和美术源文件不进入发布构建。

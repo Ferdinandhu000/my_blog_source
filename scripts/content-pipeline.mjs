@@ -11,7 +11,7 @@ import { profile } from '../src/site-content.js';
 const root = process.cwd();
 const articleRoot = path.join(root, 'content', 'articles');
 const generated = path.join(root, 'src', 'generated');
-const origin = (process.env.URL || 'https://ferdinandhu.netlify.app').replace(/\/$/, '');
+const origin = (process.env.SITE_URL || 'https://ferdinandhu.netlify.app').replace(/\/$/, '');
 const categoryEnglish = {
   'AI 与研究': 'AI & Research',
   '算法与数据结构': 'Algorithms & Data Structures',

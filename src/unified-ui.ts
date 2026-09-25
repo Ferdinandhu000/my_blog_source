@@ -194,7 +194,7 @@ export class UnifiedUI {
         for (const attribute of ['src', 'href']) {
           const value = element.getAttribute(attribute);
           if (value && !/^(?:[a-z][a-z\d+.-]*:|\/|#)/i.test(value))
-            element.setAttribute(attribute, new URL(value, new URL(url, location.origin)).pathname);
+            element.setAttribute(attribute, new URL(value, new URL(url, location.origin)).href);
         }
       }
       this.ensureStyle('/katex.min.css');

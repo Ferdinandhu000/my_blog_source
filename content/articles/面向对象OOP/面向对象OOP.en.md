@@ -11,28 +11,28 @@ tags:
 # Java Object-oriented Programming (OOP)
 
 ## Contents
-- [Object-oriented] (#面向对象)
-  - [What is object-oriented]#什么是面向对象)
-  - [Object-oriented vs process-oriented]#面向对象-vs-面向过程)
-- [Category and object](#类和对象)
-  - [Definition and use](#定义和使用)
-  - [Constructive Functions](#构造函数)
-  - [Simplified form of definition in Java](#java中类定义的最简形式)
-- [public private status final]#public-private-static-final-关键字)
-  - [public and private]#public-和-private)
+- [Object-oriented](#object-oriented)
+  - [What is object-oriented](#what%E2%80%99s-object-oriented%3F)
+  - [Object-oriented vs process-oriented](#object-oriented-vs-process)
+- [Classes and Objects](#classes-and-objects)
+  - [Definition and use](#definition-and-use)
+  - [Construct Functions](#construct-functions)
+  - [The simplest form of definition in Java](#the-simplest-form-of-definition-in-java)
+- [Keywords](#keywords)
+  - [Public and Private](#public-and-private)
   - [static](#static)
   - [final](#final)
-- [The three characteristics of the object]#面向对象三大特性)
-  - [1. Envelope](#1-封装)
-  - [2. Succession]#2-继承)
-  - [3. Multi-state](#3-多态)
+- [Three properties for object orientation](#three-properties-for-object-orientation)
+  - [1. Cover](#1.-cover)
+  - [2. Succession](#2.-succession)
+  - [3. Plurality](#3.-plurality)
 
 ---
 
 ## Object-oriented
 
 ### What's object-oriented?
-Generally speaking, object-oriented is the process by which each object has its own ** attributes** and ** methods** and is encapsulated.
+Generally speaking, object-oriented is the process by which each object has its own **attributes** and **methods** and is encapsulated.
 
 ### Object-oriented vs process
 | Feature | Object-oriented (OOP) | Process-oriented (POP) |
@@ -49,15 +49,15 @@ Application scenes Complex system development Small program development
 ## Classes and Objects
 
 ### Definition and use
-- ** Class**: Template for Object
+- **Class**: Template for Object
   Includes: attributes and methods
 - **Object**: examples of categories
-- ** Example:**
+- **Example:**
   - Category: Persons
   - Target: Students, teachers
 
 ### Construct Functions
-** Format**:`public 类名 (传入的属性) {}`
+**Format**:`public 类名 (传入的属性) {}`
 ```java
 class Employee {
     // 属性
@@ -91,7 +91,7 @@ class Employee {
 }
 ```
 
-> **Note: One class may include multiple tectonic functions (reloading)
+> **Note:** One class may include multiple constructors (overloading).
 
 ### The simplest form of definition in Java
 ```java
@@ -112,13 +112,13 @@ class ClassName {
 ## Keywords
 
 ### Public and Private
-- Both are access rights amplifiers to limit or allow outside access to internal members of the class, which may be modified ** class** attributes** method**
+- Both are access modifiers that control external access to a class's **attributes and methods**.
     - **public**: to indicate that the object members are publicly available and available throughout the project
     - **private**: indicates that the target members are completely private and are not allowed any outside visits
 
 ### static
-- If it means static, it can be modified ** class** method** ** code block**
-- ** Features**:
+- `static` can be applied to **class attributes**, **methods**, and **code blocks**.
+- **Features**:
     - modifies the attribute, the attribute will be in the memory and only the only one will be stored. So it's possible.`类名.属性名`Direct access, without creating a single object to access again
       For example:`Math.PI`
     - You can also pass when you fix it.`类名.方法名`Direct Call
@@ -148,7 +148,7 @@ class ClassName {
 
 ### final
 - It means the members of the adornment are immutable.
-- ** Features**:
+- **Features**:
     - When modifying a variable, initializing a copy must be performed and the value cannot be modified when used at any location
     - When you fix it, you can't weigh it. Write
     - And when it's modified, it can't be inherited.
@@ -166,8 +166,8 @@ The sub-groups in the different bags, the sub-groups, the sub-groups, the sub-gr
 ♪ It's different ♪
 
 ### 2. Succession
-- ** Meaning**: to create a new class (subcategory) based on existing classes (paternity) by adding new attributes and methods to achieve reuse of duplicate codes and reduce code volume
-- ** Achieved**:
+- **Meaning**: to create a new class (subcategory) based on existing classes (paternity) by adding new attributes and methods to achieve reuse of duplicate codes and reduce code volume
+- **Achieved**:
     - When creating class, use`extends`Keyword Inheritance Parent
       格式： `public class 子类名 extends 父类名 {}`
       Use when accessing a member variable or method in a parent category`super`Keyword
@@ -208,8 +208,8 @@ The sub-groups in the different bags, the sub-groups, the sub-groups, the sub-gr
     - How many parts can inherit?
 
 ### 3. Plurality
-- ** Meaning**: under inheritance systems, when the subcategory is rewritten to the parent method, create the sub-object and call the method, and the procedure is executed by the method in the corresponding category
-- ** Achieved**:
+- **Meaning**: under inheritance systems, when the subcategory is rewritten to the parent method, create the sub-object and call the method, and the procedure is executed by the method in the corresponding category
+- **Achieved**:
     See the code that you inherited from above when you execute the code below.
     ```java
     Employee Alice = new Manager("Alice",10000); // 声明类型是Employee，实际类型是Manager
@@ -219,7 +219,7 @@ The sub-groups in the different bags, the sub-groups, the sub-groups, the sub-gr
     ```
     The program will output 15,000 instead of 10,000 because the program is rewrited in Manager, even though Alice's statement is about Employeee.
 
-- ** with special attention**:
+- **with special attention**:
     For the next code
     ```java
     class SuperClass {

@@ -44,9 +44,9 @@ Pixel 是谷歌自研的智能手机，自2024 年 8 月以来，谷歌决定将
 2. 然后应该就可以看到目前这个邮箱账号的所属国家和地区了
 ![查看所属地示例](https://raw.githubusercontent.com/Ferdinandhu000/my_blog_img/master/Pasted%20image%2020260626115630.png)
 
-大家可以对照上方的表格，如果自己邮箱所属的国家是包含在12个月计划的国家地区之内的那就没事了可以跳转到下一节，如果发现没有也没关系，可以点击[国家/地区版本]()，在右侧跳出的栏中点击[了解详情并与我们联系]()
+大家可以对照上方的表格，如果自己邮箱所属的国家是包含在12个月计划的国家地区之内的那就没事了可以跳转到下一节，如果发现没有也没关系，可以点击“国家/地区版本”，在右侧跳出的栏中点击“了解详情并与我们联系”
 ![](https://raw.githubusercontent.com/Ferdinandhu000/my_blog_img/master/20260626115904.png)
-下滑找到[关联国家/地区更改]()
+下滑找到“关联国家/地区更改”
 ![](https://raw.githubusercontent.com/Ferdinandhu000/my_blog_img/master/20260626120026.png)
 按照如下设置选择并提交，其中州可以选择和自己梯子IP一致 of 地区或者选择一个免税州（例如俄勒冈州），我个人当时选择的是俄勒冈州
 ![](https://raw.githubusercontent.com/Ferdinandhu000/my_blog_img/master/20260626120914.png)

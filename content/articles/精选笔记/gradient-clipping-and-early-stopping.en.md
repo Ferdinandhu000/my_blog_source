@@ -11,7 +11,7 @@ tags:
 - Gradient Crop
 - Stop early.
 ---
-The article was collated by my Obsidian note, "Technology of training stability: gradient cutting and early cessation." These two approaches often appear together in the training configuration, but address different issues:** the gradient tailors the input of an updated parameter and decides early when the training will be completed. **
+The article was collated by my Obsidian note, "Technology of training stability: gradient cutting and early cessation." These two approaches often appear together in the training configuration, but address different issues:**the gradient tailors the input of an updated parameter and decides early when the training will be completed.**
 
 ## Gradient tailoring to what?
 
@@ -75,6 +75,6 @@ The example omits the details of the project, such as equipment, the drop-off of
 
 The uncut gradients and training, calibration curves should be recorded first, followed by cropping; the threshold or upstream training configuration should be checked if the vast majority of the training steps trigger the cropping. Early stoppage compared with the baseline of “fix epoch, save the best validation point”. Both should be assessed under the same data disaggregation and indicator definition.
 
-Extending reading: [How to read the gradient signal]/p/gradient-flow-diagnostics/)。
+Further reading: [How to read the gradient signal](/p/gradient-flow-diagnostics/).
 
-** Ref:** [PyTorch]`clip_grad_norm_`Document]https://docs.pytorch.org/docs/stable/generated/torch.nn.utils.clip_grad_norm_.html), [PyTorch parameter optimized tutorial](https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial), [Examples of automatic hybrid accuracy] (https://docs.pytorch.org/docs/stable/notes/amp_examples.html)。
+**Ref:** [PyTorch `clip_grad_norm_` documentation](https://docs.pytorch.org/docs/stable/generated/torch.nn.utils.clip_grad_norm_.html), [PyTorch optimization tutorial](https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial), [Automatic mixed precision examples](https://docs.pytorch.org/docs/stable/notes/amp_examples.html).
