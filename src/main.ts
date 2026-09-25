@@ -747,7 +747,7 @@ document.addEventListener("input", (e) => {
 });
 document.addEventListener("change", (e) => {
   const el = e.target as HTMLInputElement;
-  if (el.dataset.language) {
+  if (el.hasAttribute('data-language')) {
     prefs.language = el.value === 'en' ? 'en' : 'zh';
     setLanguage(prefs.language);
     renderModal();
