@@ -4,9 +4,8 @@ draft : false
 title : 'Java面向对象编程'
 title_en: 'Java Object-Oriented Programming'
 slug: 'java-object-oriented-programming'
-categories : 
-  - Java
-  - 面向对象
+category: "Java 基础"
+tags: ["Java","面向对象"]
 ---
 # Java 面向对象编程 (OOP)
 

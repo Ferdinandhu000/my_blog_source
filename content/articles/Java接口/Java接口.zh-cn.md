@@ -4,8 +4,8 @@ draft : false
 title : 'Java接口'
 title_en: 'Interface of Java'
 slug: 'interface-of-java'
-categories : 
-  - Java
+category: "Java 基础"
+tags: ["Java","接口"]
 ---
 ## 接口 Interface
 

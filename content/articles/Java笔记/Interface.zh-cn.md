@@ -4,9 +4,8 @@ draft : false
 title : 'Interface'
 title_en: 'Interface'
 slug: 'interface'
-categories : 
-  - Java
-  - Notes
+category: "Java 基础"
+tags: ["Java","接口"]
 ---
 ## 两个重要接口
 

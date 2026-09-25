@@ -70,7 +70,7 @@ $("#stage").innerHTML = `
   <nav class="system-nav" aria-label="系统导航">
     <button data-action="search"><span class="nav-glyph">⌕</span> ARCHIVE INDEX <span class="key">/</span></button>
     <a class="blog-nav-link" href="/archives/">文章归档 ↗</a><a class="blog-nav-link" href="/terminal/">终端 ↗</a><a class="blog-nav-link" href="/about/">CV ↗</a>
-    <button data-action="saved" aria-label="查看收藏档案" title="收藏档案">＋ SAVED <span id="saved-count">00</span></button>
+    <button data-action="saved" aria-label="查看本机收藏档案" title="仅保存在当前浏览器">＋ SAVED <span id="saved-count">00</span></button>
     <button class="settings-button" data-action="settings" aria-label="系统设置" title="系统设置"><span class="settings-glyph" aria-hidden="true">◷</span><span class="settings-label">设置</span></button>
   </nav>
   <button id="skip" class="skip" data-action="skip">ENTER SYSTEM <span>↗</span></button>
@@ -531,7 +531,7 @@ function renderDetail() {
   <dl class="metadata"><div><dt>CATEGORY / 分类</dt><dd>${escapeHtml(r.category)}</dd></div><div><dt>PUBLISHED / 发布日期</dt><dd>${escapeHtml(r.date)}</dd></div><div><dt>AUTHOR / 作者</dt><dd>${escapeHtml(r.lead)}</dd></div><div><dt>STATUS / 状态</dt><dd><i></i>公开 · 可阅读</dd></div></dl>
   <div class="detail-tabs" role="tablist"><button id="tab-overview" class="active" role="tab" aria-controls="tab-panel" aria-selected="true" data-tab="overview">01 <span>概述</span></button><button id="tab-notes" role="tab" aria-controls="tab-panel" aria-selected="false" data-tab="notes">02 <span>标签</span></button><button id="tab-history" role="tab" aria-controls="tab-panel" aria-selected="false" data-tab="history">03 <span>阅读</span></button><i class="tab-indicator" aria-hidden="true"></i></div>
   <div id="tab-panel" class="tab-panel" role="tabpanel">${overview()}</div>
-  <div class="detail-actions"><button class="solid-button" data-action="bookmark">${saved.has(r.id) ? "− REMOVE FROM SAVED" : "＋ SAVE ARCHIVE"}<span>${saved.has(r.id) ? "已收藏" : "收藏档案"}</span></button><a class="export-button" href="${r.url}" aria-label="阅读完整文章：${escapeHtml(r.title)}">阅读全文 <span>↗</span></a></div>
+  <div class="detail-actions"><button class="solid-button" data-action="bookmark" title="仅保存在当前浏览器">${saved.has(r.id) ? "− REMOVE FROM SAVED" : "＋ SAVE ARCHIVE"}<span>${saved.has(r.id) ? "已收藏" : "收藏档案"}</span></button><a class="export-button" href="${r.url}" aria-label="阅读完整文章：${escapeHtml(r.title)}">阅读全文 <span>↗</span></a></div>
   <div class="detail-footnote"><a href="${r.url}">打开文章与评论 ↗</a><span>${String(selected + 1).padStart(3, "0")} / ${String(records.length).padStart(3, "0")}</span></div>`;
   $("#detail-content").setAttribute("tabindex", "-1");
   $('[data-action="bookmark"]').setAttribute("aria-pressed", String(saved.has(r.id)));

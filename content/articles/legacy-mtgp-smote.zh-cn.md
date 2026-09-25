@@ -2,7 +2,8 @@
 title: MTGP-SMOTE论文研读笔记
 slug: a-critical-reading-of-mtgp-smote-concepts-analysis-and-observations
 date: 2025-09-13
-category: Notes
+category: "AI 与研究"
+tags: ["论文研读","机器学习"]
 ---
 
 <h2 id="问题背景">问题背景
