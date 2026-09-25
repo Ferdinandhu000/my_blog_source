@@ -11,6 +11,14 @@ const root = process.cwd();
 const articleRoot = path.join(root, 'content', 'articles');
 const generated = path.join(root, 'src', 'generated');
 const origin = 'https://ferdinandhu.netlify.app';
+const categoryEnglish = {
+  'AI 与研究': 'AI & Research',
+  '算法与数据结构': 'Algorithms & Data Structures',
+  'Java 基础': 'Java Fundamentals',
+  '桌面开发': 'Desktop Development',
+  '开发实践': 'Development Practice',
+  '随笔': 'Journal',
+};
 
 function walk(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
@@ -31,7 +39,7 @@ function stableId(slug) {
   return `X-${String(number).padStart(6, '0')}`;
 }
 
-export function loadArticles() {
+export function loadArticles({ requireEnglish = true } = {}) {
   const articles = [];
   const slugs = new Set();
   const ids = new Set();
@@ -54,12 +62,29 @@ export function loadArticles() {
     const category = String(data.category ?? (Array.isArray(data.categories) ? data.categories[0] : data.categories) ?? '未分类').trim() || '未分类';
     const tags = Array.isArray(data.tags) ? data.tags.map(String) : [];
     const text = plain(content);
+    const englishFile = file.replace(/(?:\.zh-cn)?\.md$/, '.en.md');
+    let english;
+    if (fs.existsSync(englishFile)) {
+      const translated = matter(fs.readFileSync(englishFile, 'utf8'));
+      const englishTitle = String(translated.data.title ?? '').trim();
+      if (!englishTitle || String(translated.data.slug ?? '') !== slug || !translated.content.trim())
+        throw new Error(`Invalid English article: ${path.relative(root, englishFile)}`);
+      const englishText = plain(translated.content);
+      english = {
+        title: englishTitle,
+        category: String(translated.data.category ?? categoryEnglish[category] ?? category).trim(),
+        abstract: String(translated.data.description ?? englishText.slice(0, 180)).trim(),
+        tags: Array.isArray(translated.data.tags) ? translated.data.tags.map(String) : tags,
+        body: translated.content,
+        text: englishText,
+      };
+    } else if (requireEnglish) throw new Error(`Missing English article: ${path.relative(root, englishFile)}`);
     articles.push({
       id, slug, url: `/p/${slug}/`, title, category,
       date: date.toISOString().slice(0, 10), lead: 'Ferdinand Hu',
       clearance: 'PUBLIC', abstract: String(data.description ?? text.slice(0, 140)).trim(),
       source: `/p/${slug}/`,
-      tags, body: content, text, file,
+      tags, body: content, text, file, english,
     });
   }
   articles.sort((a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
@@ -72,7 +97,14 @@ export function metadata(articles) {
   return {
     categories,
     columns: categories,
-    records: articles.map(({ body, text, file, tags, slug, url, ...record }) => ({ ...record, tags, slug, url })),
+    records: articles.map(({ body, text, file, english, tags, slug, url, ...record }) => ({
+      ...record, tags, slug, url,
+      urlEn: `/en/p/${slug}/`,
+      titleEn: english?.title ?? record.title,
+      categoryEn: english?.category ?? record.category,
+      abstractEn: english?.abstract ?? record.abstract,
+      tagsEn: english?.tags ?? tags,
+    })),
   };
 }
 

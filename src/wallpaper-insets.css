@@ -27,6 +27,9 @@
 #stage[data-ui-insets="true"]:not([data-mode="boot"]) > .powered {
   right: calc(var(--edge) + var(--ui-right)); bottom: calc(108px + var(--ui-bottom));
 }
+#stage[data-ui-insets="true"][data-mode="detail"] > .powered {
+  top: calc(225px + var(--ui-top)); bottom: auto;
+}
 #stage[data-ui-insets="true"]:not([data-mode="boot"]) > .relay-entry {
   left: calc(var(--edge) + var(--ui-left));
 }

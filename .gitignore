@@ -4,3 +4,4 @@ src/generated/
 .netlify/
 .env
 .env.*
+scripts/__pycache__/

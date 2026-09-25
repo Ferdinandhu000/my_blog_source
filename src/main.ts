@@ -13,6 +13,8 @@ import "./quality-settings.css";
 import "./responsive.css";
 import "./unified-shell.css";
 import { UnifiedUI } from "./unified-ui";
+import { getLanguage, setLanguage, tr, titleOf, categoryOf, abstractOf, tagsOf, articleUrl, categoryLabel, type Language } from "./i18n";
+import { localizeSettings } from "./settings-english";
 import { viewportLayout, openingLayout } from "./viewport-layout";
 import { assetUrl } from "./asset-url";
 import { createRollingNumber, createRollingText } from "@kitlangton/rolling-number";
@@ -156,7 +158,7 @@ function readLocal<T>(key: string, fallback: T): T {
   }
 }
 const saved = new Set<string>(readLocal<string[]>("hj-blog-saved", []));
-const storedPrefs = readLocal<Partial<{ sound: boolean; music: boolean; soundVolume: number; musicVolume: number; reduced: boolean; quality: boolean; rendering: RenderQuality; superPerformance: boolean; colorTheme: "light" | "dark"; motion: StoredMotion; motionPreset: MotionPreset }>>("hj-blog-settings", {});
+const storedPrefs = readLocal<Partial<{ sound: boolean; music: boolean; soundVolume: number; musicVolume: number; reduced: boolean; quality: boolean; rendering: RenderQuality; superPerformance: boolean; colorTheme: "light" | "dark"; language: Language; motion: StoredMotion; motionPreset: MotionPreset }>>("hj-blog-settings", {});
 const initialMotion = createMotionPreferences(
   storedPrefs.motion,
   storedPrefs.reduced ?? (storedPrefs.motion === undefined
@@ -175,6 +177,7 @@ const prefs = {
   superPerformance: storedPrefs.superPerformance ?? true,
   rendering: normalizeQuality(storedPrefs.rendering, storedPrefs.quality !== false),
   colorTheme: storedPrefs.colorTheme === "dark" ? "dark" : "light",
+  language: getLanguage(),
 };
 const motionActive = (key: MotionKey) => motionEnabled(prefs.motion, key);
 const motionIsReduced = () => Object.values(prefs.motion).every((value) => !value);
@@ -429,9 +432,9 @@ function updateSelection(navigation?: ArchiveNavigation) {
   const r = records[selected];
   const { lane } = fileLocation(selected);
   const files = columnFiles(lane);
-  $("#selected-title").textContent = r.title;
+  $("#selected-title").textContent = titleOf(r);
   clearanceTitle.update({ text: r.clearance, animated: motionActive("rollingText") && mode === "archive" });
-  categoryTitle.update({ text: r.category, animated: motionActive("rollingText") && mode === "archive" });
+  categoryTitle.update({ text: categoryOf(r), animated: motionActive("rollingText") && mode === "archive" });
   const direction =
     navigation && "axis" in navigation
       ? navigation.direction > 0
@@ -460,14 +463,14 @@ function updateSelection(navigation?: ArchiveNavigation) {
         ? direction
         : "auto",
   });
-  columnTitle.update({ text: archiveColumns[lane], animated: motionActive("rollingText") && mode === "archive" });
+  columnTitle.update({ text: categoryLabel(archiveColumns[lane], records), animated: motionActive("rollingText") && mode === "archive" });
   $<HTMLButtonElement>('[data-action="column-prev"]').disabled = false;
   $<HTMLButtonElement>('[data-action="column-next"]').disabled = false;
   const selectedAt = files.indexOf(selected);
   const start = Math.max(0, Math.min(selectedAt - 5, files.length - 11));
   $("#file-ticks").innerHTML = files.slice(start, start + 11).map(index => {
     const record = records[index];
-    return `<button data-select="${index}" aria-label="选择档案 ${escapeHtml(record.id)} ${escapeHtml(record.title)}" title="${escapeHtml(record.title)}" class="${index === selected ? 'selected' : ''}" aria-pressed="${index === selected}"></button>`;
+    return `<button data-select="${index}" aria-label="${tr('选择档案', 'Select file')} ${escapeHtml(record.id)} ${escapeHtml(titleOf(record))}" title="${escapeHtml(titleOf(record))}" class="${index === selected ? 'selected' : ''}" aria-pressed="${index === selected}"></button>`;
   }).join("");
   $("#column-number").lastChild!.textContent = ` / ${String(archiveColumns.length).padStart(2, '0')}`;
   $("#saved-count").textContent = String(saved.size).padStart(2, "0");
@@ -510,7 +513,7 @@ function toggleSaved() {
   const button = $<HTMLButtonElement>('[data-action="bookmark"]');
   const added = saved.has(id);
   button.firstChild!.textContent = added ? "− REMOVE FROM SAVED" : "＋ SAVE ARCHIVE";
-  button.querySelector("span")!.textContent = added ? "已收藏" : "收藏档案";
+  button.querySelector("span")!.textContent = added ? tr("已收藏", "Saved") : tr("收藏档案", "Save file");
   button.setAttribute("aria-pressed", String(added));
   bookmarkFeedback?.cancel();
   if (motionActive("surfaceTransitions")) bookmarkFeedback = button.animate(
@@ -518,7 +521,7 @@ function toggleSaved() {
     { duration: 220, easing: "ease-out" },
   );
   audio.play("confirm");
-  notify(saved.has(id) ? "档案已加入收藏" : "已取消收藏");
+  notify(saved.has(id) ? tr("档案已加入收藏", "File saved") : tr("已取消收藏", "Removed from saved files"));
 }
 function renderDetail() {
   tabTransition.cancel();
@@ -526,20 +529,20 @@ function renderDetail() {
   $("#object-id").textContent = "NO." + String(selected + 1).padStart(3, "0");
   $("#detail-content").innerHTML = `
   <div class="detail-kicker"><span>FILE ${r.id}</span><span>${escapeHtml(r.clearance)}</span></div>
-  <h2>${escapeHtml(r.title)}</h2><div class="detail-title-cn">${escapeHtml(r.category)}<span>文章档案</span></div>
+  <h2>${escapeHtml(titleOf(r))}</h2><div class="detail-title-cn">${escapeHtml(categoryOf(r))}<span>${tr('文章档案', 'Article file')}</span></div>
   <div class="detail-rule"></div>
-  <dl class="metadata"><div><dt>CATEGORY / 分类</dt><dd>${escapeHtml(r.category)}</dd></div><div><dt>PUBLISHED / 发布日期</dt><dd>${escapeHtml(r.date)}</dd></div><div><dt>AUTHOR / 作者</dt><dd>${escapeHtml(r.lead)}</dd></div><div><dt>STATUS / 状态</dt><dd><i></i>公开 · 可阅读</dd></div></dl>
-  <div class="detail-tabs" role="tablist"><button id="tab-overview" class="active" role="tab" aria-controls="tab-panel" aria-selected="true" data-tab="overview">01 <span>概述</span></button><button id="tab-notes" role="tab" aria-controls="tab-panel" aria-selected="false" data-tab="notes">02 <span>标签</span></button><button id="tab-history" role="tab" aria-controls="tab-panel" aria-selected="false" data-tab="history">03 <span>阅读</span></button><i class="tab-indicator" aria-hidden="true"></i></div>
+  <dl class="metadata"><div><dt>${tr('CATEGORY / 分类', 'CATEGORY')}</dt><dd>${escapeHtml(categoryOf(r))}</dd></div><div><dt>${tr('PUBLISHED / 发布日期', 'PUBLISHED')}</dt><dd>${escapeHtml(r.date)}</dd></div><div><dt>${tr('AUTHOR / 作者', 'AUTHOR')}</dt><dd>${escapeHtml(r.lead)}</dd></div><div><dt>${tr('STATUS / 状态', 'STATUS')}</dt><dd><i></i>${tr('公开 · 可阅读', 'PUBLIC · READABLE')}</dd></div></dl>
+  <div class="detail-tabs" role="tablist"><button id="tab-overview" class="active" role="tab" aria-controls="tab-panel" aria-selected="true" data-tab="overview">01 <span>${tr('概述', 'Overview')}</span></button><button id="tab-notes" role="tab" aria-controls="tab-panel" aria-selected="false" data-tab="notes">02 <span>${tr('标签', 'Tags')}</span></button><button id="tab-history" role="tab" aria-controls="tab-panel" aria-selected="false" data-tab="history">03 <span>${tr('阅读', 'Read')}</span></button><i class="tab-indicator" aria-hidden="true"></i></div>
   <div id="tab-panel" class="tab-panel" role="tabpanel">${overview()}</div>
-  <div class="detail-actions"><button class="solid-button" data-action="bookmark" title="仅保存在当前浏览器">${saved.has(r.id) ? "− REMOVE FROM SAVED" : "＋ SAVE ARCHIVE"}<span>${saved.has(r.id) ? "已收藏" : "收藏档案"}</span></button><a class="export-button" href="${r.url}" aria-label="阅读完整文章：${escapeHtml(r.title)}">阅读全文 <span>↗</span></a></div>
-  <div class="detail-footnote"><a href="${r.url}">打开文章与评论 ↗</a><span>${String(selected + 1).padStart(3, "0")} / ${String(records.length).padStart(3, "0")}</span></div>`;
+  <div class="detail-actions"><button class="solid-button" data-action="bookmark" title="${tr('仅保存在当前浏览器', 'Saved in this browser only')}">${saved.has(r.id) ? "− REMOVE FROM SAVED" : "＋ SAVE ARCHIVE"}<span>${saved.has(r.id) ? tr('已收藏', 'Saved') : tr('收藏档案', 'Save file')}</span></button><a class="export-button" href="${articleUrl(r)}" aria-label="${tr('阅读完整文章', 'Read full article')}：${escapeHtml(titleOf(r))}">${tr('阅读全文', 'Read full article')} <span>↗</span></a></div>
+  <div class="detail-footnote"><a href="${articleUrl(r)}">${tr('打开文章与评论', 'Open article and comments')} ↗</a><span>${String(selected + 1).padStart(3, "0")} / ${String(records.length).padStart(3, "0")}</span></div>`;
   $("#detail-content").setAttribute("tabindex", "-1");
   $('[data-action="bookmark"]').setAttribute("aria-pressed", String(saved.has(r.id)));
   documentDecryption.reset($("#detail-content"), !motionActive("documentReveal") || !scene || scene.decryptionFrame.phase === "clear");
   setTab(activeTab, false);
 }
 function overview() {
-  return `<div class="panel-label">ABSTRACT / 摘要</div><p>${escapeHtml(records[selected].abstract)}</p>`;
+  return `<div class="panel-label">${tr('ABSTRACT / 摘要', 'ABSTRACT')}</div><p>${escapeHtml(abstractOf(records[selected]))}</p>`;
 }
 function setTab(tab: string, sound = true) {
   if (sound && tab === activeTab) return;
@@ -560,8 +563,8 @@ function setTab(tab: string, sound = true) {
     tab === "overview"
       ? overview()
       : tab === "notes"
-        ? `<div class="panel-label">TAGS / 标签</div><p>${r.tags.length ? r.tags.map(escapeHtml).join(' · ') : '暂无标签'}</p>`
-        : `<div class="panel-label">READ / 阅读</div><p class="log-note">本文于 ${escapeHtml(r.date)} 发布。完整正文、目录和评论位于文章页面。</p><p><a href="${r.url}">阅读全文 ↗</a></p>`;
+        ? `<div class="panel-label">${tr('TAGS / 标签', 'TAGS')}</div><p>${tagsOf(r).length ? tagsOf(r).map(escapeHtml).join(' · ') : tr('暂无标签', 'No tags')}</p>`
+        : `<div class="panel-label">${tr('READ / 阅读', 'READ')}</div><p class="log-note">${tr(`本文于 ${escapeHtml(r.date)} 发布。完整正文、目录和评论位于文章页面。`, `Published on ${escapeHtml(r.date)}. Read the full article, contents and comments here.`)}</p><p><a href="${articleUrl(r)}">${tr('阅读全文', 'Read full article')} ↗</a></p>`;
   $("#tab-panel").scrollTop = 0;
   documentDecryption.refresh();
   if (sound) {
@@ -619,10 +622,14 @@ function renderModal() {
   $("#modal-root").innerHTML =
     `<div class="modal-backdrop"><section class="terminal-modal ${modal === "settings" ? "settings-modal" : ""}" role="dialog" aria-modal="true" aria-label="${modal === "settings" ? "系统设置" : modal === "saved" ? "收藏档案" : "档案检索"}"><div class="modal-top"><span>HJ BLOG / ${modal === "settings" ? "SYSTEM PREFERENCES" : "ARCHIVE DIRECTORY"}</span><button data-action="close-modal" aria-label="关闭窗口">CLOSE <span>×</span></button></div>${modal === "settings" ? settingsMarkup() : `<h2>${modal === "saved" ? "SAVED ARCHIVES" : "ARCHIVE INDEX"}<small>${modal === "saved" ? "收藏文章" : "文章检索"}</small></h2><div class="search-field"><span>⌕</span><input id="archive-search" type="search" autocomplete="off" placeholder="输入文章编号、标题或分类" aria-label="检索文章"/><span class="key">ESC</span></div><div class="category-filters">${categories.map((c, i) => `<button data-filter="${escapeHtml(c)}" class="${i === 0 ? "active" : ""}">${escapeHtml(c)}</button>`).join("")}</div><div class="result-header"><span>FILE / 文章</span><span>CATEGORY / 分类</span><span>ACCESS</span></div><div id="search-results" class="search-results"></div><div class="modal-bottom"><span id="result-count"></span><span>BLOG ARCHIVE <i>●</i> CONNECTED</span></div>`}</section></div>`;
   const backdrop = $(".modal-backdrop");
+  if (getLanguage() === 'en') document.querySelectorAll<HTMLButtonElement>('.category-filters [data-filter]').forEach(button => {
+    button.textContent = categoryLabel(button.dataset.filter ?? '', records);
+  });
   backdrop.hidden = true;
   modalTransition = new SurfaceTransition(backdrop, $(".terminal-modal"));
   modalTransition.show(!motionActive("surfaceTransitions"));
   if (modal === "settings") updateQualitySummary();
+  if (getLanguage() === 'en') localizeSettings($('.terminal-modal'));
   if (modal !== "settings") {
     renderResults();
     requestAnimationFrame(() => {
@@ -645,7 +652,7 @@ function renderResults() {
       ({ r }) =>
         (modal !== "saved" || saved.has(r.id)) &&
         (filter === "全部档案" || r.category === filter) &&
-        `${r.id} ${r.title} ${r.category} ${r.lead} ${r.tags.join(' ')}`
+        `${r.id} ${r.title} ${r.titleEn} ${r.category} ${r.categoryEn} ${r.lead} ${r.tags.join(' ')} ${r.tagsEn.join(' ')}`
           .toLowerCase()
           .includes(searchQuery.toLowerCase()),
     );
@@ -653,28 +660,48 @@ function renderResults() {
     ? results
         .map(
           ({ r, i }) =>
-            `<button class="result-row" data-result="${i}"><span class="result-name"><b>${r.id}</b><span>${escapeHtml(r.title)}<small>${escapeHtml(r.date)}</small></span>${saved.has(r.id) ? "<i>＋</i>" : ""}</span><span>${escapeHtml(r.category)}</span><span>READ <i>↗</i></span></button>`,
+            `<button class="result-row" data-result="${i}"><span class="result-name"><b>${r.id}</b><span>${escapeHtml(titleOf(r))}<small>${escapeHtml(r.date)}</small></span>${saved.has(r.id) ? "<i>＋</i>" : ""}</span><span>${escapeHtml(categoryOf(r))}</span><span>READ <i>↗</i></span></button>`,
         )
         .join("")
     : `<div class="empty-results"><span>∅</span><strong>${modal === "saved" && !searchQuery ? "尚无收藏文章" : "没有匹配的文章"}</strong><p>${modal === "saved" && !searchQuery ? "阅读文章时，选择 SAVE ARCHIVE 将其保存在此处。" : "尝试其他标题、文章编号，或切换分类。"}</p><button data-action="reset-search">${modal === "saved" ? "查看全部文章 →" : "重置检索 →"}</button></div>`;
   $("#result-count").textContent =
     `${String(results.length).padStart(2, "0")} RECORDS FOUND`;
+  if (getLanguage() === 'en') localizeSettings($('#modal-root'));
 }
 function updateQualitySummary() {
   const summary = document.querySelector("#quality-summary");
   if (!summary) return;
-  if (!scene) { summary.textContent = "3D 已关闭 · 三维模型与渲染资源已释放"; return; }
+  if (!scene) { summary.textContent = tr("3D 已关闭 · 三维模型与渲染资源已释放", "3D is off · scene resources released"); return; }
   const canvas = scene.renderer.domElement;
   const metrics = JSON.parse(canvas.parentElement?.dataset.renderQuality ?? "{}");
-  summary.textContent = `${superPerformanceEnabled() ? "超级性能模式已启用 · 画质设置暂被覆盖，关闭后恢复 · " : ""}实际渲染 ${canvas.width} × ${canvas.height} · ${effectiveRenderQuality().antialias === "smaa" ? "SMAA" : "无额外抗锯齿"} · 纹理 ${metrics.anisotropy ?? 1}×${metrics.limited ? " · 已达到缓冲上限" : ""}`;
+  summary.textContent = `${superPerformanceEnabled() ? tr("超级性能模式已启用 · 画质设置暂被覆盖，关闭后恢复 · ", "Super Performance is on · quality settings temporarily overridden · ") : ""}${tr('实际渲染', 'Rendered at')} ${canvas.width} × ${canvas.height} · ${effectiveRenderQuality().antialias === "smaa" ? "SMAA" : tr("无额外抗锯齿", "No extra antialiasing")} · ${tr('纹理', 'Texture filtering')} ${metrics.anisotropy ?? 1}×${metrics.limited ? tr(" · 已达到缓冲上限", " · buffer limit reached") : ""}`;
 }
 function motionPreferenceNoteMarkup() {
   const preset = prefs.motionPreset;
   const allEnabled = Object.values(prefs.motion).every(Boolean);
   return `<div id="motion-preference-note" class="motion-preference-note"><p>${motionSummary(prefs.motion)}</p><span>预设：${preset === "full" ? "完整动画" : preset === "reduced" ? "减少动画" : "自定义"} · 选择会保存在本站</span>${allEnabled ? "" : '<button data-action="enable-motion">启用完整动画并重播 ↻</button>'}</div>`;
 }
+function languageSettingsMarkup() {
+  return `<label class="language-setting"><div><strong>LANGUAGE / ${tr('语言', 'Language')}</strong><span>${tr('切换界面与文章语言', 'Switch the interface and article language')}</span></div><select data-language aria-label="${tr('语言', 'Language')}"><option value="zh" ${prefs.language === 'zh' ? 'selected' : ''}>中文</option><option value="en" ${prefs.language === 'en' ? 'selected' : ''}>English</option></select></label>`;
+}
+function applyLanguageChrome() {
+  const en = getLanguage() === 'en';
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.system-nav .blog-nav-link')];
+  if (links[0]) { links[0].href = en ? '/en/archives/' : '/archives/'; links[0].textContent = tr('文章归档 ↗', 'Articles ↗'); }
+  if (links[1]) { links[1].href = en ? '/en/terminal/' : '/terminal/'; links[1].textContent = tr('终端 ↗', 'Terminal ↗'); }
+  if (links[2]) { links[2].href = en ? '/en/about/' : '/about/'; links[2].textContent = 'CV ↗'; }
+  $('.settings-label').textContent = tr('设置', 'Settings');
+  $('.back-button span').textContent = tr('ARCHIVE OVERVIEW', 'ARCHIVE OVERVIEW');
+  $('.viewer-open').innerHTML = `${tr('360° 查看文档模型', '360° View document model')} <span>↗</span>`;
+  $('.footer-link').textContent = tr('搜索全部文章 ↗', 'Search all articles ↗');
+  ($('.footer-link') as HTMLAnchorElement).href = en ? '/en/search/' : '/search/';
+  $('.archive-hint').innerHTML = en
+    ? '<kbd>←</kbd> <kbd>→</kbd> Columns <span>／</span> <kbd>↑</kbd> <kbd>↓</kbd> Files <span>／</span> <kbd>ENTER</kbd> Read'
+    : '<kbd>←</kbd> <kbd>→</kbd> 切换列 <span>／</span> <kbd>↑</kbd> <kbd>↓</kbd> 前后档案 <span>／</span> <kbd>ENTER</kbd> 读取';
+  document.title = tr('HJ BLOG · 个人博客', 'HJ BLOG · Personal blog');
+}
 function settingsMarkup() {
-  return `<h2>SYSTEM SETTINGS<small>显示偏好设置</small></h2><p class="settings-intro">FERDINAND HU <span>·</span> PUBLIC BLOG</p>${isWallpaper ? '<p class="wallpaper-settings-note">每次启动都会读取 Wallpaper Engine 中的设置。在此修改仅对当前运行生效，无法持久保存；如需保留，请在 Wallpaper Engine 的壁纸属性中调整。</p>' : ""}<div class="settings-list">${themeSettingsMarkup(prefs.colorTheme === "dark")}${!isWallpaper ? `<label><div><strong>SUPER PERFORMANCE</strong><span>三维画面以 50% 分辨率、最高 30 帧运行；关闭后恢复所选画质</span></div><input type="checkbox" data-pref="superPerformance" ${prefs.superPerformance ? "checked" : ""}/><i class="toggle"></i></label>` : ""}${workbench?.settingsMarkup() ?? ""}${audioSettingsMarkup(prefs)}</div>${motionPreferenceNoteMarkup()}${motionSettingsMarkup(prefs.motion, prefs.motionPreset)}${qualityMarkup(prefs.rendering)}<div class="settings-shortcuts">${isWallpaper ? '<span>DESKTOP CONTROLS</span><p>拖动阵列或点击界面按钮浏览档案。桌面模式下，方向键与滚轮可能无法传入壁纸。</p>' : '<span>KEYBOARD CONTROLS</span><p><kbd>←</kbd><kbd>→</kbd> 切列 <kbd>↑</kbd><kbd>↓</kbd> 选档 <kbd>ENTER</kbd> 读取 <kbd>/</kbd> 检索 <kbd>ESC</kbd> 返回</p>'}</div><div class="settings-bottom">${!isWallpaper && document.fullscreenEnabled ? '<button data-action="fullscreen">FULLSCREEN <span>↗</span></button>' : ''}<button data-action="restart">REINITIALIZE SYSTEM <span>↻</span></button></div><div class="modal-bottom"><span>BLOG OS / 1.0 · <a href="/licenses/RHINELABUI-LICENSE">开源许可</a></span><span>POWERED BY HJ BLOG</span></div>`;
+  return `<h2>SYSTEM SETTINGS<small>${tr('显示偏好设置', 'Display preferences')}</small></h2><p class="settings-intro">FERDINAND HU <span>·</span> PUBLIC BLOG</p>${isWallpaper ? '<p class="wallpaper-settings-note">每次启动都会读取 Wallpaper Engine 中的设置。在此修改仅对当前运行生效，无法持久保存；如需保留，请在 Wallpaper Engine 的壁纸属性中调整。</p>' : ""}<div class="settings-list">${languageSettingsMarkup()}${themeSettingsMarkup(prefs.colorTheme === "dark")}${!isWallpaper ? `<label><div><strong>SUPER PERFORMANCE</strong><span>三维画面以 50% 分辨率、最高 30 帧运行；关闭后恢复所选画质</span></div><input type="checkbox" data-pref="superPerformance" ${prefs.superPerformance ? "checked" : ""}/><i class="toggle"></i></label>` : ""}${workbench?.settingsMarkup() ?? ""}${audioSettingsMarkup(prefs)}</div>${motionPreferenceNoteMarkup()}${motionSettingsMarkup(prefs.motion, prefs.motionPreset)}${qualityMarkup(prefs.rendering)}<div class="settings-shortcuts">${isWallpaper ? '<span>DESKTOP CONTROLS</span><p>拖动阵列或点击界面按钮浏览档案。桌面模式下，方向键与滚轮可能无法传入壁纸。</p>' : '<span>KEYBOARD CONTROLS</span><p><kbd>←</kbd><kbd>→</kbd> 切列 <kbd>↑</kbd><kbd>↓</kbd> 选档 <kbd>/</kbd> 搜索 <kbd>ESC</kbd> 返回</p>'}</div><div class="settings-bottom">${!isWallpaper && document.fullscreenEnabled ? '<button data-action="fullscreen">FULLSCREEN <span>↗</span></button>' : ''}<button data-action="restart">REINITIALIZE SYSTEM <span>↻</span></button></div><div class="modal-bottom"><span>BLOG OS / 1.0 · <a href="/licenses/RHINELABUI-LICENSE">${tr('开源许可', 'Open-source license')}</a></span><span>POWERED BY HJ BLOG</span></div>`;
 }
 
 document.addEventListener("input", (e) => {
@@ -696,6 +723,13 @@ document.addEventListener("input", (e) => {
 });
 document.addEventListener("change", (e) => {
   const el = e.target as HTMLInputElement;
+  if (el.dataset.language) {
+    prefs.language = el.value === 'en' ? 'en' : 'zh';
+    setLanguage(prefs.language);
+    renderModal();
+    requestAnimationFrame(() => document.querySelector<HTMLSelectElement>('[data-language]')?.focus({ preventScroll: true }));
+    return;
+  }
   if (el.id === "quality-preset" && Object.hasOwn(qualityPresets, el.value)) {
     prefs.rendering = { ...qualityPresets[el.value as QualityPreset] };
     savePrefs();
@@ -806,7 +840,7 @@ document.addEventListener("click", async (e) => {
     scene.finishDecryption();
     viewer.open(
       records[selected].id,
-      records[selected].title,
+      titleOf(records[selected]),
       () => activeScene.createAssemblyModel(),
       !motionActive("viewerNavigation"),
     );
@@ -1078,7 +1112,7 @@ function bindScene(scene: ArchiveScene, cell?: { lane: number; row: number }) {
         value: Number(records[i].id.slice(2)),
         animated: !label.hidden && numbersAnimated,
       });
-      hoverTitle.update({ text: records[i].title, animated: !label.hidden && animated });
+      hoverTitle.update({ text: titleOf(records[i]), animated: !label.hidden && animated });
       label.hidden = false;
       // Prepare the first visible value so the next hover can animate immediately.
       hoverCode.update({ animated: numbersAnimated });
@@ -1294,6 +1328,14 @@ if (!isWallpaper) unifiedUI = new UnifiedUI({
   showArchive: () => { if (mode !== "archive") setMode("archive"); },
   showDetail: index => { select(index); openFile(); },
 });
+window.addEventListener('hj-language-change', () => {
+  prefs.language = getLanguage();
+  savePrefs();
+  applyLanguageChrome();
+  updateSelection();
+  if (mode === 'detail') { renderDetail(); documentDecryption.reset($('#detail-content'), true); }
+});
+applyLanguageChrome();
 void start();
 // Deterministic review controls: the running application, never a video surrogate.
 Object.assign(window, {

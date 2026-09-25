@@ -5,13 +5,18 @@ export interface ArchiveRecord {
   slug: string;
   url: string;
   title: string;
+  titleEn: string;
   category: string;
+  categoryEn: string;
   date: string;
   lead: string;
   clearance: string;
   abstract: string;
+  abstractEn: string;
   source: string;
   tags: string[];
+  tagsEn: string[];
+  urlEn: string;
 }
 
 export const records: ArchiveRecord[] = content.records;

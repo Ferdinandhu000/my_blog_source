@@ -73,11 +73,11 @@ export class DocumentDecryption {
     if (!this.root || this.progress === 1) return;
     if (reduced) this.progress = 1;
     else {
-      // Keep covered through joining / holding / retraction. The text starts
-      // opening with the glass, and its easing tail lasts a little longer.
-      if (this.started === null && frame.clarity > 0) this.started = now;
+      // Reveal the text as soon as the archive connects, so the card is
+      // readable while the decorative glass animation finishes.
+      if (this.started === null && (frame.phase === "connected" || frame.phase === "retracting" || frame.clarity > 0)) this.started = now;
       if (this.started !== null)
-        this.progress = Math.min(1, Math.max(0, (now - this.started) / 0.95));
+        this.progress = Math.min(1, Math.max(0, (now - this.started) / 0.55));
     }
     if (this.progress === 1) this.remove();
     else if (this.started !== null) this.paint();
@@ -86,8 +86,8 @@ export class DocumentDecryption {
   private paint() {
     const count = Math.max(1, this.covers.length - 1);
     for (const cover of this.covers) {
-      const delay = (cover.order / count) * 0.22;
-      const t = Math.min(1, Math.max(0, (this.progress - delay) / 0.78));
+      const delay = (cover.order / count) * 0.08;
+      const t = Math.min(1, Math.max(0, (this.progress - delay) / 0.92));
       // Brief acceleration, decisive departure, long deceleration; no bounce.
       const eased = t < 0.2
         ? 0.4 * (t / 0.2) ** 2

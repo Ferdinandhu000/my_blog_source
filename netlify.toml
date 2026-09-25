@@ -3,16 +3,6 @@
   publish = "dist"
 
 [[redirects]]
-  from = "/en/p/gemini-pixel-certificate/"
-  to = "/p/gemini-pixel-certificate/"
-  status = 301
-
-[[redirects]]
-  from = "/en/*"
-  to = "/:splat"
-  status = 301
-
-[[redirects]]
   from = "/post/*"
   to = "/archives/"
   status = 301

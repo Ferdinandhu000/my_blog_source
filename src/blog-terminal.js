@@ -6,6 +6,7 @@ const links = {
 const commands = ['/help', '/?', ...Object.keys(links), '/ls', '/dir', '/whoami', '/date', '/echo', '/clear'];
 
 export function mountTerminal(root, navigate = url => location.assign(url)) {
+  const english = location.pathname.startsWith('/en/') || document.documentElement.lang === 'en';
   const output = root.querySelector('#terminal-output');
   const input = root.querySelector('#terminal-input');
   const form = root.querySelector('#terminal-form');
@@ -20,7 +21,7 @@ export function mountTerminal(root, navigate = url => location.assign(url)) {
     line.scrollIntoView({ block: 'nearest' });
   }
   print('HJ BLOG / READY');
-  print('输入 /help 查看命令。');
+  print(english ? 'Type /help to list commands.' : '输入 /help 查看命令。');
   form.addEventListener('submit', event => {
     event.preventDefault();
     const command = input.value.trim();
@@ -33,8 +34,8 @@ export function mountTerminal(root, navigate = url => location.assign(url)) {
     if (name === '/clear') { output.replaceChildren(); return; }
     if (name === '/help' || name === '/?') { print('/home  /blog  /archive  /search  /about  /github  /ls  /whoami  /date  /echo  /clear'); return; }
     if (name === '/ls' || name === '/dir') { print('home/  blog/  archives/  search/  about/'); return; }
-    if (name === '/whoami') { print('Ferdinand Hu · personal blog'); return; }
-    if (name === '/date') { print(new Date().toLocaleString('zh-CN')); return; }
+    if (name === '/whoami') { print('Ferdinand Hu · blog'); return; }
+    if (name === '/date') { print(new Date().toLocaleString(english ? 'en-US' : 'zh-CN')); return; }
     if (name === '/echo') { print(args.join(' ')); return; }
     if (links[name]) {
       if (name === '/github') {
@@ -44,10 +45,10 @@ export function mountTerminal(root, navigate = url => location.assign(url)) {
         link.rel = 'noopener noreferrer';
         link.textContent = `→ ${links[name]}`;
         output.append(link);
-      } else navigate(links[name]);
+      } else navigate(english && links[name] !== '/' ? `/en${links[name]}` : links[name]);
       return;
     }
-    print('未知命令。输入 /help 查看可用命令。');
+    print(english ? 'Unknown command. Type /help for available commands.' : '未知命令。输入 /help 查看可用命令。');
   }, { signal: events.signal });
   input.addEventListener('keydown', event => {
     if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
