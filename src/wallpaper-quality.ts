@@ -2,7 +2,7 @@ import { normalizeQuality, qualityPresets, type RenderQuality } from "./render-q
 import type { WallpaperProperties } from "./wallpaper";
 
 export const superPerformanceQuality: RenderQuality = {
-  scale: 60, pixelRatio: 1, antialias: "off", shadows: 0, aoSamples: 0,
+  scale: 50, pixelRatio: 1, antialias: "off", shadows: 0, aoSamples: 0,
   aoResolution: .5, depthOfField: 0, transmission: .25, anisotropy: 2,
 };
 

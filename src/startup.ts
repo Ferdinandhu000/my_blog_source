@@ -48,7 +48,7 @@ export class StartupGate {
     this.options.root.dataset.entry = "waiting";
     this.button.disabled = false;
     this.button.textContent = "点击进入 →";
-    this.options.root.querySelector(":scope > span")!.textContent = "PERSONAL DATABASE / READY";
+    this.options.root.querySelector(":scope > span")!.textContent = "BLOG ARCHIVE / READY";
     this.status.textContent = "轻触屏幕或按 Enter 开始";
     this.button.focus({ preventScroll: true });
   }

@@ -104,7 +104,7 @@ export class BootSequence {
       el.replaceChildren(ink);
     });
     this.poweredHTML = this.el(".powered").innerHTML;
-    new BootLettering(this.brandLines[0], ["brand"]).setText("HJ ARCHIVE");
+    new BootLettering(this.brandLines[0], ["brand"]).setText("HJ BLOG");
     // Bind after collecting the original ring paths. Phrase artwork also has
     // SVG paths, and must never be included in the scan's animated geometry.
     this.accessLettering = new BootLettering(this.el(".access-text"), ["access"]);
@@ -114,10 +114,10 @@ export class BootSequence {
     for (const [selector, key, text] of [
       [".scan > span", "permission", "PERMISSION AUTHORIZED"],
       [".welcome-heading", "welcome", "WELCOME TO"],
-      [".welcome-database", "database", "PERSONAL DATABASE"],
+      [".welcome-database", "database", "BLOG ARCHIVE"],
     ] as const) new BootLettering(this.el(selector), [key]).setText(text);
     this.companyInk.forEach((el) =>
-      new BootLettering(el.querySelector("span")!, ["company"]).setText("HJ ARCHIVE"),
+      new BootLettering(el.querySelector("span")!, ["company"]).setText("HJ BLOG"),
     );
   }
   private el(selector: string) {
@@ -166,7 +166,7 @@ export class BootSequence {
     });
     this.opacity(".powered", s.poweredLetters > 0);
     this.el(".powered").style.clipPath =
-      `inset(0 ${100 * (1 - s.poweredLetters / 19)}% 0 0)`;
+      `inset(0 ${100 * (1 - s.poweredLetters / 18)}% 0 0)`;
     this.opacity(".scan", s.scanVisible);
     if (s.scanVisible) this.renderScan(s);
     this.opacity(".welcome", s.welcomeVisible ? s.welcomeOpacity : 0);

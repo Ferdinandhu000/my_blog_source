@@ -252,7 +252,9 @@ export class ArchiveScene {
     private readonly lightingLook: LightingLook = "baseline",
   ) {
     this.renderer = new THREE.WebGLRenderer({
-      antialias: true,
+      // SMAA remains available in the quality presets. Browser MSAA adds a
+      // separate multisampled buffer even in the default performance mode.
+      antialias: false,
       alpha: false,
       powerPreference: "high-performance",
     });
@@ -776,10 +778,10 @@ export class ArchiveScene {
     c.fillRect(12, 12, 1000, 6);
     c.fillRect(12, 419, 1000, 3);
     c.font = "bold 81px MiSans";
-    c.fillText("HJ ARCHIVE", 22, 116);
+    c.fillText("HJ BLOG", 22, 116);
     c.font = "32px MiSans";
     c.fillStyle = "#878476";
-    c.fillText("PERSONAL DATABASE", 25, 174);
+    c.fillText("BLOG ARCHIVE", 25, 174);
     c.fillStyle = "#171713";
     c.font = "bold 130px MiSans";
     c.fillText("NO." + String(index + 1).padStart(3, "0"), 22, 360);

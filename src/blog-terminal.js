@@ -16,7 +16,7 @@ function print(message) {
   line.scrollIntoView({ block: 'nearest' });
 }
 
-print('HJ ARCHIVE / TERMINAL READY');
+print('HJ BLOG / TERMINAL READY');
 print('输入 /help 查看命令。');
 
 document.querySelector('#terminal-form').addEventListener('submit', event => {

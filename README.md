@@ -1,4 +1,4 @@
-# HJ Archive
+# HJ Blog
 
 个人博客。首页是基于 [RhineLabUI](https://github.com/LBEILC/RhineLabUI) 改造的三维档案；文章、归档、搜索、终端和关于页是独立的静态页面。文章页不加载 Three.js。前端使用 Vite、TypeScript 和 Three.js，内容从 Markdown 在构建时生成。Hugo 不参与构建。
 
@@ -19,7 +19,7 @@ npm run check:content
 npm run preview
 ```
 
-`dist/` 是完整静态站点。首页默认启用 Super Performance，音频关闭；设置中可以调整画质。若浏览器无法创建 WebGL 上下文，可从首页错误提示进入 `/archives/` 或 `/search/`。
+`dist/` 是完整静态站点。首页默认启用 Super Performance（三维画面以 50% 分辨率、最高 30 帧运行），音频关闭；设置中可以调整画质。若浏览器无法创建 WebGL 上下文，可从首页错误提示进入 `/archives/` 或 `/search/`。
 
 ## 发布文章
 

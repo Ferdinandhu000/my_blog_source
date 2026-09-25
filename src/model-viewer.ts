@@ -101,7 +101,7 @@ export class ModelViewer {
       <div class="scene-atmosphere viewer-atmosphere" aria-hidden="true"></div>
       <header class="viewer-header">
         <button class="viewer-back" data-viewer="close">← <span>返回档案</span><kbd>ESC</kbd></button>
-        <div class="viewer-heading"><span>HJ ARCHIVE / OBJECT STUDY</span><h2 id="viewer-title">档案模型</h2><p id="viewer-file"></p></div>
+        <div class="viewer-heading"><span>HJ BLOG / OBJECT STUDY</span><h2 id="viewer-title">档案模型</h2><p id="viewer-file"></p></div>
         <span class="viewer-index">360<span>°</span></span>
       </header>
       <div class="viewer-surface" role="group" aria-label="玻璃模式"><button data-viewer="clear" aria-pressed="true">清晰</button><button data-viewer="frosted" aria-pressed="false">磨砂</button></div>
@@ -232,7 +232,7 @@ export class ModelViewer {
     this.root.dataset.transition = "opening";
     this.root.querySelector("#viewer-title")!.textContent = title;
     this.root.querySelector("#viewer-file")!.textContent =
-      "FILE " + id + " / PERSONAL DATABASE";
+      "FILE " + id + " / BLOG ARCHIVE";
     this.spread = { value: 0, velocity: 0 };
     this.targetSpread = 0;
     this.clarity = { value: 1, velocity: 0 };
