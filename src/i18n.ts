@@ -5,6 +5,7 @@ let language: Language = 'zh';
 try {
   language = JSON.parse(localStorage.getItem('hj-blog-settings') ?? '{}').language === 'en' ? 'en' : 'zh';
 } catch { /* Storage can be unavailable in private browsing. */ }
+if (location.pathname.startsWith('/en/')) language = 'en';
 document.documentElement.lang = language === 'en' ? 'en' : 'zh-CN';
 
 export const getLanguage = () => language;

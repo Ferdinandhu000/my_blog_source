@@ -526,6 +526,7 @@ function toggleSaved() {
 function renderDetail() {
   tabTransition.cancel();
   const r = records[selected];
+  unifiedUI?.prefetchReader(r.slug);
   $("#object-id").textContent = "NO." + String(selected + 1).padStart(3, "0");
   $("#detail-content").innerHTML = `
   <div class="detail-kicker"><span>FILE ${r.id}</span><span>${escapeHtml(r.clearance)}</span></div>
@@ -725,7 +726,7 @@ function applyLanguageChrome() {
   }
 }
 function settingsMarkup() {
-  return `<h2>SYSTEM SETTINGS<small>${tr('显示偏好设置', 'Display preferences')}</small></h2><p class="settings-intro">FERDINAND HU <span>·</span> PUBLIC BLOG</p>${isWallpaper ? '<p class="wallpaper-settings-note">每次启动都会读取 Wallpaper Engine 中的设置。在此修改仅对当前运行生效，无法持久保存；如需保留，请在 Wallpaper Engine 的壁纸属性中调整。</p>' : ""}<div class="settings-list">${languageSettingsMarkup()}${themeSettingsMarkup(prefs.colorTheme === "dark")}${!isWallpaper ? `<label><div><strong>SUPER PERFORMANCE</strong><span>三维画面以 50% 分辨率、最高 30 帧运行；关闭后恢复所选画质</span></div><input type="checkbox" data-pref="superPerformance" ${prefs.superPerformance ? "checked" : ""}/><i class="toggle"></i></label>` : ""}${workbench?.settingsMarkup() ?? ""}${audioSettingsMarkup(prefs)}</div>${motionPreferenceNoteMarkup()}${motionSettingsMarkup(prefs.motion, prefs.motionPreset)}${qualityMarkup(prefs.rendering)}<div class="settings-shortcuts">${isWallpaper ? '<span>DESKTOP CONTROLS</span><p>拖动阵列或点击界面按钮浏览档案。桌面模式下，方向键与滚轮可能无法传入壁纸。</p>' : '<span>KEYBOARD CONTROLS</span><p><kbd>←</kbd><kbd>→</kbd> 切列 <kbd>↑</kbd><kbd>↓</kbd> 选档 <kbd>/</kbd> 搜索 <kbd>ESC</kbd> 返回</p>'}</div><div class="settings-bottom">${!isWallpaper && document.fullscreenEnabled ? '<button data-action="fullscreen">FULLSCREEN <span>↗</span></button>' : ''}<button data-action="restart">REINITIALIZE SYSTEM <span>↻</span></button></div><div class="modal-bottom"><span>BLOG OS / 1.0 · <a href="/licenses/RHINELABUI-LICENSE">${tr('开源许可', 'Open-source license')}</a></span><span>POWERED BY HJ BLOG</span></div>`;
+  return `<h2>SYSTEM SETTINGS<small>${tr('显示偏好设置', 'Display preferences')}</small></h2><p class="settings-intro">FERDINAND HU <span>·</span> PUBLIC BLOG</p>${isWallpaper ? '<p class="wallpaper-settings-note">每次启动都会读取 Wallpaper Engine 中的设置。在此修改仅对当前运行生效，无法持久保存；如需保留，请在 Wallpaper Engine 的壁纸属性中调整。</p>' : ""}<div class="settings-list">${languageSettingsMarkup()}${themeSettingsMarkup(prefs.colorTheme === "dark")}${!isWallpaper ? `<label><div><strong>SUPER PERFORMANCE</strong><span>三维画面以 50% 分辨率、最高 60 帧运行；关闭后恢复所选画质</span></div><input type="checkbox" data-pref="superPerformance" ${prefs.superPerformance ? "checked" : ""}/><i class="toggle"></i></label>` : ""}${workbench?.settingsMarkup() ?? ""}${audioSettingsMarkup(prefs)}</div>${motionPreferenceNoteMarkup()}${motionSettingsMarkup(prefs.motion, prefs.motionPreset)}${qualityMarkup(prefs.rendering)}<div class="settings-shortcuts">${isWallpaper ? '<span>DESKTOP CONTROLS</span><p>拖动阵列或点击界面按钮浏览档案。桌面模式下，方向键与滚轮可能无法传入壁纸。</p>' : '<span>KEYBOARD CONTROLS</span><p><kbd>←</kbd><kbd>→</kbd> 切列 <kbd>↑</kbd><kbd>↓</kbd> 选档 <kbd>/</kbd> 搜索 <kbd>ESC</kbd> 返回</p>'}</div><div class="settings-bottom">${!isWallpaper && document.fullscreenEnabled ? '<button data-action="fullscreen">FULLSCREEN <span>↗</span></button>' : ''}<button data-action="restart">REINITIALIZE SYSTEM <span>↻</span></button></div><div class="modal-bottom"><span>BLOG OS / 1.0 · <a href="/licenses/RHINELABUI-LICENSE">${tr('开源许可', 'Open-source license')}</a></span><span>POWERED BY HJ BLOG</span></div>`;
 }
 
 document.addEventListener("input", (e) => {
@@ -750,6 +751,7 @@ document.addEventListener("change", (e) => {
   if (el.hasAttribute('data-language')) {
     prefs.language = el.value === 'en' ? 'en' : 'zh';
     setLanguage(prefs.language);
+    unifiedUI?.syncHomeLanguage();
     renderModal();
     requestAnimationFrame(() => document.querySelector<HTMLSelectElement>('[data-language]')?.focus({ preventScroll: true }));
     return;
@@ -1060,12 +1062,15 @@ function frame(ms: number) {
     requestAnimationFrame(frame);
     return;
   }
-  // Limit the blog's default rendering cadence without slowing animation time.
-  if (!isWallpaper && superPerformanceEnabled() && ms - lastPresentedMs < 1000 / 30 - 1) {
-    requestAnimationFrame(frame);
-    return;
-  }
-  lastPresentedMs = ms;
+  // Carry the frame interval forward so high-refresh displays average 60 fps.
+  if (!isWallpaper && superPerformanceEnabled()) {
+    const interval = 1000 / 60;
+    if (ms - lastPresentedMs < interval - 1) {
+      requestAnimationFrame(frame);
+      return;
+    }
+    lastPresentedMs = ms - lastPresentedMs > interval * 2 ? ms : lastPresentedMs + interval;
+  } else lastPresentedMs = ms;
   workbench?.tick();
   const time = ms / 1000;
   const theme = scene?.themeAmount ?? (prefs.colorTheme === "dark" ? 1 : 0);
@@ -1235,8 +1240,9 @@ async function start() {
     }
   } catch (error) {
     console.error(error);
+    const prefix = getLanguage() === 'en' ? '/en' : '';
     $("#loading").innerHTML =
-      '<div class="error-state"><strong>三维档案暂不可用</strong><p>仍可正常阅读全部文章。</p><a href="/archives/">打开文章归档 →</a><a href="/search/">搜索文章 →</a><button onclick="location.reload()">重试三维 →</button></div>';
+      `<div class="error-state"><strong>${tr('三维档案暂不可用', '3D archive unavailable')}</strong><p>${tr('仍可正常阅读全部文章。', 'You can still read all articles.')}</p><a href="${prefix}/archives/">${tr('打开文章归档', 'Open article archive')} →</a><a href="${prefix}/search/">${tr('搜索文章', 'Search articles')} →</a><button onclick="location.reload()">${tr('重试三维', 'Retry 3D')} →</button></div>`;
   }
 }
 function completeStartup(silent: boolean) {

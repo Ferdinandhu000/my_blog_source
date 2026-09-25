@@ -8,7 +8,7 @@ const labels: [string, string][] = [
   ['查看全部文章', 'View all articles'], ['重置检索', 'Reset search'],
   ['收藏文章', 'Saved articles'], ['文章检索', 'Article search'],
   ['系统设置', 'System settings'], ['收藏档案', 'Saved files'], ['档案检索', 'Archive search'],
-  ['三维画面以 50% 分辨率、最高 30 帧运行；关闭后恢复所选画质', 'Runs the 3D scene at 50% resolution and up to 30 fps; turn off to restore the selected quality'],
+  ['三维画面以 50% 分辨率、最高 60 帧运行；关闭后恢复所选画质', 'Runs the 3D scene at 50% resolution and up to 60 fps; turn off to restore the selected quality'],
   ['完整、减少或按分项自定义；关闭后会立即收束当前动画（开场设置下次重播生效）', 'Use full or reduced motion, or adjust individual effects. Boot changes apply on replay.'],
   ['即时生效并自动保存。清晰度与材质设置同步至 360° 查看器。高渲染比例更适合静态观察；缓冲上限为 829 万像素，硬件限制时自动收敛。', 'Changes apply immediately and are saved. Resolution and material settings also affect the 360° viewer. The render buffer is limited to 8.29 million pixels.'],
   ['每次启动都会读取 Wallpaper Engine 中的设置。在此修改仅对当前运行生效，无法持久保存；如需保留，请在 Wallpaper Engine 的壁纸属性中调整。', 'Wallpaper Engine settings are loaded at each start. Changes here apply only to this session.'],

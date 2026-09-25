@@ -45,7 +45,7 @@ export function mountTerminal(root, navigate = url => location.assign(url)) {
         link.rel = 'noopener noreferrer';
         link.textContent = `→ ${links[name]}`;
         output.append(link);
-      } else navigate(english && links[name] !== '/' ? `/en${links[name]}` : links[name]);
+      } else navigate(english ? links[name] === '/' ? '/en/' : `/en${links[name]}` : links[name]);
       return;
     }
     print(english ? 'Unknown command. Type /help for available commands.' : '未知命令。输入 /help 查看可用命令。');

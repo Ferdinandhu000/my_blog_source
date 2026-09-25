@@ -14,7 +14,7 @@ type Callbacks = {
 const paths: Record<'archives' | 'search' | 'terminal' | 'cv', string> = {
   archives: '/archives/', search: '/search/', terminal: '/terminal/', cv: '/about/',
 };
-const localized = (path: string) => getLanguage() === 'en' && path !== '/' ? `/en${path}` : path;
+const localized = (path: string) => getLanguage() === 'en' ? path === '/' ? '/en/' : `/en${path}` : path;
 const articleIndex = (slug: string) => records.findIndex(record => record.slug === slug);
 
 export class UnifiedUI {
@@ -24,6 +24,8 @@ export class UnifiedUI {
   private query = '';
   private searchIndex?: SearchItem[];
   private searchLanguage?: Language;
+  private readerHtml = new Map<string, string>();
+  private readerRequests = new Map<string, Promise<string>>();
   private generation = 0;
   private disposeTerminal?: () => void;
   private previousFocus?: HTMLElement;
@@ -51,6 +53,38 @@ export class UnifiedUI {
       this.query = '';
     }
     this.navigate({ hjView: view }, localized(paths[view]));
+  }
+
+  syncHomeLanguage() {
+    if (this.isOpen) return;
+    this.route = { ...this.route, language: getLanguage() };
+    history.replaceState(this.route, '', localized('/') + location.search + location.hash);
+  }
+
+  prefetchReader(slug: string) {
+    const record = records[articleIndex(slug)];
+    if (!record) return;
+    this.ensureStyle('/katex.min.css');
+    this.ensureStyle('/highlight.css');
+    void this.fetchReader(articleUrl(record)).catch(() => {});
+  }
+
+  private fetchReader(url: string): Promise<string> {
+    const cached = this.readerHtml.get(url);
+    if (cached !== undefined) return Promise.resolve(cached);
+    const pending = this.readerRequests.get(url);
+    if (pending) return pending;
+    const request = fetch(url).then(response => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.text();
+    }).then(html => {
+      this.readerHtml.delete(url);
+      this.readerHtml.set(url, html);
+      if (this.readerHtml.size > 8) this.readerHtml.delete(this.readerHtml.keys().next().value!);
+      return html;
+    }).finally(() => this.readerRequests.delete(url));
+    this.readerRequests.set(url, request);
+    return request;
   }
 
   private navigate(route: Route, path: string) {
@@ -147,9 +181,8 @@ export class UnifiedUI {
   private async loadReader(slug: string, content: HTMLElement, generation: number, hash?: string) {
     try {
       const record = records[articleIndex(slug)];
-      const response = await fetch(record ? articleUrl(record) : `/p/${slug}/`);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const page = new DOMParser().parseFromString(await response.text(), 'text/html');
+      const url = record ? articleUrl(record) : localized(`/p/${slug}/`);
+      const page = new DOMParser().parseFromString(await this.fetchReader(url), 'text/html');
       if (generation !== this.generation) return;
       const article = page.querySelector<HTMLElement>('article.article');
       if (!article) throw new Error('文章内容不存在');
@@ -160,7 +193,7 @@ export class UnifiedUI {
         for (const attribute of ['src', 'href']) {
           const value = element.getAttribute(attribute);
           if (value && !/^(?:[a-z][a-z\d+.-]*:|\/|#)/i.test(value))
-            element.setAttribute(attribute, new URL(value, response.url).pathname);
+            element.setAttribute(attribute, new URL(value, new URL(url, location.origin)).pathname);
         }
       }
       this.ensureStyle('/katex.min.css');
@@ -193,7 +226,7 @@ export class UnifiedUI {
 
   private terminalNavigate(url: string) {
     const path = url.replace(/^\/en(?=\/)/, '');
-    if (path === '/') this.navigate({ hjView: 'home' }, '/');
+    if (path === '/') this.navigate({ hjView: 'home' }, localized('/'));
     else if (path === '/search/') this.open('search');
     else if (path === '/archives/') this.open('archives');
     else if (path === '/about/') this.open('cv');
@@ -221,7 +254,7 @@ export class UnifiedUI {
       return;
     }
     const row = target.closest<HTMLButtonElement>('[data-unified-index]');
-    if (row) this.navigate({ hjView: 'detail', index: Number(row.dataset.unifiedIndex) }, '/');
+    if (row) this.navigate({ hjView: 'detail', index: Number(row.dataset.unifiedIndex) }, localized('/'));
   };
 
   private onSearchInput = (event: Event) => {

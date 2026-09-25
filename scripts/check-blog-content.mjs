@@ -51,6 +51,11 @@ if (fs.existsSync(dist)) {
     assert.match(fs.readFileSync(path.join(dist, route, 'index.html'), 'utf8'), /class="unified-direct"/);
     assert.match(fs.readFileSync(path.join(dist, 'en', route, 'index.html'), 'utf8'), /<html lang="en">/);
   }
+  const englishHome = fs.readFileSync(path.join(dist, 'en', 'index.html'), 'utf8');
+  assert.match(englishHome, /<html lang="en">/);
+  assert.match(englishHome, /src="\/assets\/index-[^"]+\.js"/);
+  assert.doesNotMatch(englishHome, /location\.replace\("\/"\)/);
+  assert.match(fs.readFileSync(path.join(dist, 'en', 'archives', 'index.html'), 'utf8'), /class="unified-direct-close" href="\/en\/"/);
   assert.ok(fs.existsSync(path.join(dist, 'assets', 'archive-backdrop.webp')));
 }
 console.log(`Content checks passed: ${articles.length} articles, ${before.categories.length} categories.`);
