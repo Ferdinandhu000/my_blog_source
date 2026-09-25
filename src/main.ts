@@ -699,6 +699,30 @@ function applyLanguageChrome() {
     ? '<kbd>←</kbd> <kbd>→</kbd> Columns <span>／</span> <kbd>↑</kbd> <kbd>↓</kbd> Files <span>／</span> <kbd>ENTER</kbd> Read'
     : '<kbd>←</kbd> <kbd>→</kbd> 切换列 <span>／</span> <kbd>↑</kbd> <kbd>↓</kbd> 前后档案 <span>／</span> <kbd>ENTER</kbd> 读取';
   document.title = tr('HJ BLOG · 个人博客', 'HJ BLOG · Personal blog');
+  // These labels live in the initial 3D shell rather than in a rendered
+  // modal. Update them together so the language choice is visible immediately
+  // without requiring a second navigation or a full-page reload.
+  const text = (selector: string, zh: string, english: string) => {
+    const element = document.querySelector<HTMLElement>(selector);
+    if (element && (element.textContent?.trim() === zh || element.textContent?.trim() === english))
+      element.textContent = en ? english : zh;
+  };
+  text('#archive-category', '文章档案', 'Article files');
+  text('#selected-title', '文章档案', 'Article file');
+  text('#column-name', '文章档案', 'Article files');
+  text('.archive-callout .eyebrow span:last-child', '文章档案', 'Article files');
+  text('.back-button span', 'ARCHIVE OVERVIEW', 'ARCHIVE OVERVIEW');
+  text('.object-caption small', 'DRAG TO INSPECT ↔', 'DRAG TO INSPECT ↔');
+  text('.mobile-entry', '进入档案 →', 'Enter archive →');
+  const archiveLabel = document.querySelector<HTMLElement>('.archive-ui');
+  if (archiveLabel) archiveLabel.setAttribute('aria-label', tr('档案选择', 'Archive selection'));
+  const detailLabel = document.querySelector<HTMLElement>('#detail-ui');
+  if (detailLabel) detailLabel.setAttribute('aria-label', tr('档案内容', 'Archive details'));
+  const savedButton = document.querySelector<HTMLElement>('[data-action="saved"]');
+  if (savedButton) {
+    savedButton.setAttribute('aria-label', tr('查看本机收藏档案', 'View saved files on this device'));
+    savedButton.setAttribute('title', tr('仅保存在当前浏览器', 'Saved in this browser only'));
+  }
 }
 function settingsMarkup() {
   return `<h2>SYSTEM SETTINGS<small>${tr('显示偏好设置', 'Display preferences')}</small></h2><p class="settings-intro">FERDINAND HU <span>·</span> PUBLIC BLOG</p>${isWallpaper ? '<p class="wallpaper-settings-note">每次启动都会读取 Wallpaper Engine 中的设置。在此修改仅对当前运行生效，无法持久保存；如需保留，请在 Wallpaper Engine 的壁纸属性中调整。</p>' : ""}<div class="settings-list">${languageSettingsMarkup()}${themeSettingsMarkup(prefs.colorTheme === "dark")}${!isWallpaper ? `<label><div><strong>SUPER PERFORMANCE</strong><span>三维画面以 50% 分辨率、最高 30 帧运行；关闭后恢复所选画质</span></div><input type="checkbox" data-pref="superPerformance" ${prefs.superPerformance ? "checked" : ""}/><i class="toggle"></i></label>` : ""}${workbench?.settingsMarkup() ?? ""}${audioSettingsMarkup(prefs)}</div>${motionPreferenceNoteMarkup()}${motionSettingsMarkup(prefs.motion, prefs.motionPreset)}${qualityMarkup(prefs.rendering)}<div class="settings-shortcuts">${isWallpaper ? '<span>DESKTOP CONTROLS</span><p>拖动阵列或点击界面按钮浏览档案。桌面模式下，方向键与滚轮可能无法传入壁纸。</p>' : '<span>KEYBOARD CONTROLS</span><p><kbd>←</kbd><kbd>→</kbd> 切列 <kbd>↑</kbd><kbd>↓</kbd> 选档 <kbd>/</kbd> 搜索 <kbd>ESC</kbd> 返回</p>'}</div><div class="settings-bottom">${!isWallpaper && document.fullscreenEnabled ? '<button data-action="fullscreen">FULLSCREEN <span>↗</span></button>' : ''}<button data-action="restart">REINITIALIZE SYSTEM <span>↻</span></button></div><div class="modal-bottom"><span>BLOG OS / 1.0 · <a href="/licenses/RHINELABUI-LICENSE">${tr('开源许可', 'Open-source license')}</a></span><span>POWERED BY HJ BLOG</span></div>`;
