@@ -6,11 +6,12 @@ import MarkdownIt from 'markdown-it';
 import anchor from 'markdown-it-anchor';
 import katex from 'katex';
 import hljs from 'highlight.js';
+import { profile } from '../src/site-content.js';
 
 const root = process.cwd();
 const articleRoot = path.join(root, 'content', 'articles');
 const generated = path.join(root, 'src', 'generated');
-const origin = 'https://ferdinandhu.netlify.app';
+const origin = (process.env.URL || 'https://ferdinandhu.netlify.app').replace(/\/$/, '');
 const categoryEnglish = {
   'AI 与研究': 'AI & Research',
   '算法与数据结构': 'Algorithms & Data Structures',
@@ -81,7 +82,7 @@ export function loadArticles({ requireEnglish = true } = {}) {
     } else if (requireEnglish) throw new Error(`Missing English article: ${path.relative(root, englishFile)}`);
     articles.push({
       id, slug, url: `/p/${slug}/`, title, category,
-      date: date.toISOString().slice(0, 10), lead: 'Ferdinand Hu',
+      date: date.toISOString().slice(0, 10), lead: profile.nameEn,
       clearance: 'PUBLIC', abstract: String(data.description ?? text.slice(0, 140)).trim(),
       source: `/p/${slug}/`,
       tags, body: content, text, file, english,

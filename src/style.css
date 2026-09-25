@@ -678,6 +678,7 @@ button {
 .system-footer button:hover {
   color: #111;
 }
+.system-footer .source-credit { font-size: 8px; white-space: nowrap; }
 .detail-ui {
   position: absolute;
   inset: 0;

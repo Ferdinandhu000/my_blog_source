@@ -302,7 +302,7 @@ async function main() {
         minute: '2-digit'
     });
 
-    let message = `📊 *FerdinandHu 博客每日数据报表*\n`;
+    let message = `📊 *胡珏博客每日数据报表*\n`;
     message += `📅 统计时间: ${todayStr} (北京时间)\n\n`;
 
     message += `📈 *全站整体数据*:\n`;

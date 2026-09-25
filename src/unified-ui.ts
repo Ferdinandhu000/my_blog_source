@@ -1,8 +1,9 @@
 import { records, categories } from './data';
 import { escapeHtml } from './html';
 import { articleUrl, categoryLabel, categoryOf, getLanguage, setLanguage, titleOf, tr, type Language } from './i18n';
+import { aboutMarkup, sourceCreditMarkup } from './site-content.js';
 
-type View = 'home' | 'archives' | 'search' | 'terminal' | 'cv' | 'detail' | 'reader';
+type View = 'home' | 'archives' | 'search' | 'terminal' | 'about' | 'detail' | 'reader';
 type Route = { hjView: View; index?: number; slug?: string; hash?: string; language?: Language };
 type SearchItem = { title: string; url: string; date: string; category: string; tags: string[]; abstract: string; text: string };
 type Callbacks = {
@@ -11,8 +12,8 @@ type Callbacks = {
   showDetail: (index: number) => void;
 };
 
-const paths: Record<'archives' | 'search' | 'terminal' | 'cv', string> = {
-  archives: '/archives/', search: '/search/', terminal: '/terminal/', cv: '/about/',
+const paths: Record<'archives' | 'search' | 'terminal' | 'about', string> = {
+  archives: '/archives/', search: '/search/', terminal: '/terminal/', about: '/about/',
 };
 const localized = (path: string) => getLanguage() === 'en' ? path === '/' ? '/en/' : `/en${path}` : path;
 const articleIndex = (slug: string) => records.findIndex(record => record.slug === slug);
@@ -46,7 +47,7 @@ export class UnifiedUI {
     });
   }
 
-  open(view: 'archives' | 'search' | 'terminal' | 'cv') {
+  open(view: 'archives' | 'search' | 'terminal' | 'about') {
     if (!this.callbacks.ready()) return;
     if (view === 'archives' || view === 'search') {
       this.filter = '全部档案';
@@ -114,15 +115,15 @@ export class UnifiedUI {
     document.querySelector<HTMLElement>('#stage')!.inert = true;
     if (route.hjView === 'archives') this.callbacks.showArchive();
     const terminal = route.hjView === 'terminal';
-    const title = route.hjView === 'reader' ? tr('ARTICLE / 阅读', 'ARTICLE / READ') : terminal ? 'HJ BLOG / ~' : route.hjView === 'cv' ? 'CURRICULUM VITAE' : route.hjView === 'search' ? tr('ARCHIVE / 检索', 'ARCHIVE / SEARCH') : tr('ARCHIVE / 文章归档', 'ARCHIVE / ARTICLES');
-    this.root.innerHTML = `<div class="unified-overlay"><section class="unified-window ${route.hjView === 'reader' ? 'unified-window--reader' : ''} ${terminal ? 'unified-window--terminal' : ''}" role="dialog" aria-modal="true" aria-label="${route.hjView === 'reader' ? tr('文章阅读', 'Article reader') : title}" tabindex="-1"><div class="unified-top"><span>${title}</span><button type="button" data-unified-close aria-label="${tr('关闭窗口', 'Close window')}">CLOSE ×</button></div><div class="unified-content"></div></section></div>`;
+    const title = route.hjView === 'reader' ? tr('ARTICLE / 阅读', 'ARTICLE / READ') : terminal ? 'HJ BLOG / ~' : route.hjView === 'about' ? 'HJ BLOG / ABOUT ME' : route.hjView === 'search' ? tr('ARCHIVE / 检索', 'ARCHIVE / SEARCH') : tr('ARCHIVE / 文章归档', 'ARCHIVE / ARTICLES');
+    this.root.innerHTML = `<div class="unified-overlay"><section class="unified-window ${route.hjView === 'reader' ? 'unified-window--reader' : ''} ${terminal ? 'unified-window--terminal' : ''}" role="dialog" aria-modal="true" aria-label="${route.hjView === 'reader' ? tr('文章阅读', 'Article reader') : title}" tabindex="-1"><div class="unified-top"><span>${title}</span><button type="button" data-unified-close aria-label="${tr('关闭窗口', 'Close window')}">CLOSE ×</button></div><div class="unified-content"></div><footer class="unified-credit">${sourceCreditMarkup()}</footer></section></div>`;
     const content = this.root.querySelector<HTMLElement>('.unified-content')!;
     if (route.hjView === 'archives') this.renderArchives(content);
     else if (route.hjView === 'search') {
       content.innerHTML = `<span class="unified-kicker">HJ BLOG / SEARCH</span><h2 class="unified-heading">${tr('检索文章', 'Search articles')}</h2><label class="unified-search-label" for="unified-search">${tr('关键词', 'Keywords')}</label><input id="unified-search" type="search" autocomplete="off" placeholder="${tr('标题、正文、标签…', 'Title, text, tags…')}"><div class="unified-filters" aria-label="${tr('分类筛选', 'Category filters')}"></div><p id="unified-search-count" role="status"></p><div id="unified-search-results"></div>`;
       void this.loadSearchIndex(this.generation);
     }
-    else if (route.hjView === 'cv') content.innerHTML = `<div class="unified-cv"><div><span class="unified-kicker">RESEARCH / CV</span><h2>CV</h2><p>${tr('内容整理中', 'Content in preparation')}</p></div></div>`;
+    else if (route.hjView === 'about') content.innerHTML = aboutMarkup(getLanguage());
     else if (terminal) {
       content.innerHTML = '<div class="unified-terminal"><div class="terminal-output" id="terminal-output" aria-live="polite"></div><form class="terminal-prompt" id="terminal-form"><label for="terminal-input">~$</label><input id="terminal-input" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="终端命令"></form></div>';
       const generation = this.generation;
@@ -229,7 +230,7 @@ export class UnifiedUI {
     if (path === '/') this.navigate({ hjView: 'home' }, localized('/'));
     else if (path === '/search/') this.open('search');
     else if (path === '/archives/') this.open('archives');
-    else if (path === '/about/') this.open('cv');
+    else if (path === '/about/') this.open('about');
   }
 
   private scrollToHeading(hash: string, content: HTMLElement) {
@@ -280,7 +281,7 @@ export class UnifiedUI {
       event.preventDefault();
       if (url.pathname.startsWith('/en/')) setLanguage('en');
       else if (getLanguage() === 'en') setLanguage('zh');
-      this.open(path === '/archives/' ? 'archives' : path === '/terminal/' ? 'terminal' : path === '/search/' ? 'search' : 'cv');
+      this.open(path === '/archives/' ? 'archives' : path === '/terminal/' ? 'terminal' : path === '/search/' ? 'search' : 'about');
       return;
     }
     const match = path.match(/^\/p\/([a-z0-9-]+)\/$/);

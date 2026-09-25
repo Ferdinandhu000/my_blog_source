@@ -13,6 +13,7 @@ import "./quality-settings.css";
 import "./responsive.css";
 import "./unified-shell.css";
 import { UnifiedUI } from "./unified-ui";
+import { profile, sourceCreditMarkup } from "./site-content.js";
 import { getLanguage, setLanguage, tr, titleOf, categoryOf, abstractOf, tagsOf, articleUrl, categoryLabel, type Language } from "./i18n";
 import { localizeSettings } from "./settings-english";
 import { viewportLayout, openingLayout } from "./viewport-layout";
@@ -71,7 +72,7 @@ $("#stage").innerHTML = `
   <header class="brand">${brandHeading}</header>
   <nav class="system-nav" aria-label="系统导航">
     <button data-action="search"><span class="nav-glyph">⌕</span> ARCHIVE INDEX <span class="key">/</span></button>
-    <a class="blog-nav-link" href="/archives/">文章归档 ↗</a><a class="blog-nav-link" href="/terminal/">终端 ↗</a><a class="blog-nav-link" href="/about/">CV ↗</a>
+    <a class="blog-nav-link" href="/archives/">文章归档 ↗</a><a class="blog-nav-link" href="/terminal/">终端 ↗</a><a class="blog-nav-link" href="/about/">关于我 ↗</a>
     <button data-action="saved" aria-label="查看本机收藏档案" title="仅保存在当前浏览器">＋ SAVED <span id="saved-count">00</span></button>
     <button class="settings-button" data-action="settings" aria-label="系统设置" title="系统设置"><span class="settings-glyph" aria-hidden="true">◷</span><span class="settings-label">设置</span></button>
   </nav>
@@ -99,7 +100,7 @@ $("#stage").innerHTML = `
     <article id="detail-content" class="detail-content"></article>
   </section>
   <div class="powered">BLOG ARCHIVE <b>HJ</b><i></i></div>
-  <footer class="system-footer"><span><i class="status-light"></i> BLOG ONLINE${isWallpaper ? '<button type="button" class="three-toggle" data-action="toggle-three" aria-pressed="true" title="卸载三维模型，保留 2D 界面">3D 开启</button>' : ''}</span><span>FERDINAND HU <i>／</i> <span id="clock">00:00:00</span></span><a class="footer-link" href="/search/">搜索全部文章 ↗</a></footer>
+  <footer class="system-footer"><span><i class="status-light"></i> BLOG ONLINE${isWallpaper ? '<button type="button" class="three-toggle" data-action="toggle-three" aria-pressed="true" title="卸载三维模型，保留 2D 界面">3D 开启</button>' : ''}</span><span><span class="footer-author">${getLanguage() === 'en' ? profile.nameEn.toUpperCase() : profile.nameZh}</span> <i>／</i> <span id="clock">00:00:00</span></span><a class="footer-link" href="/search/">搜索全部文章 ↗</a>${sourceCreditMarkup()}</footer>
   <div id="modal-root"></div><div id="toast" class="toast" role="status"></div>
   <div id="loading" class="loading"><div class="loading-mark">${logo}</div><span>CONNECTING TO BLOG ARCHIVE</span><i></i></div>
 `;
@@ -532,7 +533,7 @@ function renderDetail() {
   <div class="detail-kicker"><span>FILE ${r.id}</span><span>${escapeHtml(r.clearance)}</span></div>
   <h2>${escapeHtml(titleOf(r))}</h2><div class="detail-title-cn">${escapeHtml(categoryOf(r))}<span>${tr('文章档案', 'Article file')}</span></div>
   <div class="detail-rule"></div>
-  <dl class="metadata"><div><dt>${tr('CATEGORY / 分类', 'CATEGORY')}</dt><dd>${escapeHtml(categoryOf(r))}</dd></div><div><dt>${tr('PUBLISHED / 发布日期', 'PUBLISHED')}</dt><dd>${escapeHtml(r.date)}</dd></div><div><dt>${tr('AUTHOR / 作者', 'AUTHOR')}</dt><dd>${escapeHtml(r.lead)}</dd></div><div><dt>${tr('STATUS / 状态', 'STATUS')}</dt><dd><i></i>${tr('公开 · 可阅读', 'PUBLIC · READABLE')}</dd></div></dl>
+  <dl class="metadata"><div><dt>${tr('CATEGORY / 分类', 'CATEGORY')}</dt><dd>${escapeHtml(categoryOf(r))}</dd></div><div><dt>${tr('PUBLISHED / 发布日期', 'PUBLISHED')}</dt><dd>${escapeHtml(r.date)}</dd></div><div><dt>${tr('AUTHOR / 作者', 'AUTHOR')}</dt><dd>${escapeHtml(tr(profile.nameZh, profile.nameEn))}</dd></div><div><dt>${tr('STATUS / 状态', 'STATUS')}</dt><dd><i></i>${tr('公开 · 可阅读', 'PUBLIC · READABLE')}</dd></div></dl>
   <div class="detail-tabs" role="tablist"><button id="tab-overview" class="active" role="tab" aria-controls="tab-panel" aria-selected="true" data-tab="overview">01 <span>${tr('概述', 'Overview')}</span></button><button id="tab-notes" role="tab" aria-controls="tab-panel" aria-selected="false" data-tab="notes">02 <span>${tr('标签', 'Tags')}</span></button><button id="tab-history" role="tab" aria-controls="tab-panel" aria-selected="false" data-tab="history">03 <span>${tr('阅读', 'Read')}</span></button><i class="tab-indicator" aria-hidden="true"></i></div>
   <div id="tab-panel" class="tab-panel" role="tabpanel">${overview()}</div>
   <div class="detail-actions"><button class="solid-button" data-action="bookmark" title="${tr('仅保存在当前浏览器', 'Saved in this browser only')}">${saved.has(r.id) ? "− REMOVE FROM SAVED" : "＋ SAVE ARCHIVE"}<span>${saved.has(r.id) ? tr('已收藏', 'Saved') : tr('收藏档案', 'Save file')}</span></button><a class="export-button" href="${articleUrl(r)}" aria-label="${tr('阅读完整文章', 'Read full article')}：${escapeHtml(titleOf(r))}">${tr('阅读全文', 'Read full article')} <span>↗</span></a></div>
@@ -622,6 +623,7 @@ function renderModal() {
   modalTransition?.dispose();
   $("#modal-root").innerHTML =
     `<div class="modal-backdrop"><section class="terminal-modal ${modal === "settings" ? "settings-modal" : ""}" role="dialog" aria-modal="true" aria-label="${modal === "settings" ? "系统设置" : modal === "saved" ? "收藏档案" : "档案检索"}"><div class="modal-top"><span>HJ BLOG / ${modal === "settings" ? "SYSTEM PREFERENCES" : "ARCHIVE DIRECTORY"}</span><button data-action="close-modal" aria-label="关闭窗口">CLOSE <span>×</span></button></div>${modal === "settings" ? settingsMarkup() : `<h2>${modal === "saved" ? "SAVED ARCHIVES" : "ARCHIVE INDEX"}<small>${modal === "saved" ? "收藏文章" : "文章检索"}</small></h2><div class="search-field"><span>⌕</span><input id="archive-search" type="search" autocomplete="off" placeholder="输入文章编号、标题或分类" aria-label="检索文章"/><span class="key">ESC</span></div><div class="category-filters">${categories.map((c, i) => `<button data-filter="${escapeHtml(c)}" class="${i === 0 ? "active" : ""}">${escapeHtml(c)}</button>`).join("")}</div><div class="result-header"><span>FILE / 文章</span><span>CATEGORY / 分类</span><span>ACCESS</span></div><div id="search-results" class="search-results"></div><div class="modal-bottom"><span id="result-count"></span><span>BLOG ARCHIVE <i>●</i> CONNECTED</span></div>`}</section></div>`;
+  $("#modal-root").querySelector(".modal-bottom")?.insertAdjacentHTML("beforeend", sourceCreditMarkup());
   const backdrop = $(".modal-backdrop");
   if (getLanguage() === 'en') document.querySelectorAll<HTMLButtonElement>('.category-filters [data-filter]').forEach(button => {
     button.textContent = categoryLabel(button.dataset.filter ?? '', records);
@@ -653,7 +655,7 @@ function renderResults() {
       ({ r }) =>
         (modal !== "saved" || saved.has(r.id)) &&
         (filter === "全部档案" || r.category === filter) &&
-        `${r.id} ${r.title} ${r.titleEn} ${r.category} ${r.categoryEn} ${r.lead} ${r.tags.join(' ')} ${r.tagsEn.join(' ')}`
+        `${r.id} ${r.title} ${r.titleEn} ${r.category} ${r.categoryEn} ${profile.nameZh} ${profile.nameEn} ${r.tags.join(' ')} ${r.tagsEn.join(' ')}`
           .toLowerCase()
           .includes(searchQuery.toLowerCase()),
     );
@@ -690,7 +692,8 @@ function applyLanguageChrome() {
   const links = [...document.querySelectorAll<HTMLAnchorElement>('.system-nav .blog-nav-link')];
   if (links[0]) { links[0].href = en ? '/en/archives/' : '/archives/'; links[0].textContent = tr('文章归档 ↗', 'Articles ↗'); }
   if (links[1]) { links[1].href = en ? '/en/terminal/' : '/terminal/'; links[1].textContent = tr('终端 ↗', 'Terminal ↗'); }
-  if (links[2]) { links[2].href = en ? '/en/about/' : '/about/'; links[2].textContent = 'CV ↗'; }
+  if (links[2]) { links[2].href = en ? '/en/about/' : '/about/'; links[2].textContent = tr('关于我 ↗', 'About Me ↗'); }
+  $('.footer-author').textContent = en ? profile.nameEn.toUpperCase() : profile.nameZh;
   $('.settings-label').textContent = tr('设置', 'Settings');
   $('.back-button span').textContent = tr('ARCHIVE OVERVIEW', 'ARCHIVE OVERVIEW');
   $('.viewer-open').innerHTML = `${tr('360° 查看文档模型', '360° View document model')} <span>↗</span>`;
@@ -726,7 +729,7 @@ function applyLanguageChrome() {
   }
 }
 function settingsMarkup() {
-  return `<h2>SYSTEM SETTINGS<small>${tr('显示偏好设置', 'Display preferences')}</small></h2><p class="settings-intro">FERDINAND HU <span>·</span> PUBLIC BLOG</p>${isWallpaper ? '<p class="wallpaper-settings-note">每次启动都会读取 Wallpaper Engine 中的设置。在此修改仅对当前运行生效，无法持久保存；如需保留，请在 Wallpaper Engine 的壁纸属性中调整。</p>' : ""}<div class="settings-list">${languageSettingsMarkup()}${themeSettingsMarkup(prefs.colorTheme === "dark")}${!isWallpaper ? `<label><div><strong>SUPER PERFORMANCE</strong><span>三维画面以 50% 分辨率、最高 60 帧运行；关闭后恢复所选画质</span></div><input type="checkbox" data-pref="superPerformance" ${prefs.superPerformance ? "checked" : ""}/><i class="toggle"></i></label>` : ""}${workbench?.settingsMarkup() ?? ""}${audioSettingsMarkup(prefs)}</div>${motionPreferenceNoteMarkup()}${motionSettingsMarkup(prefs.motion, prefs.motionPreset)}${qualityMarkup(prefs.rendering)}<div class="settings-shortcuts">${isWallpaper ? '<span>DESKTOP CONTROLS</span><p>拖动阵列或点击界面按钮浏览档案。桌面模式下，方向键与滚轮可能无法传入壁纸。</p>' : '<span>KEYBOARD CONTROLS</span><p><kbd>←</kbd><kbd>→</kbd> 切列 <kbd>↑</kbd><kbd>↓</kbd> 选档 <kbd>/</kbd> 搜索 <kbd>ESC</kbd> 返回</p>'}</div><div class="settings-bottom">${!isWallpaper && document.fullscreenEnabled ? '<button data-action="fullscreen">FULLSCREEN <span>↗</span></button>' : ''}<button data-action="restart">REINITIALIZE SYSTEM <span>↻</span></button></div><div class="modal-bottom"><span>BLOG OS / 1.0 · <a href="/licenses/RHINELABUI-LICENSE">${tr('开源许可', 'Open-source license')}</a></span><span>POWERED BY HJ BLOG</span></div>`;
+  return `<h2>SYSTEM SETTINGS<small>${tr('显示偏好设置', 'Display preferences')}</small></h2><p class="settings-intro">${tr(profile.nameZh, profile.nameEn.toUpperCase())} <span>·</span> PUBLIC BLOG</p>${isWallpaper ? '<p class="wallpaper-settings-note">每次启动都会读取 Wallpaper Engine 中的设置。在此修改仅对当前运行生效，无法持久保存；如需保留，请在 Wallpaper Engine 的壁纸属性中调整。</p>' : ""}<div class="settings-list">${languageSettingsMarkup()}${themeSettingsMarkup(prefs.colorTheme === "dark")}${!isWallpaper ? `<label><div><strong>SUPER PERFORMANCE</strong><span>三维画面以 50% 分辨率、最高 60 帧运行；关闭后恢复所选画质</span></div><input type="checkbox" data-pref="superPerformance" ${prefs.superPerformance ? "checked" : ""}/><i class="toggle"></i></label>` : ""}${workbench?.settingsMarkup() ?? ""}${audioSettingsMarkup(prefs)}</div>${motionPreferenceNoteMarkup()}${motionSettingsMarkup(prefs.motion, prefs.motionPreset)}${qualityMarkup(prefs.rendering)}<div class="settings-shortcuts">${isWallpaper ? '<span>DESKTOP CONTROLS</span><p>拖动阵列或点击界面按钮浏览档案。桌面模式下，方向键与滚轮可能无法传入壁纸。</p>' : '<span>KEYBOARD CONTROLS</span><p><kbd>←</kbd><kbd>→</kbd> 切列 <kbd>↑</kbd><kbd>↓</kbd> 选档 <kbd>/</kbd> 搜索 <kbd>ESC</kbd> 返回</p>'}</div><div class="settings-bottom">${!isWallpaper && document.fullscreenEnabled ? '<button data-action="fullscreen">FULLSCREEN <span>↗</span></button>' : ''}<button data-action="restart">REINITIALIZE SYSTEM <span>↻</span></button></div><div class="modal-bottom"><span>BLOG OS / 1.0 · <a href="/licenses/RHINELABUI-LICENSE">${tr('开源许可', 'Open-source license')}</a></span><span>POWERED BY HJ BLOG</span></div>`;
 }
 
 document.addEventListener("input", (e) => {

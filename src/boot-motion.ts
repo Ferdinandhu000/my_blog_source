@@ -3,6 +3,8 @@
 import { brandTrack, companyTrack, scanTrack, track } from "./boot-tracks";
 import { scanOrbitTrack } from "./boot-orbit-tracks";
 import { bootLogoTrack } from "./boot-logo-tracks";
+import { getLanguage } from "./i18n";
+import { profile } from "./site-content.js";
 export const progress = (t: number, a: number, b: number) =>
   Math.max(0, Math.min(1, (t - a) / (b - a)));
 export const smooth = (p: number) => p * p * (3 - 2 * p);
@@ -37,7 +39,7 @@ export function bootMotion(appTime: number) {
   let auth = "";
   if (f < 363) {
     auth = typed("ID CONFIRMED", f, 282, 295);
-    if (f >= 320) auth += " : " + typed("FERDINAND HU", f, 321, 339);
+    if (f >= 320) auth += " : " + typed(getLanguage() === 'en' ? profile.nameEn.toUpperCase() : profile.nameZh, f, 321, 339);
   } else if (f < 421) auth = typed("REQUEST RECEIVED", f, 367, 389);
   else {
     auth = typed("START PROCESSING", f, 423, 440);

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadArticles, metadata, writeIndex, root } from './content-pipeline.mjs';
+import { profile } from '../src/site-content.js';
 
 const articles = loadArticles();
 const before = metadata(articles);
@@ -37,6 +38,8 @@ if (fs.existsSync(dist)) {
     const html = fs.readFileSync(page, 'utf8');
     assert.match(html, /class="unified-direct"/, `Missing unified reader shell: ${article.slug}`);
     assert.match(html, /giscus\.app\/client\.js/, `Missing comments: ${article.slug}`);
+    assert.match(html, new RegExp(profile.nameZh), `Missing Chinese byline: ${article.slug}`);
+    assert.match(html, /3D INTERFACE BY LBEILC/, `Missing source credit: ${article.slug}`);
     assert.doesNotMatch(html, /src="\/assets\/index-/, `3D bundle on direct article: ${article.slug}`);
     assert.ok(search.some(item => item.url === article.url), `Missing search entry: ${article.slug}`);
     const englishPage = path.join(dist, 'en', 'p', article.slug, 'index.html');
@@ -44,13 +47,25 @@ if (fs.existsSync(dist)) {
     const englishHtml = fs.readFileSync(englishPage, 'utf8');
     assert.match(englishHtml, /<html lang="en">/, `Wrong language: ${article.slug}`);
     assert.match(englishHtml, /giscus\.app\/client\.js/, `Missing English comments: ${article.slug}`);
+    assert.match(englishHtml, new RegExp(profile.nameEn), `Missing English byline: ${article.slug}`);
     assert.doesNotMatch(englishHtml, /src="\/assets\/index-/, `3D bundle on direct English article: ${article.slug}`);
     assert.ok(englishSearch.some(item => item.url === `/en${article.url}`), `Missing English search entry: ${article.slug}`);
   }
   for (const route of ['archives', 'terminal', 'search', 'about']) {
-    assert.match(fs.readFileSync(path.join(dist, route, 'index.html'), 'utf8'), /class="unified-direct"/);
-    assert.match(fs.readFileSync(path.join(dist, 'en', route, 'index.html'), 'utf8'), /<html lang="en">/);
+    const chinesePage = fs.readFileSync(path.join(dist, route, 'index.html'), 'utf8');
+    const englishPage = fs.readFileSync(path.join(dist, 'en', route, 'index.html'), 'utf8');
+    assert.match(chinesePage, /class="unified-direct"/);
+    assert.match(englishPage, /<html lang="en">/);
+    assert.match(chinesePage, /3D INTERFACE BY LBEILC/);
+    assert.match(englishPage, /3D INTERFACE BY LBEILC/);
   }
+  const aboutZh = fs.readFileSync(path.join(dist, 'about', 'index.html'), 'utf8');
+  const aboutEn = fs.readFileSync(path.join(dist, 'en', 'about', 'index.html'), 'utf8');
+  assert.ok(aboutZh.includes(profile.bioZh) && aboutZh.includes(`mailto:${profile.email}`));
+  assert.ok(aboutEn.includes(profile.bioEn) && aboutEn.includes(profile.linkedin));
+  assert.doesNotMatch(aboutZh, /CURRICULUM VITAE|内容整理中/);
+  assert.ok(fs.existsSync(path.join(dist, 'site-content.js')), 'Missing direct terminal profile data');
+  assert.ok(fs.existsSync(path.join(dist, 'licenses', 'RHINELABUI-LICENSE')));
   const englishHome = fs.readFileSync(path.join(dist, 'en', 'index.html'), 'utf8');
   assert.match(englishHome, /<html lang="en">/);
   assert.match(englishHome, /src="\/assets\/index-[^"]+\.js"/);

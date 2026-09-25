@@ -1,7 +1,9 @@
+import { profile } from './site-content.js';
+
 const links = {
   '/home': '/', '/blog': '/archives/', '/archive': '/archives/',
   '/archives': '/archives/', '/search': '/search/', '/about': '/about/',
-  '/github': 'https://github.com/Ferdinandhu000',
+  '/github': profile.github,
 };
 const commands = ['/help', '/?', ...Object.keys(links), '/ls', '/dir', '/whoami', '/date', '/echo', '/clear'];
 
@@ -20,6 +22,17 @@ export function mountTerminal(root, navigate = url => location.assign(url)) {
     output.append(line);
     line.scrollIntoView({ block: 'nearest' });
   }
+  function printContact(label, href, display) {
+    const line = document.createElement('div');
+    const link = document.createElement('a');
+    line.append(`${label}: `);
+    link.href = href;
+    link.textContent = display;
+    if (!href.startsWith('mailto:')) { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+    line.append(link);
+    output.append(line);
+    line.scrollIntoView({ block: 'nearest' });
+  }
   print('HJ BLOG / READY');
   print(english ? 'Type /help to list commands.' : '输入 /help 查看命令。');
   form.addEventListener('submit', event => {
@@ -34,7 +47,14 @@ export function mountTerminal(root, navigate = url => location.assign(url)) {
     if (name === '/clear') { output.replaceChildren(); return; }
     if (name === '/help' || name === '/?') { print('/home  /blog  /archive  /search  /about  /github  /ls  /whoami  /date  /echo  /clear'); return; }
     if (name === '/ls' || name === '/dir') { print('home/  blog/  archives/  search/  about/'); return; }
-    if (name === '/whoami') { print('Ferdinand Hu · blog'); return; }
+    if (name === '/whoami') {
+      print(english ? `${profile.nameEn} / ${profile.nameZh}` : `${profile.nameZh} / ${profile.nameEn}`);
+      print(english ? profile.bioEn : profile.bioZh);
+      printContact('GitHub', profile.github, 'github.com/Ferdinandhu000');
+      printContact('Email', `mailto:${profile.email}`, profile.email);
+      printContact('LinkedIn', profile.linkedin, 'linkedin.com/in/hujue');
+      return;
+    }
     if (name === '/date') { print(new Date().toLocaleString(english ? 'en-US' : 'zh-CN')); return; }
     if (name === '/echo') { print(args.join(' ')); return; }
     if (links[name]) {
