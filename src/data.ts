@@ -5,14 +5,11 @@ export interface ArchiveRecord {
   slug: string;
   url: string;
   title: string;
-  en: string;
-  department: string;
   category: string;
   date: string;
   lead: string;
   clearance: string;
   abstract: string;
-  findings: string[];
   source: string;
   tags: string[];
 }

@@ -55,10 +55,10 @@ export function loadArticles() {
     const tags = Array.isArray(data.tags) ? data.tags.map(String) : [];
     const text = plain(content);
     articles.push({
-      id, slug, url: `/p/${slug}/`, title, en: title, category,
-      department: category, date: date.toISOString().slice(0, 10), lead: 'Ferdinand Hu',
+      id, slug, url: `/p/${slug}/`, title, category,
+      date: date.toISOString().slice(0, 10), lead: 'Ferdinand Hu',
       clearance: 'PUBLIC', abstract: String(data.description ?? text.slice(0, 140)).trim(),
-      findings: ['阅读全文以查看完整内容。'], source: `/p/${slug}/`,
+      source: `/p/${slug}/`,
       tags, body: content, text, file,
     });
   }
