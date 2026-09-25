@@ -12,10 +12,13 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script>
       if (location.pathname === '/') {
-        let savedLanguage;
-        try { savedLanguage = JSON.parse(localStorage.getItem('hj-blog-settings') || '{}').language; }
+        let preferChinese = false;
+        try {
+          const saved = JSON.parse(localStorage.getItem('hj-blog-settings') || '{}');
+          preferChinese = saved.language === 'zh' && saved.languageChosen === true;
+        }
         catch { /* Storage may be unavailable. */ }
-        if (savedLanguage !== 'zh') location.replace('/en/' + location.search + location.hash);
+        if (!preferChinese) location.replace('/en/' + location.search + location.hash);
       }
     </script>
   </head>

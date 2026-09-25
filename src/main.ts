@@ -159,7 +159,7 @@ function readLocal<T>(key: string, fallback: T): T {
   }
 }
 const saved = new Set<string>(readLocal<string[]>("hj-blog-saved", []));
-const storedPrefs = readLocal<Partial<{ sound: boolean; music: boolean; soundVolume: number; musicVolume: number; reduced: boolean; quality: boolean; rendering: RenderQuality; superPerformance: boolean; colorTheme: "light" | "dark"; language: Language; motion: StoredMotion; motionPreset: MotionPreset }>>("hj-blog-settings", {});
+const storedPrefs = readLocal<Partial<{ sound: boolean; music: boolean; soundVolume: number; musicVolume: number; reduced: boolean; quality: boolean; rendering: RenderQuality; superPerformance: boolean; colorTheme: "light" | "dark"; language: Language; languageChosen: boolean; motion: StoredMotion; motionPreset: MotionPreset }>>("hj-blog-settings", {});
 const initialMotion = createMotionPreferences(
   storedPrefs.motion,
   storedPrefs.reduced ?? (storedPrefs.motion === undefined
@@ -179,6 +179,7 @@ const prefs = {
   rendering: normalizeQuality(storedPrefs.rendering, storedPrefs.quality !== false),
   colorTheme: storedPrefs.colorTheme === "dark" ? "dark" : "light",
   language: getLanguage(),
+  languageChosen: storedPrefs.languageChosen === true,
 };
 const motionActive = (key: MotionKey) => motionEnabled(prefs.motion, key);
 const motionIsReduced = () => Object.values(prefs.motion).every((value) => !value);
@@ -753,7 +754,9 @@ document.addEventListener("change", (e) => {
   const el = e.target as HTMLInputElement;
   if (el.hasAttribute('data-language')) {
     prefs.language = el.value === 'en' ? 'en' : 'zh';
+    prefs.languageChosen = true;
     setLanguage(prefs.language);
+    savePrefs();
     unifiedUI?.syncHomeLanguage();
     renderModal();
     requestAnimationFrame(() => document.querySelector<HTMLSelectElement>('[data-language]')?.focus({ preventScroll: true }));

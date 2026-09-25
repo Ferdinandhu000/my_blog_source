@@ -87,6 +87,8 @@ if (fs.existsSync(dist)) {
   const aboutEn = fs.readFileSync(path.join(dist, 'en', 'about', 'index.html'), 'utf8');
   assert.ok(aboutZh.includes(profile.bioZh) && aboutZh.includes(`mailto:${profile.email}`));
   assert.ok(aboutEn.includes(profile.bioEn) && aboutEn.includes(profile.linkedin));
+  assert.match(aboutZh, /p\.language='zh';p\.languageChosen=true;/);
+  assert.match(aboutEn, /p\.language='en';p\.languageChosen=true;/);
   assert.doesNotMatch(aboutZh, /CURRICULUM VITAE|内容整理中/);
   assert.ok(fs.existsSync(path.join(dist, 'site-content.js')), 'Missing direct terminal profile data');
   assert.ok(fs.existsSync(path.join(dist, 'licenses', 'RHINELABUI-LICENSE')));
@@ -97,11 +99,16 @@ if (fs.existsSync(dist)) {
   const home = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
   const languageRedirect = home.match(/<script>([\s\S]*?)<\/script>/)?.[1];
   assert.ok(languageRedirect, 'Missing home language redirect');
-  for (const [saved, expected] of [[null, '/en/?q=1#section'], ['en', '/en/?q=1#section'], ['zh', null]]) {
+  for (const [saved, expected] of [
+    [null, '/en/?q=1#section'],
+    [{ language: 'en' }, '/en/?q=1#section'],
+    [{ language: 'zh' }, '/en/?q=1#section'],
+    [{ language: 'zh', languageChosen: true }, null],
+  ]) {
     let redirected = null;
     vm.runInNewContext(languageRedirect, {
       location: { pathname: '/', search: '?q=1', hash: '#section', replace: value => { redirected = value; } },
-      localStorage: { getItem: () => saved && JSON.stringify({ language: saved }) },
+      localStorage: { getItem: () => saved && JSON.stringify(saved) },
     });
     assert.equal(redirected, expected, `Unexpected home route for saved language ${saved}`);
   }

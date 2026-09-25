@@ -3,7 +3,8 @@ import type { ArchiveRecord } from './data';
 export type Language = 'zh' | 'en';
 let language: Language = 'en';
 try {
-  language = JSON.parse(localStorage.getItem('hj-blog-settings') ?? '{}').language === 'zh' ? 'zh' : 'en';
+  const saved = JSON.parse(localStorage.getItem('hj-blog-settings') ?? '{}');
+  language = saved.language === 'zh' && saved.languageChosen === true ? 'zh' : 'en';
 } catch { /* Storage can be unavailable in private browsing. */ }
 if (location.pathname.startsWith('/en/')) language = 'en';
 document.documentElement.lang = language === 'en' ? 'en' : 'zh-CN';
