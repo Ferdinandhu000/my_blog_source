@@ -133,30 +133,29 @@ export class BootSequence {
     this.accessLettering.setText(s.access);
     this.opacity(".access-text", s.accessOpacity);
     this.opacity(".boot-logo", s.logoOpacity);
-    if (s.logoOpacity) {
-      this.el(".boot-logo").style.transform =
-        `translate(${s.logo.offsetX}px, 1px)`;
-      this.contour.style.strokeDasharray = `${s.logo.length} ${1 - s.logo.length}`;
-      this.contour.style.strokeDashoffset = String(-s.logo.start);
-      this.contour.setAttribute("stroke-width", String(s.logo.strokeWidth));
-      // Keep glyph rasterization stable while the logo is visible.
-      if (this.letters.textContent !== s.logoLetters)
-        this.letters.textContent = s.logoLetters;
-      this.plus.style.opacity = this.minus.style.opacity =
-        s.logo.symbolScale > 0 ? "1" : "0";
-      this.plus.setAttribute(
-        "transform",
-        `translate(${s.logo.plusX} 70) rotate(${s.logo.plusAngle}) scale(${s.logo.symbolScale}) translate(-69 -70)`,
-      );
-      this.minus.setAttribute(
-        "d",
-        `M${-s.logo.minusWidth / 2} 0h${s.logo.minusWidth}`,
-      );
-      this.minus.setAttribute(
-        "transform",
-        `translate(${s.logo.minusX} 70) scale(${s.logo.symbolScale})`,
-      );
-    }
+    this.el(".boot-logo").style.transform =
+      `translate(${s.logo.offsetX}px, 1px)`;
+    this.contour.style.strokeDasharray = `${s.logo.length} ${1 - s.logo.length}`;
+    this.contour.style.strokeDashoffset = String(-s.logo.start);
+    this.contour.setAttribute("stroke-width", String(s.logo.strokeWidth));
+    // Preserve the SVG text node once each revealed letter is in place. Replacing
+    // it every frame invalidates glyph rasterization under the moving HUD.
+    if (this.letters.textContent !== s.logoLetters)
+      this.letters.textContent = s.logoLetters;
+    this.plus.style.opacity = this.minus.style.opacity =
+      s.logo.symbolScale > 0 ? "1" : "0";
+    this.plus.setAttribute(
+      "transform",
+      `translate(${s.logo.plusX} 70) rotate(${s.logo.plusAngle}) scale(${s.logo.symbolScale}) translate(-69 -70)`,
+    );
+    this.minus.setAttribute(
+      "d",
+      `M${-s.logo.minusWidth / 2} 0h${s.logo.minusWidth}`,
+    );
+    this.minus.setAttribute(
+      "transform",
+      `translate(${s.logo.minusX} 70) scale(${s.logo.symbolScale})`,
+    );
     this.opacity(".auth-status", s.authOpacity);
     this.authLettering.setText(s.auth);
     this.opacity(".brand", 1);
@@ -171,30 +170,27 @@ export class BootSequence {
     this.opacity(".scan", s.scanVisible);
     if (s.scanVisible) this.renderScan(s);
     this.opacity(".welcome", s.welcomeVisible ? s.welcomeOpacity : 0);
-    if (s.welcomeVisible) {
-      this.el(".welcome").style.transform = `scale(${s.welcomeScale})`;
-      this.el(".welcome").style.filter = s.exitBlur || s.exit
-        ? `blur(${s.exitBlur}px) invert(${s.exit * 0.22}) sepia(${s.exit}) saturate(${1 + s.exit * 5}) hue-rotate(${s.exit * 115}deg)`
-        : "none";
-      this.opacity(".welcome-panel", s.welcomePanel);
-      this.opacity(".welcome-heading", 1);
-      this.el(".welcome-heading").style.color =
-        themeAmount > .0001 ? "var(--theme-ink)" : `rgb(${255 * (1 - s.welcomeInk)} ${255 * (1 - s.welcomeInk)} ${255 * (1 - s.welcomeInk)})`;
-      this.opacity(".welcome-company", s.companyVisible);
-      this.el(".welcome-company").style.opacity = String(
-        s.companyVisible ? (s.companyMask ? 0.65 : 1) : 0,
-      );
-      this.companyInk[1].querySelector("span")!.style.opacity = s.companyMask
-        ? ".06"
-        : "1";
-      this.el(".welcome-highlight").style.clipPath =
-        `inset(0 ${100 * (1 - s.highlight)}% 0 0)`;
-      this.opacity(".welcome-database", s.databaseOpacity);
-      this.opacity(".welcome-logo", s.welcomeLogo);
-    }
+    this.el(".welcome").style.transform = `scale(${s.welcomeScale})`;
+    this.el(".welcome").style.filter =
+      `blur(${s.exitBlur}px) invert(${s.exit * 0.22}) sepia(${s.exit}) saturate(${1 + s.exit * 5}) hue-rotate(${s.exit * 115}deg)`;
+    this.opacity(".welcome-panel", s.welcomePanel);
+    this.opacity(".welcome-heading", 1);
+    this.el(".welcome-heading").style.color =
+      themeAmount > .0001 ? "var(--theme-ink)" : `rgb(${255 * (1 - s.welcomeInk)} ${255 * (1 - s.welcomeInk)} ${255 * (1 - s.welcomeInk)})`;
+    this.opacity(".welcome-company", s.companyVisible);
+    this.el(".welcome-company").style.opacity = String(
+      s.companyVisible ? (s.companyMask ? 0.65 : 1) : 0,
+    );
+    this.companyInk[1].querySelector("span")!.style.opacity = s.companyMask
+      ? ".06"
+      : "1";
+    this.el(".welcome-highlight").style.clipPath =
+      `inset(0 ${100 * (1 - s.highlight)}% 0 0)`;
+    this.opacity(".welcome-database", s.databaseOpacity);
+    this.opacity(".welcome-logo", s.welcomeLogo);
     this.opacity("#boot-background", s.backgroundOpacity);
     this.opacity(".boot-white", s.white);
-    if (s.backgroundOpacity) this.el(".boot-background svg").style.transform =
+    this.el(".boot-background svg").style.transform =
       `translate(${Math.sin(t * 0.16) * 18}px, ${-(t - 6) * 5}px) scale(1.08)`;
     return s;
   }
@@ -207,7 +203,7 @@ export class BootSequence {
       `translate(960 540) scale(${s.ringScale}) translate(-960 -540)`,
     );
     group.style.opacity = String(s.ringOpacity);
-    group.style.filter = s.ringBlur ? `blur(${s.ringBlur}px)` : "none";
+    group.style.filter = `blur(${s.ringBlur}px)`;
     this.scanPaths[0].setAttribute(
       "d",
       arc(r, scan.outerStart, scan.outerSweep),

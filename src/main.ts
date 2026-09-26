@@ -1107,9 +1107,8 @@ function frame(ms: number) {
   }
   $("#stage").style.setProperty("--detail-shade", String(mode === "boot" ? 0 : scene?.detailVisibility ?? 0));
   const currentScene = scene;
-  if (currentScene && (!cinema || cinema.time >= 21.9)) inspectionOverlay.render(currentScene.decryptionFrame,
+  if (currentScene) inspectionOverlay.render(currentScene.decryptionFrame,
     (x, y) => currentScene.projectCard(x, y), Boolean(cinema), motionActive("modelDecryption"));
-  else inspectionOverlay.hide();
   if (Math.floor(time) !== lastTime) {
     lastTime = Math.floor(time);
     updateFooterClock(new Date(), motionActive("rollingNumbers"));

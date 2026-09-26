@@ -22,14 +22,6 @@ export class InspectionOverlay {
   private point =
     this.root.querySelector<SVGCircleElement>("#inspection-point")!;
   private label = document.querySelector<HTMLElement>("#inspection-text")!;
-  private hidden = false;
-
-  hide() {
-    if (this.hidden) return;
-    this.hidden = true;
-    this.root.style.opacity = "0";
-    this.label.style.opacity = "0";
-  }
 
   render(
     frame: DecryptionFrame,
@@ -37,7 +29,6 @@ export class InspectionOverlay {
     showLabel: boolean,
     enabled = true,
   ) {
-    this.hidden = false;
     const host = document.querySelector<HTMLElement>("#three-scene")!;
     this.root.setAttribute("viewBox", `0 0 ${host.clientWidth} ${host.clientHeight}`);
     this.root.style.opacity =
