@@ -1,5 +1,5 @@
 ---
-title: How do you read gradient signals when you train a nervous network?
+title: "Reading Gradient Signals in Neural Network Training"
 slug: gradient-flow-diagnostics
 date: '2026-09-25'
 category: AI & Research
@@ -7,9 +7,9 @@ draft: false
 description: Proceeding from the chain law, the gradients are organized, losses are trained and losses are verified as to
   how they should be observed together.
 tags:
-- In-depth learning
-- Gradient
-- Training diagnostics
+- "Deep Learning"
+- "Gradients"
+- "Training Diagnostics"
 ---
 This article was collated by my Obsidian note, The Math Basis of Gradient Analysis. When the training curve was unstable, I used to adjust the learning rate; it would be better to figure out how the gradient spreads in the network, and then to determine what level and where the anomaly occurred.
 

@@ -59,8 +59,17 @@ body.unified-open #stage { filter: blur(6px); pointer-events: none; }
 .unified-reader .prose img, .unified-reader .prose video { max-width: 100%; height: auto; }
 .unified-reader .prose blockquote { margin: 20px 0; padding: 8px 18px; border-left: 3px solid #9e774b; background: #e6e6dc; }
 .unified-reader .prose pre { overflow-x: auto; padding: 16px; color: #dde8dc; background: #18241c; font-size: 13px; }
+.unified-reader .prose .code-block { position: relative; margin: 1.35em 0; }
+.unified-reader .prose .code-block pre { margin: 0; padding-top: 46px; }
+.unified-reader .prose .code-copy { position: absolute; z-index: 1; top: 8px; right: 8px; min-height: 30px; padding: 4px 10px; border: 1px solid #718575; color: #edf4eb; background: #344b38; font: 11px ui-monospace, Consolas, monospace; cursor: pointer; }
+.unified-reader .prose .code-copy:hover, .unified-reader .prose .code-copy:focus-visible { background: #4c6b51; outline-offset: 2px; }
+.unified-reader .prose .task-list-item { list-style: none; }
+.unified-reader .prose .task-checkbox { width: 1em; height: 1em; margin: 0 .55em 0 -1.5em; vertical-align: -.08em; accent-color: #527158; }
 .unified-reader .prose :not(pre)>code { padding: 2px 4px; background: #e1e4d9; }
 .unified-reader .prose table, .unified-reader .katex-display { display: block; max-width: 100%; overflow-x: auto; }
+.unified-reader .prose .katex { margin-inline: .15em; }
+.unified-reader .prose .katex-display { margin: 1.4em 0; padding: .15em 0; }
+.unified-reader .prose .katex-display > .katex { margin-inline: 0; }
 .unified-reader .prose td, .unified-reader .prose th { border: 1px solid #c5c9be; padding: 7px; }
 .unified-reader .comments { margin-top: 50px; padding-top: 20px; border-top: 1px solid #c5c9be; }
 .unified-reader .site-aside { position: sticky; top: 0; align-self: start; max-height: 70dvh; overflow: auto; padding-left: 16px; border-left: 1px solid #c5c9be; }

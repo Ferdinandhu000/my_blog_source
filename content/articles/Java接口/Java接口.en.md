@@ -1,12 +1,12 @@
 ---
-title: Java interface
+title: "Java Interfaces"
 slug: interface-of-java
 date: '2025-05-17T14:15:40+08:00'
 category: Java Fundamentals
 draft: false
 tags:
-- Java
-- Interface
+- "Java"
+- "Interfaces"
 ---
 ## Interface
 

@@ -1,5 +1,5 @@
 ---
-title: 'From Mirror to Common: Docker Introduction'
+title: "From Images to Compose: A Practical Docker Introduction"
 slug: docker-images-containers-compose
 date: '2026-09-25'
 category: Development Practice
@@ -7,9 +7,9 @@ draft: false
 description: Learn from the individual Docker to sort out the relationship between mirrors, containers, Dockerfiles, data
   files and Compoce.
 tags:
-- Docker
-- Containers
-- Compose
+- "Docker"
+- "Containers"
+- "Compose"
 ---
 This article is organized by my Obsidian Docker study notes, keeping the most common concepts and commands. At the beginning of Docker, I felt that it was not a command parameter that was most easily confused, but the three layers of mirrors, containers and operating configurations.
 

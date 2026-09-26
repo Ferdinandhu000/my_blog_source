@@ -1,5 +1,5 @@
 ---
-title: FastAPI Routes, Parameters and Dependence Injection Synopsis
+title: "FastAPI Routes, Parameters, and Dependency Injection"
 slug: fastapi-routing-parameters-dependencies
 date: '2026-09-25'
 category: Development Practice
@@ -7,9 +7,9 @@ draft: false
 description: Organises the FastAPI base notes of Obsidian as a runable example of a serial path, query, requesting body and
   dependent injection.
 tags:
-- FastAPI
-- Python
-- API
+- "FastAPI"
+- "Python"
+- "API"
 ---
 This article is based on my Obsidian "FastAPI Foundation" notes. The original notes document the route, parameters, response, abnormal treatment and dependence injection; here, the fraction is bound to a small case where it is operational.
 

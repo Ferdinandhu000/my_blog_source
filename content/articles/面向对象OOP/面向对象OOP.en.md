@@ -1,12 +1,12 @@
 ---
-title: Java object-oriented programming
+title: "Java Object-Oriented Programming"
 slug: java-object-oriented-programming
 date: '2025-05-17T14:16:29+08:00'
 category: Java Fundamentals
 draft: false
 tags:
-- Java
-- Object-oriented
+- "Java"
+- "Object-Oriented Programming"
 ---
 # Java Object-oriented Programming (OOP)
 

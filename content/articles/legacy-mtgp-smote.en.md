@@ -1,12 +1,12 @@
 ---
-title: Study notes on MTTGP-SMOTE dissertations
+title: "Reading Notes on the MTGP-SMOTE Paper"
 slug: a-critical-reading-of-mtgp-smote-concepts-analysis-and-observations
 date: '2025-09-13'
 category: AI & Research
 draft: false
 tags:
-- Studying dissertations
-- Machine Learning
+- "Paper Reading"
+- "Machine Learning"
 ---
 <h2 id="问题背景">Background
 </h2><p>Addressing classification is one of the important branches of machine learning. In order to achieve classification, there is a need to learn from the corresponding data, and in real life the data we receive are often uneven (e.g. banks need to classify both unusual transactions and normal transactions, while most of the data studied are normal transactions, which are, after all, a minority), which can influence the results of the classification. To this end, the MTTGP-SMOTE approach presented in this paper used the synthesis of a few oversampling techniques (SMOTE) at the data level to sample raw data (oversampling) and then, using the Multitree General Programme (Multitree) strategy in the genetic programming, to use the results of the operation of individual trees as a stand-alone filling data, thus enabling multitrees to fill the overall data.</p>

@@ -1,12 +1,12 @@
 ---
-title: Interface
+title: "Java Interfaces and Comparators"
 slug: interface
 date: '2025-05-19T21:05:05+08:00'
 category: Java Fundamentals
 draft: false
 tags:
-- Java
-- Interface
+- "Java"
+- "Interfaces"
 ---
 ## Two Important Interfaces
 

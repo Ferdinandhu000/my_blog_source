@@ -123,6 +123,28 @@ export function markdownRenderer() {
     return `<pre class="hljs"><code>${highlighted}</code></pre>`;
   } });
   md.use(anchor, { permalink: anchor.permalink.linkInsideHeader({ symbol: ' #', placement: 'after' }) });
+  // Markdown-it does not render GitHub-style task markers on its own.
+  md.core.ruler.after('inline', 'task_lists', state => {
+    for (let i = 2; i < state.tokens.length; i++) {
+      const item = state.tokens[i - 2];
+      const inline = state.tokens[i];
+      if (item.type !== 'list_item_open' || inline.type !== 'inline') continue;
+      const first = inline.children?.[0];
+      if (first?.type !== 'text') continue;
+      const match = first.content.match(/^\[([ xX])\][ \t]+/);
+      if (!match) continue;
+      first.content = first.content.slice(match[0].length);
+      const checkbox = new state.Token('html_inline', '', 0);
+      checkbox.content = `<input class="task-checkbox" type="checkbox" disabled${match[1] === ' ' ? '' : ' checked'} aria-label="${match[1] === ' ' ? 'Incomplete' : 'Complete'}">`;
+      inline.children.unshift(checkbox);
+      item.attrJoin('class', 'task-list-item');
+    }
+  });
+  for (const type of ['fence', 'code_block']) {
+    const original = md.renderer.rules[type] ?? ((tokens, index, options, env, self) => self.renderToken(tokens, index, options));
+    md.renderer.rules[type] = (tokens, index, options, env, self) =>
+      `<div class="code-block"><button class="code-copy" type="button" data-copy-code aria-label="Copy code">Copy</button>${original(tokens, index, options, env, self)}</div>`;
+  }
   const defaultImage = md.renderer.rules.image;
   md.renderer.rules.image = (tokens, index, options, env, self) => {
     tokens[index].attrSet('loading', 'lazy');

@@ -7,6 +7,9 @@ categories:
   - Tutorials
 
 math: true
+tags:
+- "AI Tools"
+- "Tutorial"
 ---
 
 

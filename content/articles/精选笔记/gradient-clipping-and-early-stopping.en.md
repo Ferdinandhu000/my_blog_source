@@ -1,5 +1,5 @@
 ---
-title: 'Gradient cropping and early stop: two different training protections'
+title: "Gradient Clipping and Early Stopping: Two Training Safeguards"
 slug: gradient-clipping-and-early-stopping
 date: '2026-09-25'
 category: AI & Research
@@ -7,9 +7,9 @@ draft: false
 description: Gradient cropping limits are updated single times, with early suspension of training periods based on a validation
   set; attached PyTorch achieves and uses the boundary.
 tags:
-- In-depth learning
-- Gradient Crop
-- Stop early.
+- "Deep Learning"
+- "Gradient Clipping"
+- "Early Stopping"
 ---
 The article was collated by my Obsidian note, "Technology of training stability: gradient cutting and early cessation." These two approaches often appear together in the training configuration, but address different issues:**the gradient tailors the input of an updated parameter and decides early when the training will be completed.**
 

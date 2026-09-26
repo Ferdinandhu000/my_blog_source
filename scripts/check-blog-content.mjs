@@ -12,6 +12,10 @@ assert.ok(before.categories.length > 0);
 assert.equal(new Set(articles.map(article => article.url)).size, articles.length);
 
 const renderer = markdownRenderer();
+const markdownFeatures = renderer.render('- [ ] Open\n- [x] Done\n\n```js\nconst answer = 42;\n```\n');
+assert.match(markdownFeatures, /class="task-checkbox" type="checkbox" disabled aria-label="Incomplete"/);
+assert.match(markdownFeatures, /class="task-checkbox" type="checkbox" disabled checked aria-label="Complete"/);
+assert.match(markdownFeatures, /class="code-copy"[^>]*data-copy-code/);
 const renderedArticles = new Map();
 for (const article of articles) {
   for (const [language, version] of [['zh', article], ['en', article.english]]) {
@@ -64,6 +68,7 @@ if (fs.existsSync(dist)) {
     assert.match(html, /giscus\.app\/client\.js/, `Missing comments: ${article.slug}`);
     assert.match(html, new RegExp(profile.nameZh), `Missing Chinese byline: ${article.slug}`);
     assert.match(html, /3D INTERFACE BY LBEILC/, `Missing source credit: ${article.slug}`);
+    assert.match(html, /src="\/code-copy\.js"/, `Missing code copy handler: ${article.slug}`);
     assert.doesNotMatch(html, /src="\/assets\/index-/, `3D bundle on direct article: ${article.slug}`);
     assert.ok(search.some(item => item.url === article.url), `Missing search entry: ${article.slug}`);
     const englishPage = path.join(dist, 'en', 'p', article.slug, 'index.html');

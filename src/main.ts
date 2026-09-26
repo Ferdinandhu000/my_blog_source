@@ -12,6 +12,7 @@ import "./style.css";
 import "./quality-settings.css";
 import "./responsive.css";
 import "./unified-shell.css";
+import "./code-copy.js";
 import { UnifiedUI } from "./unified-ui";
 import { profile, sourceCreditMarkup } from "./site-content.js";
 import { getLanguage, setLanguage, tr, titleOf, categoryOf, abstractOf, tagsOf, articleUrl, categoryLabel, type Language } from "./i18n";
@@ -1106,8 +1107,9 @@ function frame(ms: number) {
   }
   $("#stage").style.setProperty("--detail-shade", String(mode === "boot" ? 0 : scene?.detailVisibility ?? 0));
   const currentScene = scene;
-  if (currentScene) inspectionOverlay.render(currentScene.decryptionFrame,
+  if (currentScene && (!cinema || cinema.time >= 21.9)) inspectionOverlay.render(currentScene.decryptionFrame,
     (x, y) => currentScene.projectCard(x, y), Boolean(cinema), motionActive("modelDecryption"));
+  else inspectionOverlay.hide();
   if (Math.floor(time) !== lastTime) {
     lastTime = Math.floor(time);
     updateFooterClock(new Date(), motionActive("rollingNumbers"));
