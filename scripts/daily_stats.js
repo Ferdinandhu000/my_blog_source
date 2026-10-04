@@ -227,20 +227,22 @@ async function main() {
     // 2. Fetch global site views
     console.log('Fetching site-wide views...');
     const siteData = await fetchBusuanzi(SITE_URL + '/');
-    if (!siteData) {
-        console.error('Error: Failed to fetch global site views from Busuanzi.');
-        process.exit(1);
+    // Busuanzi is a flaky third-party counter: degrade gracefully instead of failing the whole run.
+    const busuanziOk = !!siteData;
+    if (!busuanziOk) {
+        console.warn('Warning: Failed to fetch global site views from Busuanzi. Falling back to last known values.');
     }
 
-    // Increment script runs count
-    const nextScriptRuns = (history.accumulated_script_runs || 0) + 1;
+    // Only count this run toward the self-boost correction when fresh data was actually fetched,
+    // so the subtraction stays consistent on the next successful run.
+    const nextScriptRuns = busuanziOk ? (history.accumulated_script_runs || 0) + 1 : (history.accumulated_script_runs || 0);
 
     // Calculate true values (subtracting current and past script runs to avoid +1 self-boosting)
-    const currentSitePv = Math.max(0, (siteData.site_pv || 0) - nextScriptRuns);
-    const currentSiteUv = Math.max(0, (siteData.site_uv || 0) - nextScriptRuns);
+    const currentSitePv = busuanziOk ? Math.max(0, (siteData.site_pv || 0) - nextScriptRuns) : (history.site?.pv || 0);
+    const currentSiteUv = busuanziOk ? Math.max(0, (siteData.site_uv || 0) - nextScriptRuns) : (history.site?.uv || 0);
 
-    const deltaSitePv = history.site?.pv ? (currentSitePv - history.site.pv) : 0;
-    const deltaSiteUv = history.site?.uv ? (currentSiteUv - history.site.uv) : 0;
+    const deltaSitePv = (busuanziOk && history.site?.pv) ? (currentSitePv - history.site.pv) : 0;
+    const deltaSiteUv = (busuanziOk && history.site?.uv) ? (currentSiteUv - history.site.uv) : 0;
 
     // 3. Fetch Giscus comments
     console.log('Fetching Giscus comments from GitHub...');
@@ -310,6 +312,9 @@ async function main() {
     message += `📅 统计时间: ${todayStr} (北京时间)\n\n`;
 
     message += `📈 *全站整体数据*:\n`;
+    if (!busuanziOk) {
+        message += `• ⚠️ 不蒜子统计服务今日不可用，浏览量沿用上次数据。\n`;
+    }
     message += `• *总访问量 (PV)*: \`${currentSitePv}\` (较昨日 \`+${deltaSitePv}\`)\n`;
     message += `• *总访客数 (UV)*: \`${currentSiteUv}\` (较昨日 \`+${deltaSiteUv}\`)\n\n`;
 
