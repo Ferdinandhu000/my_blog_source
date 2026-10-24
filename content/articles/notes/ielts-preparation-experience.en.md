@@ -80,10 +80,6 @@ Here are the websites, videos, tools, and some of the preparation materials ment
 
 [IELTS Advantage on YouTube](https://www.youtube.com/@Ieltsadvantage): Watch speaking mock tests featuring candidates at different score levels, or get into the rhythm of an English conversation before your test.
 
-[ChatGPT](https://chatgpt.com/): Speaking practice, writing feedback, and reflection. Treat scores as estimates, and adapt generated speaking answers into your own words.
-
-[Obsidian](https://obsidian.md/): Organize speaking material, writing practice, and reflections so you can review topics and connect them to reusable personal experiences.
-
 ### Downloads
 
 The files below are the original preparation materials and include Chinese-language content.
@@ -97,5 +93,3 @@ The files below are the original preparation materials and include Chinese-langu
 [IELTS Writing Task 1 predictions with sample answers, October 2026 (PDF)](/downloads/ielts/ielts-writing-task1-2026-10.pdf)
 
 [Listening vocabulary self-test sheet, Cambridge IELTS 19—latest edition (Excel)](/downloads/ielts/ielts-listening-corpus-self-test-cambridge19.xlsx)
-
-The speaking question bank and writing predictions are tied to particular test periods, so check that they suit your exam date. Use predictions to broaden your ideas and practise; I would not recommend relying entirely on guessing which questions will appear.

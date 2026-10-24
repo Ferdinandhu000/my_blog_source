@@ -74,10 +74,6 @@ draft: false
 
 [IELTS Advantage（YouTube）](https://www.youtube.com/@Ieltsadvantage)：观看口语模考，了解不同分段考生的回答，也可以在考前用来进入英语交流的状态。
 
-[ChatGPT](https://chatgpt.com/)：口语对练、写作反馈和练习复盘。分数作为参考，生成的口语答案也要改成自己的表达。
-
-[Obsidian](https://obsidian.md/)：整理口语语料、写作练习和复盘记录，方便按主题回顾和串题。
-
 ### 资料下载
 
 [2026 年 9–12 月最新雅思口语题库（PDF）](/downloads/ielts/ielts-speaking-2026-09-12.pdf)
@@ -89,5 +85,3 @@ draft: false
 [2026 年 10 月雅思小作文机经预测带范文（PDF）](/downloads/ielts/ielts-writing-task1-2026-10.pdf)
 
 [语料库自测表（剑 19—最新版，Excel）](/downloads/ielts/ielts-listening-corpus-self-test-cambridge19.xlsx)
-
-口语题库和作文预测都有对应的时间版本，大家记得结合自己的考试时间使用。预测资料主要用于拓展思路和练习，不建议完全依赖押题。
