@@ -58,7 +58,7 @@ draft: false
 如果大家在备考阶段有一些问题，或者想联系我的**写作老师**，欢迎在下方评论区留言。另外，这里我也推荐一个不错的**雅思伴学**服务，在我备考阶段提供了数不胜数的优质**备考资料**以及众多**直播课**、**录播课**资源（在下方我也整理分享了部分重要资料，例如 9–12 月当季口语题库等）。他们的助教老师非常有耐心，会定期跟进学员的学习情况，非常适合**不想花大价钱报班**、但自己又**稍微缺乏一点学习主动性**的同学，有需要的话也可以在下方留言交流。
 
 祝大家都考出自己理想的成绩！
-![雅思人，let's 显化！](https://raw.githubusercontent.com/Ferdinandhu000/my_blog_img/master/IMG_1982(20261024-211524).PNG)
+<img src="https://raw.githubusercontent.com/Ferdinandhu000/my_blog_img/master/IMG_1982(20261024-211524).PNG" alt="雅思人，let's 显化！" style="width: 50%; height: auto;" loading="lazy" decoding="async">
 
 ## 备考资料
 

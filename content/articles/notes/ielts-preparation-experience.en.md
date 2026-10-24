@@ -64,7 +64,7 @@ If you have questions about preparing for IELTS, or would like to get in touch w
 
 I hope you all get the results you are aiming for!
 
-![IELTS learners, let's manifest our goals!](https://raw.githubusercontent.com/Ferdinandhu000/my_blog_img/master/IMG_1982(20261024-211524).PNG)
+<img src="https://raw.githubusercontent.com/Ferdinandhu000/my_blog_img/master/IMG_1982(20261024-211524).PNG" alt="IELTS learners, let's manifest our goals!" style="width: 50%; height: auto;" loading="lazy" decoding="async">
 
 ## Preparation Resources
 
