@@ -20,6 +20,8 @@ export interface ArchiveRecord {
 }
 
 export const records: ArchiveRecord[] = content.records;
+export const latestArticleIndex = records.reduce((latest, record, index) =>
+  record.date > records[latest].date ? index : latest, 0);
 export const categories = ["全部档案", ...content.categories];
 export const archiveColumns = content.columns;
 const filesByColumn = archiveColumns.map(category => records

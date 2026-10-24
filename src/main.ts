@@ -28,6 +28,7 @@ import { loadBootWebfonts } from "./boot-lettering";
 import { wrap, type ArchiveNavigation } from "./archive-loop";
 import {
   records,
+  latestArticleIndex,
   categories,
   archiveColumns,
   columnFiles,
@@ -115,7 +116,7 @@ $("#viewport").insertAdjacentHTML("beforeend", '<button class="mobile-entry" dat
 
 type Mode = "boot" | "archive" | "detail";
 let mode: Mode = "boot",
-  selected = 0,
+  selected = latestArticleIndex,
   bootStart = 0,
   lastStep = "",
   ready = false;
@@ -485,7 +486,7 @@ function replayBoot(forcePreview = false) {
 function replayBootAfterModal(forcePreview: boolean) {
   if (!isWallpaper && !forcePreview) {
     setMode("archive");
-    select(0);
+    select(latestArticleIndex);
     return;
   }
   bootStart = performance.now() / 1000 - 1.76;
@@ -493,8 +494,8 @@ function replayBootAfterModal(forcePreview: boolean) {
   lastStep = "";
   setMode(!motionActive("boot") && !forcePreview ? "archive" : "boot");
   audio.restartBoot();
-  scene?.select(0);
-  selected = 0;
+  scene?.select(latestArticleIndex);
+  selected = latestArticleIndex;
   updateSelection();
   if (!forcePreview) audio.play("ui-tick");
 }
@@ -1236,7 +1237,7 @@ async function start() {
     if (scene) bindScene(scene);
     savePrefs();
     ready = true;
-    select(0);
+    select(latestArticleIndex);
     if (entry) entry.ready();
     else {
       if (isWallpaper) {
